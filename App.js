@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
-import ParametersScreen from "./screens/HomeScreen";
+import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 
 // import { StatusBar } from "expo-status-bar";
@@ -15,7 +15,8 @@ const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
   return (
-    <TabNavigator
+    <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName = "";
@@ -24,7 +25,7 @@ const TabNavigator = () => {
             iconName = "home";
           } else if (route.name === "Profile") {
             iconName = "user";
-          } else {
+          } else if (route.name === "Parameters") {
             iconName = "gear";
           }
 
@@ -35,10 +36,10 @@ const TabNavigator = () => {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Parameters" component={ParametersScreen} />
-    </TabNavigator>
+    </Tab.Navigator>
   );
 };
 
@@ -46,7 +47,6 @@ export default function App() {
   return (
     <NavigationContainer style={styles.container}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
