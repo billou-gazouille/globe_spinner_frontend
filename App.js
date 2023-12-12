@@ -2,12 +2,13 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// Ajouter @react-navigation/elements dans le projet
+import { HeaderBackButton } from "@react-navigation/elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
 import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
-
-// import { StatusBar } from "expo-status-bar";
+import SuggestionsScreen from "./screens/SuggestionsScreen";
 import { StyleSheet, Text, View } from "react-native";
 
 const Stack = createNativeStackNavigator();
@@ -47,6 +48,20 @@ export default function App() {
   return (
     <NavigationContainer style={styles.container}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen
+          name="Suggestions"
+          component={SuggestionsScreen}
+          options={{
+            title: "Coucou",
+            headerLeft: () => (
+              <HeaderBackButton
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+            ),
+          }}
+        />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>

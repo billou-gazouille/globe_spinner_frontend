@@ -12,7 +12,7 @@ import {
 
 export default function ProfileScreen({ navigation }) {
   const handleSubmit = () => {
-    navigation.navigate("TabNavigator");
+    navigation.navigate("Parameters");
   };
 
   return (
