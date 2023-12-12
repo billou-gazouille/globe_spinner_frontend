@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
+import SVG from "../assets/globe_spinner.svg";
 
 export default function HomeScreen({ navigation }) {
   const handleSubmit = () => {
@@ -16,10 +17,9 @@ export default function HomeScreen({ navigation }) {
   };
   return (
     <View style={styles.container}>
+      <Image source={SVG} style={styles.logoImage} />
       <TouchableOpacity onPress={() => handleSubmit()}>
-        <Text style={styles.title}>
-          Welcome to GLOBEEEE SPINNEEEERRRRRUUU'S HOMESCREEN
-        </Text>
+        <Text style={styles.title}>GLOBE SPINNER</Text>
       </TouchableOpacity>
     </View>
   );
@@ -28,11 +28,17 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "blue",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
+  logoImage: {
+    width: "50%",
+    height: "70%",
+  },
   title: {
-    fontSize: 38,
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 30,
   },
 });

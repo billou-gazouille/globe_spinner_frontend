@@ -20,7 +20,7 @@ const TabNavigator = () => {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
+        tabBarIcon: ({ focused, color, size }) => {
           let iconName = "";
 
           if (route.name === "Home") {
@@ -31,11 +31,27 @@ const TabNavigator = () => {
             iconName = "gear";
           }
 
-          return <FontAwesome name={iconName} size={size} color={color} />;
+          let backgroundColor = focused ? "transparent" : "#ba99fe";
+
+          return (
+            <View
+              style={{
+                backgroundColor: backgroundColor,
+                borderRadius: size / 2,
+                justifyContent: "center",
+                alignItems: "center",
+                width: size,
+                height: size,
+              }}
+            >
+              <FontAwesome name={iconName} size={size} color={color} />
+            </View>
+          );
         },
-        tabBarActiveTintColor: "#e8be4b",
-        tabBarInactiveTintColor: "#b2b2b21",
+        tabBarActiveTintColor: "#FFFFFF",
+        tabBarInactiveTintColor: "#CBCBE4",
         headerShown: false,
+        tabBarStyle: { backgroundColor: "#ba99fe" },
       })}
     >
       <Tab.Screen name="Profile" component={ProfileScreen} />
@@ -62,10 +78,11 @@ export default function App() {
 }
 
 // const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
+
+// container: {
+//   flex: 1,
+//   backgroundColor: "#fff",
+//   alignItems: "center",
+//   justifyContent: "center",
+// },
 // });
