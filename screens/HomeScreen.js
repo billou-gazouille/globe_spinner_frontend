@@ -9,7 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import SVG from "../assets/globe_spinner.svg";
+import SvgUri from "react-native-svg-uri";
 
 export default function HomeScreen({ navigation }) {
   const handleSubmit = () => {
@@ -17,7 +17,11 @@ export default function HomeScreen({ navigation }) {
   };
   return (
     <View style={styles.container}>
-      <Image source={SVG} style={styles.logoImage} />
+      <SvgUri
+        width="200"
+        height="200"
+        source={require("../assets/globe_spinner.svg")}
+      />
       <TouchableOpacity onPress={() => handleSubmit()}>
         <Text style={styles.title}>GLOBE SPINNER</Text>
       </TouchableOpacity>
