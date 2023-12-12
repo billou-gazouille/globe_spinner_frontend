@@ -48,20 +48,7 @@ export default function App() {
   return (
     <NavigationContainer style={styles.container}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="Suggestions"
-          component={SuggestionsScreen}
-          options={{
-            title: "Coucou",
-            headerLeft: () => (
-              <HeaderBackButton
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              />
-            ),
-          }}
-        />
+        <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
