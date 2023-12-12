@@ -1,32 +1,34 @@
 import React, { useCallback } from "react";
 import { View, StyleSheet, Text, Image, Pressable } from "react-native";
 // import SvgUri from "react-native-svg-uri";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
+import { CustomTextKrona } from "../components/CustomTextKronaOne";
+// import { useFonts } from "expo-font";
+// import * as SplashScreen from "expo-splash-screen";
 
 export default function HomeScreen({ navigation }) {
-  SplashScreen.preventAutoHideAsync();
+  //   SplashScreen.preventAutoHideAsync();
 
-  const [fontsLoaded] = useFonts({
-    "KronaOne-Regular": require("../assets/fonts/KronaOne-Regular.ttf"),
-  });
+  //   const [fontsLoaded] = useFonts({
+  //     "KronaOne-Regular": require("../assets/fonts/KronaOne-Regular.ttf"),
+  //   });
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
+  //   const onLayoutRootView = useCallback(async () => {
+  //     if (fontsLoaded) {
+  //       await SplashScreen.hideAsync();
+  //     }
+  //   }, [fontsLoaded]);
 
   const handleSubmit = () => {
     navigation.navigate("Suggestions");
   };
 
-  if (!fontsLoaded) {
-    return null;
-  }
+  // if (!fontsLoaded) {
+  //   return null;
+  // }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
+    //onLayout={onLayoutRootView}
+    <View style={styles.container}>
       <Image
         source={require("../assets/bendy-dotted-line_2.jpg")}
         style={styles.topLine}
@@ -36,7 +38,7 @@ export default function HomeScreen({ navigation }) {
         style={styles.logoImage}
       />
       <Pressable style={styles.travelButton} onPress={handleSubmit}>
-        <Text style={styles.text}>TRAVEL</Text>
+        <CustomTextKrona style={styles.text}>TRAVEL</CustomTextKrona>
       </Pressable>
       <Image
         source={require("../assets/line-map.jpg")}

@@ -28,25 +28,3 @@ const styles = StyleSheet.create({
     fontSize: 28,
   },
 });
-
-// ({
-//   tabBarIcon: ({ focused, color, size }) => {
-//     let iconName = "";
-
-//     if (route.name === "Home") {
-//       iconName = "home";
-//     } else if (route.name === "Profile") {
-//       iconName = "user";
-//     } else if (route.name === "Parameters") {
-//       iconName = "gear";
-//     }
-
-//     let iconBackgroundColor = focused ? "transparent" : "#ba99fe";
-
-//     return <FontAwesome name={iconName} size={size} color={color} />;
-//   },
-//   tabBarActiveTintColor: "#FFFFFF",
-//   tabBarInactiveTintColor: "#CBCBE4",
-//   headerShown: false,
-// })}
-// >
