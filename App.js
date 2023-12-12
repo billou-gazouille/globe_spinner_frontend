@@ -2,14 +2,12 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// Ajouter @react-navigation/elements dans le projet
-import { HeaderBackButton } from "@react-navigation/elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
 import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 import SelectedSuggestionsScreen from "./screens/SelectedSuggestionScreen";
 
 const Stack = createNativeStackNavigator();
@@ -32,18 +30,8 @@ const TabNavigator = () => {
             iconName = "gear";
           }
 
-          // if (focused) iconBackgroundColor = "transparent";
-
           return (
             <View
-              // style={{
-              //   // backgroundColor: iconBackgroundColor,
-              //   borderRadius: size / 2,
-              // justifyContent: "center",
-              // alignItems: "center",
-              // width: size,
-              // height: size,
-              // }}
               style={{
                 backgroundColor: focused ? "rgba(255,255,255,0.33)" : null,
                 justifyContent: "center",
@@ -76,7 +64,6 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
-    // style={styles.container}
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
@@ -89,13 +76,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-// const styles = StyleSheet.create({
-
-// container: {
-//   flex: 1,
-//   backgroundColor: "#fff",
-//   alignItems: "center",
-//   justifyContent: "center",
-// },
-// });
