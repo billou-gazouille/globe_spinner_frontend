@@ -1,30 +1,47 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   View,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
+  Image,
+  Pressable,
 } from "react-native";
-import SvgUri from "react-native-svg-uri";
+// import SvgUri from "react-native-svg-uri";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
 export default function HomeScreen({ navigation }) {
+  SplashScreen.preventAutoHideAsync();
+
+  const [fontsLoaded] = useFonts({
+    "KronaOne-Regular": require("../assets/fonts/KronaOne-Regular.ttf"),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
   const handleSubmit = () => {
     navigation.navigate("TabNavigator");
   };
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <SvgUri
-        width="200"
-        height="200"
-        source={require("../assets/globe_spinner.svg")}
+    <View style={styles.container} onLayout={onLayoutRootView}>
+      {/* <SvgUri source={require("../assets/globe_spinner.svg")} /> */}
+      <Image
+        source={require("../assets/globe_spinner.jpg")}
+        style={styles.logoImage}
       />
-      <TouchableOpacity onPress={() => handleSubmit()}>
-        <Text style={styles.title}>GLOBE SPINNER</Text>
-      </TouchableOpacity>
+      <Pressable style={styles.travelButton} onPress={handleSubmit}>
+        <Text style={styles.text}>TRAVEL</Text>
+      </Pressable>
     </View>
   );
 }
@@ -37,12 +54,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logoImage: {
-    width: "50%",
-    height: "70%",
+    width: "100%",
+    height: "50%",
   },
-  title: {
+  text: {
+    fontFamily: "KronaOne-Regular",
+    letterSpacing: 0.25,
+    color: "white",
+  },
+  travelButton: {
     alignItems: "center",
     justifyContent: "center",
     fontSize: 30,
+    color: "#BA99FE",
+    borderRadius: 20,
+    paddingVertical: 25,
+    paddingHorizontal: 60,
+    elevation: 4,
+    backgroundColor: "#3972D9",
   },
 });

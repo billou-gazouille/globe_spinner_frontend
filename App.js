@@ -16,6 +16,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  let iconBackgroundColor = "#ba99fe";
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -31,12 +32,12 @@ const TabNavigator = () => {
             iconName = "gear";
           }
 
-          let backgroundColor = focused ? "transparent" : "#ba99fe";
+          if (focused) iconBackgroundColor = "transparent";
 
           return (
             <View
               style={{
-                backgroundColor: backgroundColor,
+                // backgroundColor: iconBackgroundColor,
                 borderRadius: size / 2,
                 justifyContent: "center",
                 alignItems: "center",
@@ -48,7 +49,9 @@ const TabNavigator = () => {
             </View>
           );
         },
+
         tabBarActiveTintColor: "#FFFFFF",
+        tabBarActiveBackgroundColor: iconBackgroundColor,
         tabBarInactiveTintColor: "#CBCBE4",
         headerShown: false,
         tabBarStyle: { backgroundColor: "#ba99fe" },
