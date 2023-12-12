@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
 } from "react-native";
-// import SvgUri from "react-native-svg-uri";
+import SvgUri from "react-native-svg-uri";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
@@ -34,7 +34,10 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
-      {/* <SvgUri source={require("../assets/globe_spinner.svg")} /> */}
+      <Image
+        source={require("../assets/bendy-dotted-line_2.jpg")}
+        style={styles.topLine}
+      />
       <Image
         source={require("../assets/globe_spinner.jpg")}
         style={styles.logoImage}
@@ -42,6 +45,10 @@ export default function HomeScreen({ navigation }) {
       <Pressable style={styles.travelButton} onPress={handleSubmit}>
         <Text style={styles.text}>TRAVEL</Text>
       </Pressable>
+      <Image
+        source={require("../assets/line-map.jpg")}
+        style={styles.bottomLine}
+      />
     </View>
   );
 }
@@ -72,5 +79,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 60,
     elevation: 4,
     backgroundColor: "#3972D9",
+    marginTop: 15,
+  },
+  topLine: {
+    marginBottom: 20,
+    width: "100%",
+    height: "9%",
+  },
+  bottomLine: {
+    marginTop: 20,
+    width: "100%",
+    height: "21%",
+    marginBottom: 10,
   },
 });
