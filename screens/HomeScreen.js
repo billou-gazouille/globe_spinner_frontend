@@ -1,13 +1,6 @@
 import React, { useCallback } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-  Pressable,
-} from "react-native";
-import SvgUri from "react-native-svg-uri";
+import { View, StyleSheet, Text, Image, Pressable } from "react-native";
+// import SvgUri from "react-native-svg-uri";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
