@@ -18,7 +18,7 @@ export default function HomeScreen({ navigation }) {
   }, [fontsLoaded]);
 
   const handleSubmit = () => {
-    navigation.navigate("TabNavigator");
+    navigation.navigate("Suggestions");
   };
 
   if (!fontsLoaded) {
