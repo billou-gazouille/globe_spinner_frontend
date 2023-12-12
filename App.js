@@ -34,20 +34,21 @@ const TabNavigator = () => {
             <View
               style={{
                 backgroundColor: focused ? "rgba(255,255,255,0.33)" : null,
-                justifyContent: "center",
+                justifyContent: "space-between",
                 alignItems: "center",
-                height: "80%",
-                width: "50%",
+                height: "90%",
+                width: "70%",
                 borderRadius: 20,
-                paddingBottom: 3,
-                paddingTop: 3,
+                paddingBottom: 8,
+                paddingTop: 8,
+                marginTop: 10,
               }}
             >
               <FontAwesome name={iconName} size={size} color={color} />
             </View>
           );
         },
-
+        tabBarLabel: () => null,
         tabBarActiveTintColor: "#FFFFFF",
         tabBarActiveBackgroundColor: iconBackgroundColor,
         tabBarInactiveTintColor: "#CBCBE4",
