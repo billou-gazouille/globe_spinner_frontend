@@ -32,17 +32,27 @@ const TabNavigator = () => {
             iconName = "gear";
           }
 
-          if (focused) iconBackgroundColor = "transparent";
+          // if (focused) iconBackgroundColor = "transparent";
 
           return (
             <View
+              // style={{
+              //   // backgroundColor: iconBackgroundColor,
+              //   borderRadius: size / 2,
+              // justifyContent: "center",
+              // alignItems: "center",
+              // width: size,
+              // height: size,
+              // }}
               style={{
-                // backgroundColor: iconBackgroundColor,
-                borderRadius: size / 2,
+                backgroundColor: focused ? "rgba(255,255,255,0.33)" : null,
                 justifyContent: "center",
                 alignItems: "center",
-                width: size,
-                height: size,
+                height: "80%",
+                width: "50%",
+                borderRadius: 20,
+                paddingBottom: 3,
+                paddingTop: 3,
               }}
             >
               <FontAwesome name={iconName} size={size} color={color} />
