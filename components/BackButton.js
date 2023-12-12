@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Button, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const BackButton = ({ navigation }) => {
@@ -9,8 +9,8 @@ const BackButton = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={handleBackClick}>
-        <Icon name="chevron-left" size={20} color="#000" />{" "}
+      <TouchableOpacity onPress={handleBackClick}>
+        <Icon name="chevron-left" size={25} color="#000" />
       </TouchableOpacity>
     </View>
   );
@@ -18,10 +18,8 @@ const BackButton = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 10,
-    left: 10,
+    top: 55,
+    left: 15,
   },
-  //   button: {
-  //   },
 });
 export default BackButton;

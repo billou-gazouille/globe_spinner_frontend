@@ -10,6 +10,7 @@ import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
 import { StyleSheet, Text, View } from "react-native";
+import SelectedSuggestionsScreen from "./screens/SelectedSuggestionScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -46,20 +47,25 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
-    <NavigationContainer style={styles.container}>
+    // style={styles.container}
+    <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
+        <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+        <Stack.Screen
+          name="SelectedSuggestions"
+          component={SelectedSuggestionsScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+// });
