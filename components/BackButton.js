@@ -15,5 +15,13 @@ const BackButton = ({ navigation }) => {
     </View>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    top: 10,
+    left: 10,
+  },
+  //   button: {
+  //   },
+});
 export default BackButton;
