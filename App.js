@@ -38,9 +38,10 @@ const TabNavigator = () => {
                 alignItems: "center",
                 height: "90%",
                 width: "70%",
-                borderRadius: 20,
-                paddingBottom: 8,
-                paddingTop: 8,
+                borderRadius: 10,
+                paddingVertical: 10,
+                // paddingBottom: 8,
+                // paddingTop: 8,
                 marginTop: 10,
               }}
             >

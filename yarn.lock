@@ -1178,6 +1178,16 @@
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/krona-one/-/krona-one-0.2.3.tgz#b847f3763c2905f7a3eaddb1c37339b3b0426c0c"
   integrity sha512-vAWp/kKs0TcUw/TT98Fzulag+rRNu0PPOnefoAK3Ftp1GFCMRqnj5tSdijcMICXxxAP7yNPxbntEE2Y8Hw+FvQ==
 
+"@expo-google-fonts/nunito-sans@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/nunito-sans/-/nunito-sans-0.2.3.tgz#491d915531a41aea2c93cdb3f53893c3a60af575"
+  integrity sha512-8p1ZVigs6rCArGzQtLeaJ70wZI7hc32IyLnPQC6Ul1HW8Ok6qn+Q5tCpPz3/0k+LcMU6dyAmNj5fVzDSTho9aA==
+
+"@expo-google-fonts/oswald@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/oswald/-/oswald-0.2.3.tgz#5f9b2a9c6ee34b9735c92956061f0fde5dd2f4a3"
+  integrity sha512-LQhPBNx3UuS6Ug4pyyoqYA9KtxW9FlOixGhAUZm9kue/7IufaGPGd/VkXyy2TpdCIzvpRcDTXu+GRPwEKEzUSw==
+
 "@expo/bunyan@4.0.0", "@expo/bunyan@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@expo/bunyan/-/bunyan-4.0.0.tgz#be0c1de943c7987a9fbd309ea0b1acd605890c7b"
