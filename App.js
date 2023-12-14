@@ -13,6 +13,7 @@ import SelectedSuggestionsScreen from "./screens/SelectedSuggestionScreen";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import filters from "./reducers/filters";
+import FiltersScreen from "./screens/FiltersScreen";
 
 const store = configureStore({
   reducer: { filters },
@@ -78,6 +79,7 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
         <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+        <Stack.Screen name="Filters" component={FiltersScreen} />
         <Stack.Screen
           name="SelectedSuggestions"
           component={SelectedSuggestionsScreen}
