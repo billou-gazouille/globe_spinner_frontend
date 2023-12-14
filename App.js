@@ -2,24 +2,24 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// Ajouter @react-navigation/elements dans le projet
+import { HeaderBackButton } from "@react-navigation/elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import HomeScreen from "./screens/HomeScreen";
 import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
-import { View } from "react-native";
-import SelectedSuggestionsScreen from "./screens/SelectedSuggestionScreen";
+import { StyleSheet, Text, View } from "react-native";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
-  let iconBackgroundColor = "#ba99fe";
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ color, size }) => {
           let iconName = "";
 
           if (route.name === "Home") {
@@ -30,30 +30,11 @@ const TabNavigator = () => {
             iconName = "gear";
           }
 
-          return (
-            <View
-              style={{
-                backgroundColor: focused ? "rgba(255,255,255,0.33)" : null,
-                justifyContent: "space-between",
-                alignItems: "center",
-                height: "90%",
-                width: "70%",
-                borderRadius: 20,
-                paddingBottom: 8,
-                paddingTop: 8,
-                marginTop: 10,
-              }}
-            >
-              <FontAwesome name={iconName} size={size} color={color} />
-            </View>
-          );
+          return <FontAwesome name={iconName} size={size} color={color} />;
         },
-        tabBarLabel: () => null,
-        tabBarActiveTintColor: "#FFFFFF",
-        tabBarActiveBackgroundColor: iconBackgroundColor,
-        tabBarInactiveTintColor: "#CBCBE4",
+        tabBarActiveTintColor: "#e8be4b",
+        tabBarInactiveTintColor: "#b2b2b21",
         headerShown: false,
-        tabBarStyle: { backgroundColor: "#ba99fe" },
       })}
     >
       <Tab.Screen name="Profile" component={ProfileScreen} />
@@ -65,15 +46,33 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer style={styles.container}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
         <Stack.Screen
-          name="SelectedSuggestions"
-          component={SelectedSuggestionsScreen}
+          name="Suggestions"
+          component={SuggestionsScreen}
+          options={{
+            title: "Coucou",
+            headerLeft: () => (
+              <HeaderBackButton
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              />
+            ),
+          }}
         />
+        <Stack.Screen name="TabNavigator" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
