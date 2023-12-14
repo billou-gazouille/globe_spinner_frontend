@@ -11,7 +11,7 @@ const SignModal = ({ visible, onClose, onSignIn, onSignUp }) => {
       <View style={styles.modalContainer}>  
         <View style={styles.modalContent}>  
           <TouchableOpacity style={styles.button} onPress={onSignIn}>
-            <Text style={styles.buttonText}>Sign In</Text> 
+            <Text style={styles.buttonText}>Sign In!!!</Text> 
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={onSignUp}>
             <Text style={styles.buttonText}>Sign Up</Text>
