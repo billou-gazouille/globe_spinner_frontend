@@ -74,26 +74,15 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen
-            name="Suggestions"
-            component={SuggestionsScreen}
-            options={{
-              title: "Coucou",
-              headerLeft: () => (
-                <HeaderBackButton
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                />
-              ),
-            }}
-          />
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="TabNavigator" component={TabNavigator} />
+        <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+        <Stack.Screen
+          name="SelectedSuggestions"
+          component={SelectedSuggestionsScreen}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
