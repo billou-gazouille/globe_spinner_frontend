@@ -1,23 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  SafeAreaView,
+  View,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  ScrollView,
+  Modal,
 } from "react-native";
 import DateTimePicker from "react-native-ui-datepicker";
-import dayjs from "dayjs";
 import BackButton from "../components/BackButton";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-
-// Il faut enregistrer les filtres dans le store de redux
+import { CustomText } from "../components/CustomText";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function FiltersScreen({ navigation }) {
   const [departureLocation, setDepartureLocation] = useState("");
-  const [inboundDate, setInboundDate] = useState(dayjs());
-  const [outboundDate, setOutboundDate] = useState(dayjs());
+  const [departureDate, setDepartureDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
+  const [isPickerShow, setIsPickerShow] = useState(false);
+  const [pickerMode, setPickerMode] = useState("departure");
   const [budget, setBudget] = useState("");
   const [numberOfPeople, setNumberOfPeople] = useState(null);
   const [transportType, setTransportType] = useState("");
@@ -26,59 +29,140 @@ export default function FiltersScreen({ navigation }) {
     navigation.navigate("Suggestions");
   };
 
+  const showDatePicker = (mode) => {
+    setIsPickerShow(true);
+    setPickerMode(mode);
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <TextInput
-        style={styles.input}
-        value={departureLocation}
-        onChangeText={(value) => setDepartureLocation(value)}
-      />
-      {/* https://github.com/farhoudshapouran/react-native-ui-datepicker */}
-      <DateTimePicker
-        style={styles.dateInput}
-        value={inboundDate}
-        onValueChange={(date) => setInboundDate(date)}
-      />
-      <DateTimePicker
-        style={styles.dateInput}
-        value={outboundDate}
-        onValueChange={(date) => setOutboundDate(date)}
-      />
-      <TextInput
-        style={styles.input}
-        value={budget}
-        keyboardType="numeric"
-        onChangeText={setBudget}
-      />
-      <TextInput
-        style={styles.input}
-        value={numberOfPeople}
-        keyboardType="numeric"
-        onChangeText={setNumberOfPeople}
-      />
-      <TextInput
-        style={styles.input}
-        value={transportType}
-        onChangeText={setTransportType}
-      />
-      <TouchableOpacity onPress={() => handleSubmit()}>
-        <Text>Go!</Text>
-      </TouchableOpacity>
-    </SafeAreaView>
+    <ScrollView contentContainerStyle={styles.contentContainer}>
+      <BackButton />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingContainer}
+      >
+        <TextInput
+          style={styles.input}
+          value={departureLocation}
+          placeholder="origin"
+          onChangeText={(value) => setDepartureLocation(value)}
+        />
+
+        <TouchableOpacity onPress={() => showDatePicker("departure")}>
+          <View style={styles.buttonText}>
+            <Icon name="calendar" size={20} color="#000" />
+            <Text>Choose Departure Date</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => showDatePicker("return")}>
+          <View style={styles.buttonText}>
+            <Icon name="calendar" size={20} color="#000" />
+            <Text>Choose Return Date</Text>
+          </View>
+        </TouchableOpacity>
+
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={isPickerShow}
+          onRequestClose={() => setIsPickerShow(false)}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <DateTimePicker
+                mode="date"
+                date={pickerMode === "departure" ? departureDate : returnDate}
+                onDateChange={(date) => {
+                  if (pickerMode === "departure") {
+                    setDepartureDate(date);
+                  } else {
+                    setReturnDate(date);
+                  }
+                }}
+              />
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setIsPickerShow(false)}
+              >
+                <Text style={styles.textStyle}>Confirm</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        {/* Other Inputs */}
+        <TextInput
+          style={styles.input}
+          value={budget}
+          placeholder="Budget"
+          keyboardType="numeric"
+          onChangeText={setBudget}
+        />
+        <TextInput
+          style={styles.input}
+          value={numberOfPeople}
+          placeholder="Number of people"
+          keyboardType="numeric"
+          onChangeText={setNumberOfPeople}
+        />
+        <TextInput
+          style={styles.input}
+          value={transportType}
+          placeholder="Transport type"
+          onChangeText={setTransportType}
+        />
+        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+          <CustomText style={styles.text}>Go!</CustomText>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  contentContainer: {
     flex: 1,
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   input: {
+    marginTop: 10,
     height: 40,
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 20,
+  },
+  keyboardAvoidingContainer: {
+    width: "100%", // Ensures the container takes full width
+    alignItems: "center", // Centers children horizontally
   },
   dateInput: {
     backgroundColor: "#F5FCFF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button: {
+    borderRadius: 50,
+    paddingVertical: 15,
+    paddingHorizontal: 60,
+    elevation: 4,
+    backgroundColor: "#3972D9",
+    marginTop: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonText: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    fontWeight: "bold",
+    letterSpacing: 2.5,
+    color: "white",
+    fontSize: 16,
+    textAlign: "center",
+    justifyContent: "center",
   },
 });

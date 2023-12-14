@@ -18,10 +18,10 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={[styles.container, { height }]}>
-      {/* <Image
-        source={require("../assets/bendy-dotted-line_2.jpg")}
-        style={styles.topLine}
-      /> */}
+      <Image
+        source={require("../assets/line-map.jpg")}
+        style={styles.bottomLine}
+      />
       <Image
         source={require("../assets/globe_spinner.jpg")}
         style={styles.logoImage}
@@ -30,8 +30,8 @@ export default function HomeScreen({ navigation }) {
         <CustomText style={styles.text}>TRAVEL</CustomText>
       </Pressable>
       <Image
-        source={require("../assets/line-map.jpg")}
-        style={styles.bottomLine}
+        source={require("../assets/bendy-dotted-line_2.jpg")}
+        style={styles.topLine}
       />
     </View>
   );
@@ -65,15 +65,14 @@ const styles = StyleSheet.create({
     marginTop: -20,
   },
   topLine: {
-    marginBottom: 20,
+    marginTop: 30,
+    marginBottom: 10,
     width: "100%",
     height: "9%",
   },
   bottomLine: {
-    marginTop: 20,
+    marginBottom: 10,
     width: "100%",
-    position: "absolute",
-    zIndex: -1,
     bottom: 0,
     height: "22%",
     resizeMode: "contain",

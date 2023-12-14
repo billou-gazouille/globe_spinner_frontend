@@ -8,9 +8,10 @@ import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
 import { View } from "react-native";
+import BackButton from "./components/BackButton";
 
 import { Provider } from "react-redux";
-import SelectedSuggestionsScreen from "./screens/SelectedSuggestionScreen";
+import SelectedSuggestionsScreen from "./screens/SelectedSuggestionsScreen";
 import { configureStore } from "@reduxjs/toolkit";
 import filters from "./reducers/filters";
 import FiltersScreen from "./screens/FiltersScreen";
@@ -21,6 +22,33 @@ const store = configureStore({
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const HomeStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Filters" component={FiltersScreen} />
+      <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+      <Stack.Screen
+        name="SelectedSuggestions"
+        component={SelectedSuggestionsScreen}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const ProfileStack = () => {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+      <Stack.Screen
+        name="SelectedSuggestions"
+        component={SelectedSuggestionsScreen}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const TabNavigator = () => {
   let iconBackgroundColor = "#ba99fe";
@@ -66,8 +94,8 @@ const TabNavigator = () => {
         tabBarStyle: { backgroundColor: "#ba99fe" },
       })}
     >
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Profile" component={ProfileStack} />
+      <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Parameters" component={ParametersScreen} />
     </Tab.Navigator>
   );
