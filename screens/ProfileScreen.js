@@ -17,9 +17,10 @@ export default function ProfileScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => handleSubmit()}>
+      {/* <TouchableOpacity onPress={() => handleSubmit()}>
         <Text style={styles.text}>Hello this is the profile screen</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <Text style={styles.text}>Hello this is the profile screen</Text>
     </View>
   );
 }
