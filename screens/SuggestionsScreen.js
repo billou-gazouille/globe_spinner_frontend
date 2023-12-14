@@ -1,16 +1,12 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import BackButton from "../components/BackButton";
-<<<<<<< HEAD
 import { useDispatch, useSelector } from "react-redux";
-=======
->>>>>>> 707440a0fce9d92e70152661bf40be5a8f98ef66
 
 export default function SuggestionsScreen({ navigation }) {
   const handleSubmit = () => {
     navigation.navigate("SelectedSuggestions");
   };
-<<<<<<< HEAD
 
   //on importe les filtres depuis le store de Redux
   //on fetch les [trips] avec les filtres dans un useEffect pour re render la page suggestion
@@ -23,8 +19,6 @@ export default function SuggestionsScreen({ navigation }) {
   //   )
   // })
 
-=======
->>>>>>> 707440a0fce9d92e70152661bf40be5a8f98ef66
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => handleSubmit()}>
