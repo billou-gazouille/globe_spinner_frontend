@@ -5,16 +5,18 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 // Ajouter @react-navigation/elements dans le projet
 import { HeaderBackButton } from "@react-navigation/elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import HomeScreen from "./screens/HomeScreen";
-import ParametersScreen from "./screens/ParametersScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import SuggestionsScreen from "./screens/SuggestionsScreen";
 import { StyleSheet, Text, View } from "react-native";
 
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+
+import HomeScreen from "./screens/HomeScreen";
+import ParametersScreen from "./screens/ParametersScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import SuggestionsScreen from "./screens/SuggestionsScreen";
 import filters from "./reducers/filters";
 import FiltersScreen from "./screens/FiltersScreen";
+import SelectedSuggestionsScreen from "./screens/SelectedSuggestionsScreen";
 
 const store = configureStore({
   reducer: { filters },
@@ -24,11 +26,12 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
+  let iconBackgroundColor = "#ba99fe"
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
+        tabBarIcon: ({focused, color, size }) => {
           let iconName = "";
 
           if (route.name === "Home") {
@@ -58,9 +61,12 @@ const TabNavigator = () => {
             </View>
           );
         },
-        tabBarActiveTintColor: "#e8be4b",
-        tabBarInactiveTintColor: "#b2b2b21",
+        tabBarLabel: () => null,
+        tabBarActiveBackgroundColor: iconBackgroundColor,
+        tabBarActiveTintColor: "#FFFFFF",
+        tabBarInactiveTintColor: "#CBCBE4",
         headerShown: false,
+        tabBarStyle: {backgroundColor: "#ba99fe"},
       })}
     >
       <Tab.Screen name="Profile" component={ProfileScreen} />
@@ -85,11 +91,11 @@ export default function App() {
     </NavigationContainer>
   )}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+// });

@@ -11,7 +11,7 @@ const SignModal = ({ visible, onClose, onSignIn, onSignUp }) => {
       <View style={styles.modalContainer}>  
         <View style={styles.modalContent}>  
           <TouchableOpacity style={styles.button} onPress={onSignIn}>
-            <Text style={styles.buttonText}>Sign In</Text> 
+            <Text style={styles.buttonText}>Sign In</Text> // Lorsqu'il est pressé, la fonction onSignIn est appelée.
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={onSignUp}>
             <Text style={styles.buttonText}>Sign Up</Text>
@@ -26,17 +26,17 @@ const SignModal = ({ visible, onClose, onSignIn, onSignUp }) => {
 };
 
 const styles = StyleSheet.create({
-  modalContainer: { //utilisé pour styliser le conteneur global de la modalité, en lui donnant une couleur de fond grise et en centrant son contenu verticalement et horizontalement.
-    flex: 1, //  occupera toute la hauteur disponible de son parent.
-    justifyContent: 'center', //  centre le contenu verticalement dans le conteneur.
-    alignItems: 'center', // centre le contenu horizontalement dans le conteneur.
-    backgroundColor: '#F4F4F4', //définit la couleur de fond du conteneur
+  modalContainer: { 
+    flex: 1,   
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: '#F4F4F4', 
   },
-  modalContent: { //  le contenu spécifique de la modalité, en lui donnant une couleur de fond grise, un remplissage autour du contenu, des coins arrondis et en centrant le contenu horizontalement.
+  modalContent: { 
     backgroundColor: '#F4F4F4',
-    padding: 20, // remplissage de 20 unités autour du contenu de la modalité, créant ainsi un espace entre le contenu et les bords de la modalité
-    borderRadius: 10, // arrondit les coins du contenu avec un rayon de 10 unités, créant ainsi des coins arrondis.
-    alignItems: 'center', // centre le contenu horizontalement dans le conteneur de contenu.
+    padding: 20, 
+    borderRadius: 10, 
+    alignItems: 'center', 
   },
   button: {
     marginVertical: 10,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect  } from "react";
 import {
   View,
   Image,
@@ -10,35 +10,56 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-
-
 import SignModal from '../components/SignModal';
 
 
 export default function ProfileScreen({ navigation }) {
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [hasToken, setHasToken] = useState(false);
+
+  useEffect(() => {
+// Vérifier ici si l'utilisateur a un token (vous devrez adapter cela en fonction de votre logique)
+const userHasToken = checkIfUserHasToken(); 
+// Mettre à jour l'état en conséquence
+setHasToken(userHasToken);
+}, []);
+
+  
 
   const handleOpenModal = () => {
-    setModalVisible(true);
+    if (!hasToken) {
+      setModalVisible(true);
+    }
   };
 
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
 
   const handleSubmit = () => {
     navigation.navigate("Suggestions");
   };
 
   return (
-    <view style = {styles.container}>
-     <TouchableOpacity onPress={handleOpenModal}>
-     <iconName name="user"  />
-     </TouchableOpacity>
-     <SignModal
-        visible={modalVisible}
-        onClose={handleCloseModal}
-        onSignIn={() => {}}
-        onSignUp={() => {}}/>
-
+      <View style={styles.container}>
+        <TouchableOpacity onPress={handleOpenModal}>
+          <Ionicons name="person" size={30} color="white" />
+        </TouchableOpacity>
+        <SignModal
+          visible={modalVisible}
+          onClose={handleCloseModal}
+          onSignIn={() => {
+           
+            setHasToken(true);
+            handleCloseModal();
+          }}
+          onSignUp={() => {
+            
+            setHasToken(true);
+            handleCloseModal();
+          }}
+        />
 
       <TouchableOpacity onPress={() => handleSubmit()}>
         <Text style={styles.text}>
@@ -46,11 +67,7 @@ export default function ProfileScreen({ navigation }) {
           suggestions screen
         </Text>
       </TouchableOpacity>
-      
-    </view>
-
-  );
-}
+ 
 
 const styles = StyleSheet.create({
   container: {
