@@ -1,44 +1,33 @@
 import React, { useCallback } from "react";
-import { View, StyleSheet, Text, Image, Pressable } from "react-native";
-// import SvgUri from "react-native-svg-uri";
-import { CustomTextKrona } from "../components/CustomTextKronaOne";
-// import { useFonts } from "expo-font";
-// import * as SplashScreen from "expo-splash-screen";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Pressable,
+  useWindowDimensions,
+} from "react-native";
+import { CustomText } from "../components/CustomText";
 
 export default function HomeScreen({ navigation }) {
-  //   SplashScreen.preventAutoHideAsync();
-
-  //   const [fontsLoaded] = useFonts({
-  //     "KronaOne-Regular": require("../assets/fonts/KronaOne-Regular.ttf"),
-  //   });
-
-  //   const onLayoutRootView = useCallback(async () => {
-  //     if (fontsLoaded) {
-  //       await SplashScreen.hideAsync();
-  //     }
-  //   }, [fontsLoaded]);
+  const { height, width } = useWindowDimensions();
 
   const handleSubmit = () => {
-    navigation.navigate("Suggestions");
+    navigation.navigate("Filters");
   };
 
-  // if (!fontsLoaded) {
-  //   return null;
-  // }
-
   return (
-    //onLayout={onLayoutRootView}
-    <View style={styles.container}>
-      <Image
+    <View style={[styles.container, { height }]}>
+      {/* <Image
         source={require("../assets/bendy-dotted-line_2.jpg")}
         style={styles.topLine}
-      />
+      /> */}
       <Image
         source={require("../assets/globe_spinner.jpg")}
         style={styles.logoImage}
       />
       <Pressable style={styles.travelButton} onPress={handleSubmit}>
-        <CustomTextKrona style={styles.text}>TRAVEL</CustomTextKrona>
+        <CustomText style={styles.text}>TRAVEL</CustomText>
       </Pressable>
       <Image
         source={require("../assets/line-map.jpg")}
@@ -56,25 +45,24 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logoImage: {
-    width: "100%",
+    marginTop: -50,
+    width: "80%",
     height: "50%",
+    resizeMode: "contain",
   },
   text: {
-    fontFamily: "KronaOne-Regular",
-    letterSpacing: 0.25,
+    fontWeight: "bold",
+    letterSpacing: 2.5,
     color: "white",
+    fontSize: 16,
   },
   travelButton: {
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 30,
-    color: "#BA99FE",
     borderRadius: 50,
-    paddingVertical: 25,
+    paddingVertical: 15,
     paddingHorizontal: 60,
     elevation: 4,
     backgroundColor: "#3972D9",
-    marginTop: 15,
+    marginTop: -20,
   },
   topLine: {
     marginBottom: 20,
@@ -84,7 +72,10 @@ const styles = StyleSheet.create({
   bottomLine: {
     marginTop: 20,
     width: "100%",
-    height: "21%",
-    marginBottom: 10,
+    position: "absolute",
+    zIndex: -1,
+    bottom: 0,
+    height: "22%",
+    resizeMode: "contain",
   },
 });

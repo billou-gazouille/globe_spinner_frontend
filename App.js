@@ -11,6 +11,15 @@ import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
 import { StyleSheet, Text, View } from "react-native";
 
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import filters from "./reducers/filters";
+import FiltersScreen from "./screens/FiltersScreen";
+
+const store = configureStore({
+  reducer: { filters },
+});
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -30,7 +39,24 @@ const TabNavigator = () => {
             iconName = "gear";
           }
 
-          return <FontAwesome name={iconName} size={size} color={color} />;
+          return (
+            <View
+              style={{
+                backgroundColor: focused ? "rgba(255,255,255,0.33)" : null,
+                justifyContent: "space-between",
+                alignItems: "center",
+                height: "90%",
+                width: "70%",
+                borderRadius: 10,
+                paddingVertical: 10,
+                // paddingBottom: 8,
+                // paddingTop: 8,
+                marginTop: 10,
+              }}
+            >
+              <FontAwesome name={iconName} size={size} color={color} />
+            </View>
+          );
         },
         tabBarActiveTintColor: "#e8be4b",
         tabBarInactiveTintColor: "#b2b2b21",
@@ -46,27 +72,18 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
-    <NavigationContainer style={styles.container}>
+    <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="Suggestions"
-          component={SuggestionsScreen}
-          options={{
-            title: "Coucou",
-            headerLeft: () => (
-              <HeaderBackButton
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              />
-            ),
-          }}
-        />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
+        <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+        <Stack.Screen name="Filters" component={FiltersScreen} />
+        <Stack.Screen
+          name="SelectedSuggestions"
+          component={SelectedSuggestionsScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-  );
-}
+  )}
 
 const styles = StyleSheet.create({
   container: {
