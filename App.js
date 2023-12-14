@@ -7,20 +7,38 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { StyleSheet, Text, View } from "react-native";
 
-import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
 
 import HomeScreen from "./screens/HomeScreen";
 import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
 import filters from "./reducers/filters";
+import userInfo from "./reducers/userInfo";
 import FiltersScreen from "./screens/FiltersScreen";
 import SelectedSuggestionsScreen from "./screens/SelectedSuggestionsScreen";
+import { PersistGate } from 'redux-persist/integration/react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+import { persistStore, persistReducer } from 'redux-persist';
+
+
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,  
+};
+
+const rootReducer = combineReducers({ filters, userInfo });
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: { filters },
+  reducer: persistReducer(persistConfig, persistedReducer),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
 });
+
+const persistor = persistStore(store);
+
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -61,15 +79,10 @@ const TabNavigator = () => {
             </View>
           );
         },
-<<<<<<< HEAD
-        tabBarActiveTintColor: "#e8be4b",
-        tabBarInactiveTintColor: "#b2b2b2",
-=======
         tabBarLabel: () => null,
         tabBarActiveBackgroundColor: iconBackgroundColor,
         tabBarActiveTintColor: "#FFFFFF",
         tabBarInactiveTintColor: "#CBCBE4",
->>>>>>> 90ec454b52a1222de597067943a84da0a6d498a2
         headerShown: false,
         tabBarStyle: {backgroundColor: "#ba99fe"},
       })}
@@ -83,17 +96,21 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
-        <Stack.Screen name="Filters" component={FiltersScreen} />
-        <Stack.Screen
-          name="SelectedSuggestions"
-          component={SelectedSuggestionsScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+            <Stack.Screen name="Filters" component={FiltersScreen} />
+            <Stack.Screen
+              name="SelectedSuggestions"
+              component={SelectedSuggestionsScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
+    </Provider> 
   )}
 
 // const styles = StyleSheet.create({

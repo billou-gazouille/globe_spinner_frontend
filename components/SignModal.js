@@ -1,14 +1,27 @@
 import React from 'react';
 import { View, Modal, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useSelector, useDispatch } from "react-redux";
 
-const SignModal = ({ visible, onClose, onSignIn, onSignUp }) => {
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+
+const SignModal = ({onClose, onSignIn, onSignUp, closeSignModal }) => {
+
+  const userInfo = useSelector(state => state.userInfo.value);
+  console.log(userInfo.isConnected);
+
+  //const dispatch = useDispatch();
+
   return (
-    <Modal
-      animationType="slide"
-      transparent={true} 
-      visible={visible}
-    >
-      <View style={styles.modalContainer}>  
+    // plus de "Modal" car ça bug vraiment trop
+    <View style={styles.container}>
+      <View style={styles.modalContainer}>
+        <TouchableOpacity 
+          style={styles.closeButton} 
+          onPress={closeSignModal}
+        >
+          <FontAwesome name='close' size={30} color='black'/>
+        </TouchableOpacity>
         <View style={styles.modalContent}>  
           <TouchableOpacity style={styles.button} onPress={onSignIn}>
             <Text style={styles.buttonText}>Sign In!!!</Text> 
@@ -21,22 +34,34 @@ const SignModal = ({ visible, onClose, onSignIn, onSignUp }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </Modal>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  modalContainer: { 
-    flex: 1,   
+  container: {
+    width: '100%',
+    height: '100%',
     justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  modalContainer: { 
+    //flex: 1,   
+    width: '100%',
+    height: '50%',
+    // justifyContent: 'center', 
+    justifyContent: 'space-evenly',
     alignItems: 'center', 
     backgroundColor: '#F4F4F4', 
+    borderWidth: 3,
+    borderColor: 'red',
   },
   modalContent: { 
     backgroundColor: '#F4F4F4',
     padding: 20, 
     borderRadius: 10, 
     alignItems: 'center', 
+    borderWidth: 3,
   },
   button: {
     marginVertical: 10,
@@ -63,6 +88,18 @@ const styles = StyleSheet.create({
     color: '#F5F5F5',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  closeButton: {
+    width: 50,
+    height: 50,
+    right: 20,
+    top: 20,
+    //backgroundColor: 'orange',
+    borderWidth: 2,
+    position: 'absolute',
+    borderRadius: 10,
+    justifyContent: 'center', 
+    alignItems: 'center', 
   },
 });
 

@@ -10,63 +10,63 @@ import {
   TouchableOpacity,
 } from "react-native";
 
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import SignModal from '../components/SignModal';
+import { useSelector, useDispatch } from "react-redux";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { setIsConnected } from '../reducers/userInfo';
 
 
 export default function ProfileScreen({ navigation }) {
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [hasToken, setHasToken] = useState(false);
+  const userInfo = useSelector(state => state.userInfo.value);
 
-  useEffect(() => {
-// Vérifier ici si l'utilisateur a un token (vous devrez adapter cela en fonction de votre logique)
-const userHasToken = checkIfUserHasToken(); 
-// Mettre à jour l'état en conséquence
-setHasToken(userHasToken);
-}, []);
-
-  
-
-  const handleOpenModal = () => {
-    if (!hasToken) {
-      setModalVisible(true);
-    }
-  };
-
-  const handleCloseModal = () => {
-    setModalVisible(false);
-  };
+  const dispatch = useDispatch();
 
   const handleSubmit = () => {
     navigation.navigate("Suggestions");
   };
 
+  const signModal = 
+    <SignModal
+      closeSignModal={() => navigation.navigate('Home')} 
+      onSignIn={() => { 
+        
+      }}
+      onSignUp={() => {        
+        
+      }}
+    />;
+
+  const userDetails = 
+  <View>
+    <Text style={{fontSize: 30, color: 'white'}}>User details...</Text>
+  </View>;
+
+
+  const modalToShow = () => {
+    if (!userInfo.isConnected) 
+      return signModal;
+    else 
+      return userDetails;
+  };
+
+
   return (
       <View style={styles.container}>
-        <Text style={styles.text}>Hello this is the profile screen</Text>
-        {/* <TouchableOpacity onPress={handleOpenModal}>
-          <Ionicons name="person" size={30} color="white" />
-        </TouchableOpacity>
-        <SignModal
-          visible={modalVisible}
-          onClose={handleCloseModal}
-          onSignIn={() => {
-           
-            setHasToken(true);
-            handleCloseModal();
-          }}
-          onSignUp={() => {
-            
-            setHasToken(true);
-            handleCloseModal();
-          }}
-        />
+        {/* <Text style={styles.text}>Hello this is the profile screen!!!</Text> */}
+        <Text style={{...styles.text, marginTop: 40}}>
+          connected? {userInfo.isConnected ? 'YES' : 'NO'}
+        </Text>
+        {modalToShow()}
         <TouchableOpacity onPress={() => handleSubmit()}>
           <Text style={styles.text}>
             Hello this is the profile screen and if you click me you'll go on
             suggestions screen
           </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
   );
 }
@@ -77,10 +77,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "blue",
     alignItems: "center",
-    justifyContent: "center",
+    //justifyContent: "center",
+    justifyContent: "space-between",
   },
   text: {
-    fontSize: 38,
+    fontSize: 28,
   },
 });
 
