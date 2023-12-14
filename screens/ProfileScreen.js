@@ -12,13 +12,16 @@ import {
 
 export default function ProfileScreen({ navigation }) {
   const handleSubmit = () => {
-    navigation.navigate("Parameters");
+    navigation.navigate("Suggestions");
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => handleSubmit()}>
-        <Text style={styles.text}>Hello this is the profile screen</Text>
+        <Text style={styles.text}>
+          Hello this is the profile screen and if you click me you'll go on
+          suggestions screen
+        </Text>
       </TouchableOpacity>
     </View>
   );

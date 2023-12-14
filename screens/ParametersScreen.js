@@ -12,7 +12,7 @@ export default function ParametersScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "blue",
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
   },
