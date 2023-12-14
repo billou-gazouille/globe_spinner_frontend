@@ -1,6 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import BackButton from "../components/BackButton";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function SuggestionsScreen({ navigation }) {
   const handleSubmit = () => {
