@@ -8,9 +8,9 @@ import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
 import { View } from "react-native";
-import SelectedSuggestionsScreen from "./screens/SelectedSuggestionScreen";
 
 import { Provider } from "react-redux";
+import SelectedSuggestionsScreen from "./screens/SelectedSuggestionScreen";
 import { configureStore } from "@reduxjs/toolkit";
 import filters from "./reducers/filters";
 import FiltersScreen from "./screens/FiltersScreen";
@@ -75,16 +75,18 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
-        <Stack.Screen name="Filters" component={FiltersScreen} />
-        <Stack.Screen
-          name="SelectedSuggestions"
-          component={SelectedSuggestionsScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+          <Stack.Screen name="Filters" component={FiltersScreen} />
+          <Stack.Screen
+            name="SelectedSuggestions"
+            component={SelectedSuggestionsScreen}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
