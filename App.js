@@ -74,9 +74,8 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
-<<<<<<< HEAD
     <Provider store={store}>
-      <NavigationContainer style={styles.container}>
+      <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen
             name="Suggestions"
@@ -96,17 +95,5 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
-=======
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
-        <Stack.Screen
-          name="SelectedSuggestions"
-          component={SelectedSuggestionsScreen}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
->>>>>>> 707440a0fce9d92e70152661bf40be5a8f98ef66
   );
 }
