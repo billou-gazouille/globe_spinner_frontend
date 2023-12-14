@@ -9,7 +9,7 @@ const SignModal = ({onClose, onSignIn, onSignUp, closeSignModal }) => {
 
   const userInfo = useSelector(state => state.userInfo.value);
   console.log(userInfo.isConnected);
-
+  
   //const dispatch = useDispatch();
 
   return (
@@ -29,9 +29,6 @@ const SignModal = ({onClose, onSignIn, onSignUp, closeSignModal }) => {
           <TouchableOpacity style={styles.button} onPress={onSignUp}>
             <Text style={styles.buttonText}>Sign Up</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <Text style={styles.cancelButtonText}>Cancel</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -47,7 +44,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: { 
     //flex: 1,   
-    width: '100%',
+    width: '90%',
     height: '50%',
     // justifyContent: 'center', 
     justifyContent: 'space-evenly',
@@ -90,8 +87,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   closeButton: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     right: 20,
     top: 20,
     //backgroundColor: 'orange',

@@ -18,10 +18,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { setIsConnected } from '../reducers/userInfo';
 
+import SigninForm from '../components/SigninForm';
+import SignupForm from '../components/SignupForm';
+
 
 export default function ProfileScreen({ navigation }) {
 
   const userInfo = useSelector(state => state.userInfo.value);
+
+  const [isSigningIn, setIsSigningIn] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -29,28 +35,59 @@ export default function ProfileScreen({ navigation }) {
     navigation.navigate("Suggestions");
   };
 
+  const handleSubmitSigninForm = () => {
+    console.log('handleSubmitSigninForm');
+    setIsSigningIn(false);
+  };
+
+  const handleSubmitSignupForm = async (firstname, lastname, email, password) => {
+    console.log('handleSubmitSignupForm');
+    setIsSigningUp(false);
+    const data = await fetch('http://192.168.43.25:3000/users/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({firstname, lastname, email, password})
+    })
+      .then(resp => resp.json());
+    console.log(data);
+    if (data.result){
+      dispatch(setIsConnected(true));
+    }
+  };
+
   const signModal = 
-    <SignModal
+    <SignModal 
       closeSignModal={() => navigation.navigate('Home')} 
-      onSignIn={() => { 
-        
-      }}
-      onSignUp={() => {        
-        
-      }}
+      onSignIn={() => setIsSigningIn(true)} 
+      onSignUp={() => setIsSigningUp(true)}    
     />;
 
+  const signinForm = 
+    <SigninForm 
+      submit={handleSubmitSigninForm}
+    />;
+
+  const signupForm = 
+    <SignupForm 
+      submit={(firstname, lastname, email, password) => 
+        handleSubmitSignupForm(firstname, lastname, email, password)}
+    />;
+  
+
   const userDetails = 
-  <View>
-    <Text style={{fontSize: 30, color: 'white'}}>User details...</Text>
-  </View>;
+    <View>
+      <Text style={{fontSize: 30, color: 'white'}}>User details...</Text>
+    </View>;
 
 
   const modalToShow = () => {
+    if (isSigningIn)
+      return signinForm;
+    if (isSigningUp)
+      return signupForm;
     if (!userInfo.isConnected) 
       return signModal;
-    else 
-      return userDetails;
+    return userDetails;
   };
 
 
