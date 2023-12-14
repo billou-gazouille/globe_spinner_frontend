@@ -11,6 +11,14 @@ import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
 import { StyleSheet, Text, View } from "react-native";
 
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import filters from "./reducers/filters";
+
+const store = configureStore({
+  reducer: { filters },
+});
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -46,25 +54,27 @@ const TabNavigator = () => {
 
 export default function App() {
   return (
-    <NavigationContainer style={styles.container}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="Suggestions"
-          component={SuggestionsScreen}
-          options={{
-            title: "Coucou",
-            headerLeft: () => (
-              <HeaderBackButton
-                onPress={() => {
-                  navigation.goBack();
-                }}
-              />
-            ),
-          }}
-        />
-        <Stack.Screen name="TabNavigator" component={TabNavigator} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer style={styles.container}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen
+            name="Suggestions"
+            component={SuggestionsScreen}
+            options={{
+              title: "Coucou",
+              headerLeft: () => (
+                <HeaderBackButton
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen name="TabNavigator" component={TabNavigator} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 
