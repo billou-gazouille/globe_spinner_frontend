@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -27,11 +27,40 @@ export default function SuggestionsScreen({ navigation }) {
   //   )
   // })
 
+  const [trips, setTrips] = useState([null, null]);
+
+  const handlePressRegenerateAll = async () => {
+    console.log('handlePressRegenerateAll');
+    const data = await fetch("http://192.168.43.25:3000/trips/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ /* Mettre ici les filtres */ }),
+    }).then((resp) => resp.json());
+    console.log(data);
+    if (data.result) {
+      console.log('noice');
+      // setTrips(...)
+    }
+    setTrips([{trip0: 'TRIP 0'}, {trip1: 'TRIP 1'}]);
+  };
+
+  console.log(trips);
+
+  const selectTrip = (tripIndex) => {
+    console.log('tripIndex: ', tripIndex);
+    navigation.navigate('SelectedSuggestions', { 
+      screen: 'SelectedSuggestions',  
+      params: { trip: trips[tripIndex] }
+    }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <CustomText style={styles.suggestionsText}>Suggestions</CustomText>
       <View style={styles.cardsContainer}>
         <SuggestionCard 
+          tripIndex={0} 
           cityName='AMSTERDAM' 
           accommodationType='Hotel' 
           leaveTransportType='Train' 
@@ -41,8 +70,10 @@ export default function SuggestionsScreen({ navigation }) {
           leaveDate='16 Feb' 
           returnDate='29 Feb' 
           price={1400} 
+          selectTrip={selectTrip}
         />
         <SuggestionCard 
+          tripIndex={1} 
           cityName='LONDON' 
           accommodationType='airBnB' 
           leaveTransportType='Coach' 
@@ -52,9 +83,13 @@ export default function SuggestionsScreen({ navigation }) {
           leaveDate='15 Feb' 
           returnDate='28 Feb' 
           price={1200} 
+          selectTrip={selectTrip} 
         />
       </View>
-      <TouchableOpacity style={styles.regenerateAllButton}>
+      <TouchableOpacity 
+        style={styles.regenerateAllButton} 
+        onPress={handlePressRegenerateAll} 
+      >
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
       </TouchableOpacity>
       <BackButton />
@@ -72,11 +107,11 @@ const styles = StyleSheet.create({
     fontFamily: 'NunitoSans_400Regular',
   },
   cardsContainer: {
-    width: '90%',
-    height: '60%',
+    width: '100%',
+    // height: '60%',
     justifyContent: "space-between",
     alignItems: "center",
-    // borderWidth: 1,
+    //  borderWidth: 1,
   },
   suggestionsText: {
     fontSize: 28,

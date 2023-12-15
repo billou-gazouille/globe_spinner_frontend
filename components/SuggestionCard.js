@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 import { CustomText } from "./CustomText";
 
 export default function SuggestionCard({
+    tripIndex,
     cityName, 
     activities, 
     img, 
@@ -12,9 +13,13 @@ export default function SuggestionCard({
     leaveTransportType, 
     returnTransportType,  
     accommodationType, 
+    selectTrip, 
 }) {
     return (
-        <TouchableOpacity style={styles.container}>
+        <TouchableOpacity 
+            style={styles.container} 
+            onPress={() => selectTrip(tripIndex)} 
+        >
             <View style={styles.cityImgContainer}>
                 <CustomText style={{...styles.cityTitle, color: '#ffffff', width:'100%', textAlign: 'center'}}>{cityName}</CustomText>
                 <Image source={img} style={styles.cityImg}></Image>
@@ -40,7 +45,7 @@ const styles = StyleSheet.create({
     container: {
         width: '90%',
         height: 200,
-        // borderWidth: 1,
+        //  borderWidth: 5,
         justifyContent: "space-between",
         alignItems: "center",
         margin: 10,
@@ -71,7 +76,8 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         //resizeMode: 'contain',
-        resizeMode: 'stretch',
+        //resizeMode: 'stretch',
+        resizeMode: 'cover',
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
     },
