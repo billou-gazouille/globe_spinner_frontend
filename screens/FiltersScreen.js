@@ -18,15 +18,32 @@ import Icon from "react-native-vector-icons/FontAwesome";
 export default function FiltersScreen({ navigation }) {
   const [departureLocation, setDepartureLocation] = useState("");
   const [departureDate, setDepartureDate] = useState(new Date());
+  const [mode, setMode] = useState("date");
   const [returnDate, setReturnDate] = useState(new Date());
   const [isPickerShow, setIsPickerShow] = useState(false);
-  const [pickerMode, setPickerMode] = useState("departure");
+  const [text, setText] = useState("Empty");
   const [budget, setBudget] = useState("");
   const [numberOfPeople, setNumberOfPeople] = useState(null);
   const [transportType, setTransportType] = useState("");
 
   const handleSubmit = () => {
     navigation.navigate("Suggestions");
+  };
+  const onChangeDepartureDate = (event, setDepartureDate) => {
+    const currentDate = setDepartureDate || departureDate;
+    setIsPickerShow(Platform.OS === "ios");
+    setReturnDate(currentDate);
+
+    let tempDate = new Date(currentDate);
+    let formatedDate =
+      tempDate.getDate() +
+      "/" +
+      (tempDate.getMonth() + 1) +
+      "/" +
+      tempDate.getFullYear();
+    setText(formatedDate);
+
+    console("coucou voici la date", formatedDate);
   };
 
   const showDatePicker = (mode) => {
@@ -47,48 +64,31 @@ export default function FiltersScreen({ navigation }) {
           placeholder="origin"
           onChangeText={(value) => setDepartureLocation(value)}
         />
-
-        <TouchableOpacity onPress={() => showDatePicker("departure")}>
-          <View style={styles.buttonText}>
-            <Icon name="calendar" size={20} color="#000" />
-            <Text>Choose Departure Date</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => showDatePicker("return")}>
-          <View style={styles.buttonText}>
-            <Icon name="calendar" size={20} color="#000" />
-            <Text>Choose Return Date</Text>
-          </View>
-        </TouchableOpacity>
-
-        <Modal
-          animationType="slide"
-          transparent={false}
-          visible={isPickerShow}
-          onRequestClose={() => setIsPickerShow(false)}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <DateTimePicker
-                mode="date"
-                date={pickerMode === "departure" ? departureDate : returnDate}
-                onDateChange={(date) => {
-                  if (pickerMode === "departure") {
-                    setDepartureDate(date);
-                  } else {
-                    setReturnDate(date);
-                  }
-                }}
-              />
-              <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setIsPickerShow(false)}
-              >
-                <Text style={styles.textStyle}>Confirm</Text>
-              </TouchableOpacity>
+        <View>
+          <TouchableOpacity onPress={() => showDatePicker("date")}>
+            <View style={styles.buttonText}>
+              <Icon name="calendar" size={20} color="#000" />
             </View>
-          </View>
-        </Modal>
+          </TouchableOpacity>
+          <Text>Choose Departure Date</Text>
+          <Text>{text}</Text>
+          <TouchableOpacity onPress={() => showDatePicker("date")}>
+            <View style={styles.buttonText}>
+              <Icon name="calendar" size={20} color="#000" />
+              <Text>Choose Return Date</Text>
+            </View>
+          </TouchableOpacity>
+
+          {setIsPickerShow && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={departureDate}
+              mode={mode}
+              display="default"
+              onChange={onChangeDepartureDate}
+            />
+          )}
+        </View>
 
         {/* Other Inputs */}
         <TextInput
