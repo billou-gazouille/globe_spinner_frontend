@@ -34,13 +34,8 @@ export default function ProfileScreen({ navigation }) {
     navigation.navigate("Suggestions");
   };
 
-<<<<<<< HEAD
-  const handleSubmitSigninForm = () => {
-    console.log("handleSubmitSigninForm");
-=======
   const signIn = async(email, password) => {
     console.log('handleSubmitSigninForm');
->>>>>>> 25e0e332cfc74b80ff820fd8ce8a8646d500c785
     setIsSigningIn(false);
     const data = await fetch('http://192.168.43.25:3000/users/signin', {
       method: 'POST',
@@ -55,18 +50,8 @@ export default function ProfileScreen({ navigation }) {
     }
   };
 
-<<<<<<< HEAD
-  const handleSubmitSignupForm = async (
-    firstname,
-    lastname,
-    email,
-    password
-  ) => {
-    console.log("handleSubmitSignupForm");
-=======
   const signUp = async (firstname, lastname, email, password) => {
     console.log('handleSubmitSignupForm');
->>>>>>> 25e0e332cfc74b80ff820fd8ce8a8646d500c785
     setIsSigningUp(false);
     const data = await fetch("http://192.168.43.25:3000/users/signup", {
       method: "POST",
@@ -88,17 +73,6 @@ export default function ProfileScreen({ navigation }) {
     />
   );
 
-<<<<<<< HEAD
-  const signinForm = <SigninForm submit={handleSubmitSigninForm} />;
-
-  const signupForm = (
-    <SignupForm
-      submit={(firstname, lastname, email, password) =>
-        handleSubmitSignupForm(firstname, lastname, email, password)
-      }
-    />
-  );
-=======
   const signinForm = 
     <SigninForm 
       submit={
@@ -119,15 +93,9 @@ export default function ProfileScreen({ navigation }) {
     dispatch(setIsConnected(false));
   };
   
->>>>>>> 25e0e332cfc74b80ff820fd8ce8a8646d500c785
 
   const userDetails = (
     <View>
-<<<<<<< HEAD
-      <Text style={{ fontSize: 30, color: "white" }}>User details...</Text>
-    </View>
-  );
-=======
       <Text style={{fontSize: 30, color: 'white'}}>User details...</Text>
       <TouchableOpacity style={styles.logoutButton} onPress={() => HandlePressLogout()}>
         <Text style={{fontSize: 16, color: 'white'}}>Logout</Text>
@@ -135,7 +103,6 @@ export default function ProfileScreen({ navigation }) {
       </TouchableOpacity>
     </View>;
 
->>>>>>> 25e0e332cfc74b80ff820fd8ce8a8646d500c785
 
   const modalToShow = () => {
     if (isSigningIn) return signinForm;
