@@ -123,7 +123,7 @@ export default function ProfileScreen({ navigation }) {
           connected? {userInfo.isConnected ? 'YES' : 'NO'}
         </Text>
         {modalToShow()}
-        <TouchableOpacity onPress={() => handleSubmit()}>
+        <TouchableOpacity style={{width: '100%', backgroundColor: 'green'}} onPress={() => handleSubmit()}>
           <Text style={styles.text}>
             Hello this is the profile screen and if you click me you'll go on
             suggestions screen
