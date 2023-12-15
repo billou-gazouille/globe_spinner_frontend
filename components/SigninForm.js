@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Modal, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Modal, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -12,10 +12,43 @@ export default function SigninForm({submit}) {
   
   //const dispatch = useDispatch();
 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <View style={styles.container}>
       <Text style={{fontSize: 35, color: 'white'}}>Signin Form</Text> 
-      <TouchableOpacity style={styles.submitButton} onPress={submit}>
+      
+      <View style={styles.inputsContainer}>
+
+        <View style={styles.textAndInput}>
+          <Text style={{fontSize: 20, color: 'white'}}>email</Text>
+          <TextInput 
+            placeholder='email' 
+            style={styles.textInput} 
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+          >
+          </TextInput>
+        </View>
+
+        <View style={styles.textAndInput}>
+          <Text style={{fontSize: 20, color: 'white'}}>password</Text>
+          <TextInput 
+            placeholder='password' 
+            style={styles.textInput}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          >
+          </TextInput>
+        </View>
+
+      </View>
+      
+      <TouchableOpacity 
+        style={styles.submitButton} 
+        onPress={() => submit(email, password)}
+      >
           <Text style={{fontSize: 25, color: 'white'}}>Submit</Text> 
       </TouchableOpacity>
     </View>
@@ -28,6 +61,23 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center', 
     alignItems: 'center',
+  },
+  inputsContainer: {
+    width: '100%',
+    height: '20%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  textAndInput: {
+    width: '80%',
+    height: '30%',
+  },
+  textInput: {
+    width: '100%',
+    borderWidth: 1,
+    fontSize: 20,
+    padding: 5,
+    color: '#ffffff'
   },
   submitButton: {
     width: 250,

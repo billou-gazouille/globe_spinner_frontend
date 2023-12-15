@@ -13,10 +13,57 @@ export default function SignupForm({submit}) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
+  const [showFieldsError, setShowFieldsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+
+  const checkHasEmptyField = (fields) => {
+    for (let field of fields){
+      if (!field || field === ' ')
+        return true;
+    }
+    return false;
+  };
+
+  const handlePressSubmit = () => {
+    if (checkHasEmptyField([
+      firstname, 
+      lastname, 
+      email, 
+      password, 
+      confirmPassword
+    ])){
+        setShowFieldsError(true);
+        setErrorMsg('Some fields are empty !');
+        return;
+      }
+    if (!EMAIL_REGEX.test(email)) {
+      setShowFieldsError(true);
+      setErrorMsg('Email is not valid !');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setShowFieldsError(true);
+      setErrorMsg('passwords do not match !');
+      return;
+    }
+    if (password.length < 5) {
+      setShowFieldsError(true);
+      setErrorMsg('password must be at least 5 characters long !');
+      return;
+    }
+    submit(firstname, lastname, email, password);
+  };
+
   return (
     <View style={styles.container}>
       <Text style={{fontSize: 35, color: 'white'}}>Signup Form</Text> 
       
+      {/* {showFieldsError && <Text style={styles.fieldsError}>Some fields contain an error</Text>} */}
+      {showFieldsError && <Text style={styles.fieldsError}>{errorMsg}</Text>}
+
       <View style={styles.inputsContainer}>
         <View style={styles.textAndInput}>
           <Text style={{fontSize: 20, color: 'white'}}>first name</Text>
@@ -55,6 +102,7 @@ export default function SignupForm({submit}) {
           <Text style={{fontSize: 20, color: 'white'}}>password</Text>
           <TextInput 
             placeholder='password' 
+            secureTextEntry={true} 
             style={styles.textInput}
             value={password}
             onChangeText={(text) => setPassword(text)}
@@ -66,6 +114,7 @@ export default function SignupForm({submit}) {
           <Text style={{fontSize: 20, color: 'white'}}>confirm password</Text>
           <TextInput 
             placeholder='confirm password' 
+            secureTextEntry={true} 
             style={styles.textInput}
             value={confirmPassword}
             onChangeText={(text) => setConfirmPassword(text)}
@@ -76,7 +125,7 @@ export default function SignupForm({submit}) {
       
       <TouchableOpacity 
         style={styles.submitButton}  
-        onPress={() => submit(firstname, lastname, email, password)} 
+        onPress={handlePressSubmit} 
       >
           <Text style={{fontSize: 25, color: 'white'}}>Submit</Text> 
       </TouchableOpacity>
@@ -90,6 +139,11 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'space-evenly', 
     alignItems: 'center',
+  },
+  fieldsError: {
+    fontSize: 16,
+    color: 'red',
+    fontWeight: 'bold',
   },
   inputsContainer: {
     width: '100%',

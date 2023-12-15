@@ -35,12 +35,23 @@ export default function ProfileScreen({ navigation }) {
     navigation.navigate("Suggestions");
   };
 
-  const handleSubmitSigninForm = () => {
+  const signIn = async(email, password) => {
     console.log('handleSubmitSigninForm');
     setIsSigningIn(false);
+    const data = await fetch('http://192.168.43.25:3000/users/signin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({email, password})
+    })
+      .then(resp => resp.json());
+    console.log(data);
+    if (data.result){
+      dispatch(setIsConnected(true));
+      navigation.navigate('Home');
+    }
   };
 
-  const handleSubmitSignupForm = async (firstname, lastname, email, password) => {
+  const signUp = async (firstname, lastname, email, password) => {
     console.log('handleSubmitSignupForm');
     setIsSigningUp(false);
     const data = await fetch('http://192.168.43.25:3000/users/signup', {
@@ -52,6 +63,7 @@ export default function ProfileScreen({ navigation }) {
     console.log(data);
     if (data.result){
       dispatch(setIsConnected(true));
+      navigation.navigate('Home');
     }
   };
 
@@ -64,19 +76,32 @@ export default function ProfileScreen({ navigation }) {
 
   const signinForm = 
     <SigninForm 
-      submit={handleSubmitSigninForm}
+      submit={
+        (email, password) => signIn(email, password)
+      }
     />;
 
   const signupForm = 
     <SignupForm 
-      submit={(firstname, lastname, email, password) => 
-        handleSubmitSignupForm(firstname, lastname, email, password)}
+      submit={
+        (firstname, lastname, email, password) => 
+          signUp(firstname, lastname, email, password)
+      }
     />;
+
+  const HandlePressLogout = () => {
+    console.log('HandlePressLogout');
+    dispatch(setIsConnected(false));
+  };
   
 
   const userDetails = 
     <View>
       <Text style={{fontSize: 30, color: 'white'}}>User details...</Text>
+      <TouchableOpacity style={styles.logoutButton} onPress={() => HandlePressLogout()}>
+        <Text style={{fontSize: 16, color: 'white'}}>Logout</Text>
+        {/* <FontAwesome name='logout' size={25} color='white'/> */}
+      </TouchableOpacity>
     </View>;
 
 
@@ -119,6 +144,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 28,
+  },
+  logoutButton: {
+    width: 60,
+    height: 60,
+    borderWidth: 1,
   },
 });
 
