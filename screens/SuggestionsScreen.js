@@ -1,5 +1,11 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
 import BackButton from "../components/BackButton";
 import { useDispatch, useSelector } from "react-redux";
 import SuggestionCard from "../components/SuggestionCard";
@@ -23,11 +29,6 @@ export default function SuggestionsScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* <TouchableOpacity onPress={() => handleSubmit()}>
-        <Text style={styles.text}>
-          Suggestion Screen : click me to go to selected suggestions
-        </Text>
-      </TouchableOpacity> */}
       <CustomText style={styles.suggestionsText}>Suggestions</CustomText>
       <View style={styles.cardsContainer}>
         <SuggestionCard 
@@ -56,7 +57,7 @@ export default function SuggestionsScreen({ navigation }) {
       <TouchableOpacity style={styles.regenerateAllButton}>
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
       </TouchableOpacity>
-      <BackButton navigation={navigation} />
+      <BackButton />
     </View>
   );
 }
