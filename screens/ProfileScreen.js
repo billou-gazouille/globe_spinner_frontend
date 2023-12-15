@@ -34,24 +34,23 @@ export default function ProfileScreen({ navigation }) {
     navigation.navigate("Suggestions");
   };
 
-  const signIn = async(email, password) => {
-    console.log('handleSubmitSigninForm');
+  const signIn = async (email, password) => {
+    console.log("handleSubmitSigninForm");
     setIsSigningIn(false);
-    const data = await fetch('http://192.168.43.25:3000/users/signin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({email, password})
-    })
-      .then(resp => resp.json());
+    const data = await fetch("http://192.168.43.25:3000/users/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    }).then((resp) => resp.json());
     console.log(data);
-    if (data.result){
+    if (data.result) {
       dispatch(setIsConnected(true));
-      navigation.navigate('Home');
+      navigation.navigate("Home");
     }
   };
 
   const signUp = async (firstname, lastname, email, password) => {
-    console.log('handleSubmitSignupForm');
+    console.log("handleSubmitSignupForm");
     setIsSigningUp(false);
     const data = await fetch("http://192.168.43.25:3000/users/signup", {
       method: "POST",
@@ -61,7 +60,7 @@ export default function ProfileScreen({ navigation }) {
     console.log(data);
     if (data.result) {
       dispatch(setIsConnected(true));
-      navigation.navigate('Home');
+      navigation.navigate("Home");
     }
   };
 
@@ -73,36 +72,35 @@ export default function ProfileScreen({ navigation }) {
     />
   );
 
-  const signinForm = 
-    <SigninForm 
-      submit={
-        (email, password) => signIn(email, password)
-      }
-    />;
+  const signinForm = (
+    <SigninForm submit={(email, password) => signIn(email, password)} />
+  );
 
-  const signupForm = 
-    <SignupForm 
-      submit={
-        (firstname, lastname, email, password) => 
-          signUp(firstname, lastname, email, password)
+  const signupForm = (
+    <SignupForm
+      submit={(firstname, lastname, email, password) =>
+        signUp(firstname, lastname, email, password)
       }
-    />;
+    />
+  );
 
   const HandlePressLogout = () => {
-    console.log('HandlePressLogout');
+    console.log("HandlePressLogout");
     dispatch(setIsConnected(false));
   };
-  
 
   const userDetails = (
     <View>
-      <Text style={{fontSize: 30, color: 'white'}}>User details...</Text>
-      <TouchableOpacity style={styles.logoutButton} onPress={() => HandlePressLogout()}>
-        <Text style={{fontSize: 16, color: 'white'}}>Logout</Text>
+      <Text style={{ fontSize: 30, color: "white" }}>User details...</Text>
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={() => HandlePressLogout()}
+      >
+        <Text style={{ fontSize: 16, color: "white" }}>Logout</Text>
         {/* <FontAwesome name='logout' size={25} color='white'/> */}
       </TouchableOpacity>
-    </View>;
-
+    </View>
+  );
 
   const modalToShow = () => {
     if (isSigningIn) return signinForm;
