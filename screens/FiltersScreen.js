@@ -16,14 +16,34 @@ import DatePickerIOS from "../components/ios/DatePickerIOS";
 import DatePickerAndroid from "../components/android/DatePickerAndroid";
 import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
+import { useDispatch } from "react-redux";
+import { addFiltersToStore } from "../reducers/filters";
 
 export default function FiltersScreen({ navigation }) {
   const [departureLocation, setDepartureLocation] = useState("");
+  const [departureDate, setDepartureDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
   const [budget, setBudget] = useState("");
-  const [numberOfPeople, setNumberOfPeople] = useState(null);
+  const [nbrOfTravelers, setNbrOfTravelers] = useState(null);
   const [transportType, setTransportType] = useState("");
 
+  const dispatch = useDispatch();
+
+  const dispatchFiltersToStore = (filters) => {
+    dispatch(addFiltersToStore(filters));
+  };
+
   const handleSubmit = () => {
+    const filters = {
+      departureLocation,
+      budget,
+      nbrOfTravelers,
+      transportType,
+      departureDate,
+      returnDate,
+    };
+    dispatchFiltersToStore(filters);
+    console.log(filters);
     navigation.navigate("Suggestions");
   };
   let datePicker = <DatePickerIOS />;
@@ -37,7 +57,17 @@ export default function FiltersScreen({ navigation }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingContainer}
       >
-        {datePicker}
+        {/* {datePicker} */}
+        <DatePickerIOS
+          departureDate={departureDate}
+          returnDate={returnDate}
+          onDepartureDateChange={(event, selectedDate) => {
+            setDepartureDate(selectedDate || departureDate);
+          }}
+          onReturnDateChange={(event, selectedDate) => {
+            setReturnDate(selectedDate || returnDate);
+          }}
+        />
 
         {/* Other Inputs */}
         <TextInput
@@ -49,10 +79,16 @@ export default function FiltersScreen({ navigation }) {
         />
         <TextInput
           style={styles.input}
-          value={numberOfPeople}
+          value={departureLocation}
+          placeholder="Departure"
+          onChangeText={setDepartureLocation}
+        />
+        <TextInput
+          style={styles.input}
+          value={nbrOfTravelers}
           placeholder="Number of people"
           keyboardType="numeric"
-          onChangeText={setNumberOfPeople}
+          onChangeText={setNbrOfTravelers}
         />
         <TextInput
           style={styles.input}
