@@ -2,23 +2,41 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+// Ajouter @react-navigation/elements dans le projet
+import { HeaderBackButton } from "@react-navigation/elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { StyleSheet, Text, View } from "react-native";
+
 import HomeScreen from "./screens/HomeScreen";
 import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
-import { View } from "react-native";
-import BackButton from "./components/BackButton";
-
-import { Provider } from "react-redux";
-import SelectedSuggestionsScreen from "./screens/SelectedSuggestionsScreen";
-import { configureStore } from "@reduxjs/toolkit";
 import filters from "./reducers/filters";
+import userInfo from "./reducers/userInfo";
 import FiltersScreen from "./screens/FiltersScreen";
+import SelectedSuggestionsScreen from "./screens/SelectedSuggestionsScreen";
+import { PersistGate } from "redux-persist/integration/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
+import { persistStore, persistReducer } from "redux-persist";
+
+const persistConfig = {
+  key: "root",
+  storage: AsyncStorage,
+};
+
+const rootReducer = combineReducers({ filters, userInfo });
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: { filters },
+  reducer: persistReducer(persistConfig, persistedReducer),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
+
+const persistor = persistStore(store);
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -87,8 +105,8 @@ const TabNavigator = () => {
           );
         },
         tabBarLabel: () => null,
-        tabBarActiveTintColor: "#FFFFFF",
         tabBarActiveBackgroundColor: iconBackgroundColor,
+        tabBarActiveTintColor: "#FFFFFF",
         tabBarInactiveTintColor: "#CBCBE4",
         headerShown: false,
         tabBarStyle: { backgroundColor: "#ba99fe" },
@@ -104,11 +122,22 @@ const TabNavigator = () => {
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: "#fff",
+//     alignItems: "center",
+//     justifyContent: "center",
+//   },
+// });
