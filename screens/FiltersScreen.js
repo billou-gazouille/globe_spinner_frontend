@@ -27,10 +27,28 @@ export default function FiltersScreen({ navigation }) {
   const [nbrOfTravelers, setNbrOfTravelers] = useState(null);
   const [transportType, setTransportType] = useState("");
 
+  const [showFieldsError, setShowFieldsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   const dispatch = useDispatch();
 
-  const dispatchFiltersToStore = (filters) => {
-    dispatch(addFiltersToStore(filters));
+  const handlePressSubmit = () => {
+    if (
+      !checkHasEmptyField([
+        departureDate,
+        returnDate,
+        departureLocation,
+        budget,
+        nbrOfTravelers,
+        transportType,
+      ])
+    ) {
+      setShowFieldsError(true);
+      setErrorMsg("Some fields are empty !");
+      return false;
+    }
+    setShowFieldsError(false);
+    return true;
   };
 
   const handleSubmit = () => {
@@ -42,10 +60,23 @@ export default function FiltersScreen({ navigation }) {
       departureDate,
       returnDate,
     };
-    dispatchFiltersToStore(filters);
+    dispatch(addFiltersToStore(filters));
     console.log(filters);
     navigation.navigate("Suggestions");
   };
+
+  const callHandleAndHandlePress = () => {
+    if (handlePressSubmit()) {
+      handleSubmit();
+    }
+  };
+
+  const checkHasEmptyField = (fields) => {
+    for (let field of fields) {
+      return !field || field === " ";
+    }
+  };
+
   let datePicker = <DatePickerIOS />;
   if (Platform.OS === "android") datePicker = <DatePickerAndroid />;
 
@@ -75,28 +106,31 @@ export default function FiltersScreen({ navigation }) {
           value={budget}
           placeholder="Budget"
           keyboardType="numeric"
-          onChangeText={setBudget}
+          onChangeText={(number) => setBudget(number)}
         />
         <TextInput
           style={styles.input}
           value={departureLocation}
           placeholder="Departure"
-          onChangeText={setDepartureLocation}
+          onChangeText={(text) => setDepartureLocation(text)}
         />
         <TextInput
           style={styles.input}
           value={nbrOfTravelers}
           placeholder="Number of people"
           keyboardType="numeric"
-          onChangeText={setNbrOfTravelers}
+          onChangeText={(number) => setNbrOfTravelers(number)}
         />
         <TextInput
           style={styles.input}
           value={transportType}
           placeholder="Transport type"
-          onChangeText={setTransportType}
+          onChangeText={(text) => setTransportType(text)}
         />
-        <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+        <TouchableOpacity
+          onPress={callHandleAndHandlePress}
+          style={styles.button}
+        >
           <CustomText style={styles.text}>Go!</CustomText>
         </TouchableOpacity>
       </KeyboardAvoidingView>

@@ -33,7 +33,7 @@ export default function SuggestionsScreen({ navigation }) {
           Suggestion Screen : click me to go to selected suggestions
         </Text>
       </TouchableOpacity>
-      <BackButton navigation={navigation} />
+      <BackButton />
     </View>
   );
 }
