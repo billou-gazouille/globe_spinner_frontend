@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, StatusBar } from "react-native";
 
 export default function ParametersScreen({ navigation }) {
   return (
     <View style={styles.container}>
+      <StatusBar style="auto" />
       <Text style={styles.text}>This is parameters screen</Text>
     </View>
   );

@@ -6,6 +6,7 @@ import {
   Image,
   Pressable,
   useWindowDimensions,
+  StatusBar,
 } from "react-native";
 import { CustomText } from "../components/CustomText";
 
@@ -18,6 +19,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={[styles.container, { height }]}>
+      <StatusBar style="auto" />
       <Image
         source={require("../assets/line-map.jpg")}
         style={styles.bottomLine}

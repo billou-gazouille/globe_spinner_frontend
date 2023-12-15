@@ -9,19 +9,16 @@ import {
   Text,
   ScrollView,
   Modal,
+  Button,
+  StatusBar,
 } from "react-native";
-import DateTimePicker from "react-native-ui-datepicker";
+import DatePickerIOS from "../components/ios/DatePickerIOS";
+import DatePickerAndroid from "../components/android/DatePickerAndroid";
 import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function FiltersScreen({ navigation }) {
   const [departureLocation, setDepartureLocation] = useState("");
-  const [departureDate, setDepartureDate] = useState(new Date());
-  const [mode, setMode] = useState("date");
-  const [returnDate, setReturnDate] = useState(new Date());
-  const [isPickerShow, setIsPickerShow] = useState(false);
-  const [text, setText] = useState("Empty");
   const [budget, setBudget] = useState("");
   const [numberOfPeople, setNumberOfPeople] = useState(null);
   const [transportType, setTransportType] = useState("");
@@ -29,66 +26,18 @@ export default function FiltersScreen({ navigation }) {
   const handleSubmit = () => {
     navigation.navigate("Suggestions");
   };
-  const onChangeDepartureDate = (event, setDepartureDate) => {
-    const currentDate = setDepartureDate || departureDate;
-    setIsPickerShow(Platform.OS === "ios");
-    setReturnDate(currentDate);
-
-    let tempDate = new Date(currentDate);
-    let formatedDate =
-      tempDate.getDate() +
-      "/" +
-      (tempDate.getMonth() + 1) +
-      "/" +
-      tempDate.getFullYear();
-    setText(formatedDate);
-
-    console("coucou voici la date", formatedDate);
-  };
-
-  const showDatePicker = (mode) => {
-    setIsPickerShow(true);
-    setPickerMode(mode);
-  };
+  let datePicker = <DatePickerIOS />;
+  if (Platform.OS === "android") datePicker = <DatePickerAndroid />;
 
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+    <View style={styles.container}>
+      <StatusBar style="auto" />
       <BackButton />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingContainer}
       >
-        <TextInput
-          style={styles.input}
-          value={departureLocation}
-          placeholder="origin"
-          onChangeText={(value) => setDepartureLocation(value)}
-        />
-        <View>
-          <TouchableOpacity onPress={() => showDatePicker("date")}>
-            <View style={styles.buttonText}>
-              <Icon name="calendar" size={20} color="#000" />
-            </View>
-          </TouchableOpacity>
-          <Text>Choose Departure Date</Text>
-          <Text>{text}</Text>
-          <TouchableOpacity onPress={() => showDatePicker("date")}>
-            <View style={styles.buttonText}>
-              <Icon name="calendar" size={20} color="#000" />
-              <Text>Choose Return Date</Text>
-            </View>
-          </TouchableOpacity>
-
-          {setIsPickerShow && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={departureDate}
-              mode={mode}
-              display="default"
-              onChange={onChangeDepartureDate}
-            />
-          )}
-        </View>
+        {datePicker}
 
         {/* Other Inputs */}
         <TextInput
@@ -115,12 +64,12 @@ export default function FiltersScreen({ navigation }) {
           <CustomText style={styles.text}>Go!</CustomText>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  contentContainer: {
+  container: {
     flex: 1,
     flexGrow: 1,
     justifyContent: "center",
@@ -135,8 +84,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   keyboardAvoidingContainer: {
-    width: "100%", // Ensures the container takes full width
-    alignItems: "center", // Centers children horizontally
+    width: "100%",
+    alignItems: "center",
   },
   dateInput: {
     backgroundColor: "#F5FCFF",
