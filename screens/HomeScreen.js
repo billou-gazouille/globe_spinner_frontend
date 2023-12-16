@@ -12,9 +12,9 @@ import { CustomText } from "../components/CustomText";
 export default function HomeScreen({ navigation }) {
   const { height, width } = useWindowDimensions();
 
-  const handleSubmit = () => {
-    navigation.navigate("Filters");
-  };
+  // const handleSubmit = () => {
+  //   navigation.navigate("Payment");
+  // };
 
   return (
     <View style={[styles.container, { height }]}>

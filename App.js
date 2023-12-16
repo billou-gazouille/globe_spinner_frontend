@@ -12,6 +12,8 @@ import HomeScreen from "./screens/HomeScreen";
 import ParametersScreen from "./screens/ParametersScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SuggestionsScreen from "./screens/SuggestionsScreen";
+import PaymentScreen from './screens/PaymentScreen';
+import RecapScreen from './screens/RecapScreen';
 import filters from "./reducers/filters";
 import userInfo from "./reducers/userInfo";
 import FiltersScreen from "./screens/FiltersScreen";
@@ -38,6 +40,7 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
+
 
 
 const Stack = createNativeStackNavigator();
@@ -106,13 +109,17 @@ export default function App() {
             <Stack.Screen
               name="SelectedSuggestions"
               component={SelectedSuggestionsScreen}
-            />
+              />
+              {/* <Stack.Screen name="Payment" component={PaymentScreen} />
+              <Stack.Screen name="Recap" component={RecapScreen} /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
     </Provider> 
   )}
 
+  
+    
 // const styles = StyleSheet.create({
 //   container: {
 //     flex: 1,
