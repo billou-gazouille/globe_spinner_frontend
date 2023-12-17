@@ -1,4 +1,4 @@
-import React, { useState , useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Image,
@@ -8,23 +8,22 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  StatusBar,
 } from "react-native";
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-import SignModal from '../components/SignModal';
+import SignModal from "../components/SignModal";
 import { useSelector, useDispatch } from "react-redux";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { setIsConnected } from '../reducers/userInfo';
+import { setIsConnected } from "../reducers/userInfo";
 
-import SigninForm from '../components/SigninForm';
-import SignupForm from '../components/SignupForm';
-
+import SigninForm from "../components/SigninForm";
+import SignupForm from "../components/SignupForm";
 
 export default function ProfileScreen({ navigation }) {
-
-  const userInfo = useSelector(state => state.userInfo.value);
+  const userInfo = useSelector((state) => state.userInfo.value);
 
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
@@ -35,79 +34,98 @@ export default function ProfileScreen({ navigation }) {
     navigation.navigate("Suggestions");
   };
 
-  const handleSubmitSigninForm = () => {
-    console.log('handleSubmitSigninForm');
+  const signIn = async (email, password) => {
+    console.log("handleSubmitSigninForm");
     setIsSigningIn(false);
-  };
-
-  const handleSubmitSignupForm = async (firstname, lastname, email, password) => {
-    console.log('handleSubmitSignupForm');
-    setIsSigningUp(false);
-    const data = await fetch('http://192.168.43.25:3000/users/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({firstname, lastname, email, password})
-    })
-      .then(resp => resp.json());
+    const data = await fetch("http://192.168.43.25:3000/users/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    }).then((resp) => resp.json());
     console.log(data);
-    if (data.result){
+    if (data.result) {
       dispatch(setIsConnected(true));
+      navigation.navigate("Home");
     }
   };
 
-  const signModal = 
-    <SignModal 
-      closeSignModal={() => navigation.navigate('Home')} 
-      onSignIn={() => setIsSigningIn(true)} 
-      onSignUp={() => setIsSigningUp(true)}    
-    />;
+  const signUp = async (firstname, lastname, email, password) => {
+    console.log("handleSubmitSignupForm");
+    setIsSigningUp(false);
+    const data = await fetch("http://192.168.43.25:3000/users/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ firstname, lastname, email, password }),
+    }).then((resp) => resp.json());
+    console.log(data);
+    if (data.result) {
+      dispatch(setIsConnected(true));
+      navigation.navigate("Home");
+    }
+  };
 
-  const signinForm = 
-    <SigninForm 
-      submit={handleSubmitSigninForm}
-    />;
+  const signModal = (
+    <SignModal
+      closeSignModal={() => navigation.navigate("Home")}
+      onSignIn={() => setIsSigningIn(true)}
+      onSignUp={() => setIsSigningUp(true)}
+    />
+  );
 
-  const signupForm = 
-    <SignupForm 
-      submit={(firstname, lastname, email, password) => 
-        handleSubmitSignupForm(firstname, lastname, email, password)}
-    />;
-  
+  const signinForm = (
+    <SigninForm submit={(email, password) => signIn(email, password)} />
+  );
 
-  const userDetails = 
+  const signupForm = (
+    <SignupForm
+      submit={(firstname, lastname, email, password) =>
+        signUp(firstname, lastname, email, password)
+      }
+    />
+  );
+
+  const HandlePressLogout = () => {
+    console.log("HandlePressLogout");
+    dispatch(setIsConnected(false));
+  };
+
+  const userDetails = (
     <View>
-      <Text style={{fontSize: 30, color: 'white'}}>User details...</Text>
-    </View>;
-
+      <Text style={{ fontSize: 30, color: "white" }}>User details...</Text>
+      <TouchableOpacity
+        style={styles.logoutButton}
+        onPress={() => HandlePressLogout()}
+      >
+        <Text style={{ fontSize: 16, color: "white" }}>Logout</Text>
+        {/* <FontAwesome name='logout' size={25} color='white'/> */}
+      </TouchableOpacity>
+    </View>
+  );
 
   const modalToShow = () => {
-    if (isSigningIn)
-      return signinForm;
-    if (isSigningUp)
-      return signupForm;
-    if (!userInfo.isConnected) 
-      return signModal;
+    if (isSigningIn) return signinForm;
+    if (isSigningUp) return signupForm;
+    if (!userInfo.isConnected) return signModal;
     return userDetails;
   };
 
-
   return (
-      <View style={styles.container}>
-        {/* <Text style={styles.text}>Hello this is the profile screen!!!</Text> */}
-        <Text style={{...styles.text, marginTop: 40}}>
-          connected? {userInfo.isConnected ? 'YES' : 'NO'}
+    <View style={styles.container}>
+      <StatusBar style="auto" />
+      {/* <Text style={styles.text}>Hello this is the profile screen!!!</Text> */}
+      <Text style={{ ...styles.text, marginTop: 40 }}>
+        connected? {userInfo.isConnected ? "YES" : "NO"}
+      </Text>
+      {modalToShow()}
+      <TouchableOpacity onPress={() => handleSubmit()}>
+        <Text style={styles.text}>
+          Hello this is the profile screen and if you click me you'll go on
+          suggestions screen
         </Text>
-        {modalToShow()}
-        <TouchableOpacity onPress={() => handleSubmit()}>
-          <Text style={styles.text}>
-            Hello this is the profile screen and if you click me you'll go on
-            suggestions screen
-          </Text>
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
+    </View>
   );
 }
- 
 
 const styles = StyleSheet.create({
   container: {
@@ -120,5 +138,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 28,
   },
+  logoutButton: {
+    width: 60,
+    height: 60,
+    borderWidth: 1,
+  },
 });
-

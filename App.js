@@ -104,14 +104,14 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
-            <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+            {/* <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
             <Stack.Screen name="Filters" component={FiltersScreen} />
             <Stack.Screen
               name="SelectedSuggestions"
               component={SelectedSuggestionsScreen}
-              />
-              {/* <Stack.Screen name="Payment" component={PaymentScreen} />
-              <Stack.Screen name="Recap" component={RecapScreen} /> */}
+              /> */}
+              <Stack.Screen name="Payment" component={PaymentScreen} />
+              <Stack.Screen name="Recap" component={RecapScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
