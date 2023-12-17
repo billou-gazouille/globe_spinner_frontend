@@ -19,7 +19,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           <View style={{flex: 1, marginLeft: 20}}>
             <View style={{marginTop: 15, flexDirection: 'row'}}>
-              <FontAwesome name='timer' size={25} color='black'/>
+              <FontAwesome name='clock-o' size={25} color='black'/>
               <CustomText style={{marginLeft: 10, fontSize: 18}}>{timeStart} to {timeEnd}</CustomText>
             </View>
             <View style={{marginTop: 20, flexDirection: 'row'}}>
@@ -99,12 +99,12 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         </View>
       </View>
 
-      {/* <View style={styles.headingAndSectionPair}>
+      <View style={styles.headingAndSectionPair}>
         <CustomText style={styles.text}>Activities</CustomText>
         <View style={{...styles.sectionContainer, height: activities.length*150}}>
           {activities}
         </View>
-      </View> */}
+      </View>
       
 
       {/* <Text style={styles.text}>Selected Suggestions Screen</Text> */}
