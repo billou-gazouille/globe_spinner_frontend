@@ -41,18 +41,19 @@ export default function SuggestionsScreen({ navigation }) {
       console.log('noice');
       // setTrips(...)
     }
-    setTrips([{trip0: 'TRIP 0'}, {trip1: 'TRIP 1'}]);
+    setTrips(['TRIP 0', 'TRIP 1']);
   };
 
   console.log(trips);
 
   const selectTrip = (tripIndex) => {
     console.log('tripIndex: ', tripIndex);
-    navigation.navigate('SelectedSuggestions', { 
-      screen: 'SelectedSuggestions',  
-      params: { trip: trips[tripIndex] }
-    }
-    );
+    // navigation.navigate('SelectedSuggestions', { 
+    //   screen: 'SelectedSuggestions',  
+    //   params: { trip: trips[tripIndex] }
+    // }
+    navigation.navigate('SelectedSuggestions', { trip: trips[tripIndex] });
+    //navigation.navigate('SelectedSuggestions', { hello: 'hello' });
   };
 
   return (
