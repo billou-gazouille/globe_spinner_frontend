@@ -2,10 +2,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-//Ajouter @react-navigation/elements dans le projet
-import { HeaderBackButton } from "@react-navigation/elements";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 
 import HomeScreen from "./screens/HomeScreen";
 import ParametersScreen from "./screens/ParametersScreen";
@@ -46,14 +44,15 @@ const Tab = createBottomTabNavigator();
 const HomeStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Filters" component={FiltersScreen} />
-      <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+      <Stack.Screen name="HomeStack" component={HomeScreen} />
+      <Stack.Screen name="FiltersHomeStack" component={FiltersScreen} />
+      <Stack.Screen name="SuggestionsHomeStack" component={SuggestionsScreen} />
       <Stack.Screen
-        name="SelectedSuggestions"
+        name="SelectedSuggestionsHomeStack"
         component={SelectedSuggestionsScreen}
       />
-      <Stack.Screen name="Payment" component={PaymentScreen} />
+      <Stack.Screen name="PaymentHomeStack" component={PaymentScreen} />
+      <Stack.Screen name="RecapHomeStack" component={RecapScreen} />
     </Stack.Navigator>
   );
 };
@@ -61,10 +60,10 @@ const HomeStack = () => {
 const ProfileStack = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
+      <Stack.Screen name="ProfileStack" component={ProfileScreen} />
+      <Stack.Screen name="SuggestionsStack" component={SuggestionsScreen} />
       <Stack.Screen
-        name="SelectedSuggestions"
+        name="SelectedSuggestionsStack"
         component={SelectedSuggestionsScreen}
       />
     </Stack.Navigator>
@@ -135,20 +134,9 @@ export default function App() {
               name="SelectedSuggestions"
               component={SelectedSuggestionsScreen}
             />
-            <Stack.Screen name="Payment" component={PaymentScreen} />
-            <Stack.Screen name="Recap" component={RecapScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

@@ -8,14 +8,19 @@ import {
   Platform,
   Text,
   StatusBar,
+  ImageBackground,
 } from "react-native";
 // import DatePickerAndroid from "../components/android/DatePickerAndroid";
+import CustomCheckbox from "../components/CustomCheckbox";
 import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import { useDispatch } from "react-redux";
 import { addFiltersToStore } from "../reducers/filters";
 import DatePickerIOS from "../components/ios/DatePickerIOS";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+
+import GradientFontColor from "../components/GradientFontColor";
+
+const transportationMode = ["Train", "Plane", "Coach"];
 
 export default function FiltersScreen({ navigation }) {
   const [departureLocation, setDepartureLocation] = useState("");
@@ -28,8 +33,9 @@ export default function FiltersScreen({ navigation }) {
   const [showFieldsError, setShowFieldsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  let bouncyCheckboxRef = null;
-  const [checkboxState, setCheckboxState] = useState(false);
+  const checkboxes = transportationMode.map((e, i) => (
+    <CustomCheckbox key={i} text={e} />
+  ));
 
   const dispatch = useDispatch();
 
@@ -63,7 +69,7 @@ export default function FiltersScreen({ navigation }) {
     };
     dispatch(addFiltersToStore(filters));
     // console.log("coucou je suis là");
-    navigation.navigate("Suggestions");
+    navigation.navigate("SuggestionsHomeStack");
   };
 
   const callHandleAndHandlePress = () => {
@@ -75,18 +81,17 @@ export default function FiltersScreen({ navigation }) {
   };
 
   const checkHasEmptyField = (fields) => {
-    for (let field of fields){
-      if (!field || field === ' ')
-        return true;
+    for (let field of fields) {
+      if (!field || field === " ") return true;
     }
     return false;
   };
 
   // let datePicker = <DatePickerIOS />;
-  // if (Platform.OS === "android") datePicker = <DatePickerAndroid />;
 
   return (
     <View style={styles.container}>
+      <GradientFontColor style={styles.title}>Your Filters</GradientFontColor>
       {showFieldsError && <Text style={styles.fieldsError}>{errorMsg}</Text>}
 
       <StatusBar style="auto" />
@@ -95,68 +100,72 @@ export default function FiltersScreen({ navigation }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingContainer}
       >
-        {/* <DatePickerIOS
-          departureDate={departureDate}
-          returnDate={returnDate}
-          onDepartureDateChange={(event, selectedDate) => {
-            setDepartureDate(selectedDate || departureDate);
-          }}
-          onReturnDateChange={(event, selectedDate) => {
-            setReturnDate(selectedDate || returnDate);
-          }}
-        /> */}
+        <View style={styles.date}>
+          {/* <DatePickerIOS
+            departureDate={departureDate}
+            returnDate={returnDate}
+            onDepartureDateChange={(event, selectedDate) => {
+              setDepartureDate(selectedDate || departureDate);
+            }}
+            onReturnDateChange={(event, selectedDate) => {
+              setReturnDate(selectedDate || returnDate);
+            }}
+          /> */}
+        </View>
+
+        {/* <ImageBackground
+          source={require("../assets/bendy-dotted-line_2.jpg")}
+          style={styles.background}
+          resizeMode="cover"
+        >
+          <Text>Date</Text>
+        </ImageBackground> */}
 
         {/* Other Inputs */}
-        <Text style={styles.text}> What's your budget ? (in euros)</Text>
-        <TextInput
-          style={styles.input}
-          value={budget}
-          placeholder="E.g. 1000"
-          keyboardType="numeric"
-          onChangeText={(number) => setBudget(number)}
-        />
-        <Text style={styles.text}> From where are you leaving ?</Text>
-        <TextInput
-          style={styles.input}
-          value={departureLocation}
-          placeholder="E.g. Aveizieux"
-          onChangeText={(text) => setDepartureLocation(text)}
-        />
-        <Text style={styles.text}>How many travellers are there ?</Text>
-        <TextInput
-          style={styles.input}
-          value={nbrOfTravelers}
-          // placeholder="E.g. 3"
-          keyboardType="numeric"
-          onChangeText={(number) => setNbrOfTravelers(Number(number))}
-        />
-        <View>
-          <Text style={styles.text}>
-            What kind of transportation would you like
-          </Text>
-          <View>
-            <Text>Train</Text>
-            <BouncyCheckbox
-              style={{ marginTop: 16 }}
-              ref={(ref) => (bouncyCheckboxRef = ref)}
-              isChecked={checkboxState}
-              disableText
-              // disableBuiltInState
-              onPress={() => setCheckboxState(!checkboxState)}
+        <View style={styles.rowContainer}>
+          <View style={{ flex: 1, marginRight: 10 }}>
+            <Text style={styles.text}>What's your budget? (in euros)</Text>
+            <TextInput
+              style={styles.input}
+              value={budget}
+              placeholder="E.g. 1000"
+              keyboardType="numeric"
+              onChangeText={(number) => setBudget(number)}
+            />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.text}>From where are you leaving?</Text>
+            <TextInput
+              style={styles.input}
+              value={departureLocation}
+              placeholder="E.g. Davézieux"
+              onChangeText={(text) => setDepartureLocation(text)}
             />
           </View>
         </View>
-        {/* <TextInput
-          style={styles.input}
-          value={transportType}
-          placeholder="E.g. train"
-          onChangeText={(text) => setTransportType(text)}
-        /> */}
+        <View style={styles.rowContainer}>
+          <View style={{ flex: 1, marginRight: 10 }}>
+            <Text style={styles.text}>How many travelers are there?</Text>
+            <TextInput
+              style={styles.input}
+              value={nbrOfTravelers}
+              keyboardType="numeric"
+              onChangeText={(number) => setNbrOfTravelers(Number(number))}
+            />
+          </View>
+
+          <View style={{ flex: 1 }}>
+            <Text style={styles.text}>
+              What kind of transportation would you like ?
+            </Text>
+            <View>{checkboxes}</View>
+          </View>
+        </View>
         <TouchableOpacity
           onPress={callHandleAndHandlePress}
           style={styles.button}
         >
-          <CustomText style={styles.text}>Go!</CustomText>
+          <CustomText style={styles.buttonText}>Go!</CustomText>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </View>
@@ -170,13 +179,39 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  title: {
+    fontSize: 50,
+    fontFamily: "KronaOne_400Regular",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 25,
+  },
+  date: {},
+  rowContainer: {
+    marginTop: 50,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  // rowContainerTwo: {
+  //   // marginTop: 10,
+  //   flexDirection: "row",
+  //   justifyContent: "space-between",
+  // },
   input: {
     marginTop: 10,
     height: 40,
     margin: 12,
-    borderWidth: 1,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: "#515151",
     padding: 10,
     borderRadius: 20,
+  },
+  background: {
+    flex: 1,
+    width: "100%",
+    height: "30%",
+    justifyContent: "center",
   },
   keyboardAvoidingContainer: {
     width: "100%",
@@ -200,12 +235,13 @@ const styles = StyleSheet.create({
   buttonText: {
     justifyContent: "center",
     alignItems: "center",
+    color: "white",
   },
   text: {
     fontWeight: "bold",
-    letterSpacing: 0.5,
-    color: "#ba99fe",
-    fontSize: 11,
+    letterSpacing: 0,
+    color: "#515151",
+    fontSize: 17,
     textAlign: "center",
     justifyContent: "center",
   },
