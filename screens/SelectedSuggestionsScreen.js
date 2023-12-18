@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, StatusBar, Image, ScrollView } from "react-native";
+import { View, StyleSheet, Text, StatusBar, Image, ScrollView, TouchableOpacity} from "react-native";
 import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -9,11 +9,11 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   
   const trip = route.params.trip;
 
-  const {trip} = route.params;
+ 
 
   // payment 
   const handleContinueToPaymentPress = () => {
-    navigation.navigate('PaymentScreen');
+    navigation.navigate('Payment');
   };
   console.log('############################');
   console.log(trip);

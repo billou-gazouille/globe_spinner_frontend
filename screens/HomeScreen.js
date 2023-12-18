@@ -13,9 +13,9 @@ import { CustomText } from "../components/CustomText";
 export default function HomeScreen({ navigation }) {
   const { height, width } = useWindowDimensions();
 
-  // const handleSubmit = () => {
-  //   navigation.navigate("");
-  // };
+  const handleSubmit = () => {
+    navigation.navigate("Suggestions");
+  };
 
   return (
     <View style={[styles.container, { height }]}>
