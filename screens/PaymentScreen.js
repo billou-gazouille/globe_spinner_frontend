@@ -15,7 +15,6 @@ import {
   useFonts,
   NunitoSans_400Regular,
 } from "@expo-google-fonts/nunito-sans";
-
 const PaymentScreen = () => {
   const navigation = useNavigation();
   const [saveCardDetails, setSaveCardDetails] = useState(false);
@@ -36,7 +35,7 @@ const PaymentScreen = () => {
     <View style={styles.container}>
       <BackButton navigation={navigation} />
 
-      <View style={[styles.subtitleContainer, { height: 20 }]}>
+      <View style={[styles.subtitleContainer, { height: 30 }]}>
         <MaterialIcons name="person" size={24} color="#BA99FE" />
         <Text
           style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
@@ -108,7 +107,7 @@ const PaymentScreen = () => {
       <Text
         style={[styles.amountText, { fontFamily: "NunitoSans_400Regular" }]}
       >
-        Amount: 1400 euros
+        Amount: 1400£
       </Text>
 
       <TouchableOpacity style={styles.payButton} onPress={handlePayPress}>
@@ -136,6 +135,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#E6E1F1",
     flex: 1,
     position: "relative",
+    marginTop: 30,
   },
 
   subtitleContainer: {
@@ -156,18 +156,21 @@ const styles = StyleSheet.create({
   fontAwesomeIcon: {
     color: "#EDB8FE",
   },
+
   input: {
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 8,
+    margin: -10,
   },
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
-    marginTop: 10,
+    marginBottom: 30,
+    marginTop: 30,
+    justifyContent: "center",
   },
   checkboxLabel: {
     marginLeft: 8,
@@ -177,6 +180,7 @@ const styles = StyleSheet.create({
     borderColor: "#3972D9",
     borderRadius: 100,
     backgroundColor: "#BA99FE",
+    marginBottom: 50,
   },
   checkbox: {
     marginLeft: 8,
@@ -184,7 +188,7 @@ const styles = StyleSheet.create({
   },
 
   amountText: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 10,
@@ -215,7 +219,7 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: "contain",
     marginTop: 5,
-    marginLeft: -80,
+    marginLeft: -90,
   },
   imageContainer: {
     width: "100%",
