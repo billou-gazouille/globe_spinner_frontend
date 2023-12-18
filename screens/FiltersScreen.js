@@ -187,6 +187,7 @@ export default function FiltersScreen({ navigation }) {
       {/* <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingContainer}
+<<<<<<< HEAD
       /> */}
 
       <View style={styles.inputContainerRow}>
@@ -198,6 +199,20 @@ export default function FiltersScreen({ navigation }) {
             // value={"test"}
             placeholder="E.g. Davézieux"
           />
+=======
+      >
+        <View style={styles.date}>
+          {/* <DatePickerIOS
+            departureDate={departureDate}
+            returnDate={returnDate}
+            onDepartureDateChange={(event, selectedDate) => {
+              setDepartureDate(selectedDate || departureDate);
+            }}
+            onReturnDateChange={(event, selectedDate) => {
+              setReturnDate(selectedDate || returnDate);
+            }}
+          /> */}
+>>>>>>> eb67a10fb35658f58b00bc5241df6a882a11c882
         </View>
       </View>
 
@@ -302,6 +317,16 @@ const styles = StyleSheet.create({
   },
   checkboxes: {
     // flexDirection: "row",
+  },
+  transportCheckBox: {
+    justifyContent: "center",
+    textAlign: "center",
+  },
+  fieldsError: {
+    fontSize: 20,
+    marginBottom: 20,
+    color: 'red',
+    fontWeight: 'bold',
   },
 });
 // const styles = StyleSheet.create({

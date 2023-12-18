@@ -41,37 +41,44 @@ export default function ProfileScreen({ navigation }) {
   };
 
   const signIn = async (email, password) => {
-    console.log("handleSubmitSigninForm");
+    //console.log("handleSubmitSigninForm");
     // setIsSigningIn(false);
     const data = await fetch("http://192.168.43.25:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     }).then((resp) => resp.json());
-    console.log(data);
+    //console.log(data);
     if (data.result) {
       dispatch(connect(true));
       setIsSigningIn(false);
+      dispatch(loadDetails({
+        token: data.token, 
+        firstName: data.firstName, 
+        lastName: data.lastName, 
+        email: data.email,
+      }));
       navigation.navigate("Home");
     }
     return data;
   };
 
-  const signUp = async (firstname, lastname, email, password) => {
+  const signUp = async (firstName, lastName, email, password) => {
     // setIsSigningUp(false);
     const data = await fetch("http://192.168.43.25:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ firstname, lastname, email, password }),
+      body: JSON.stringify({ firstName, lastName, email, password }),
     }).then((resp) => resp.json());
     console.log(data);
     if (data.result) {
       dispatch(connect());
       setIsSigningUp(false);
+      //console.log('okkk');
       dispatch(loadDetails({
         token: data.token, 
-        firstname, 
-        lastname, 
+        firstName, 
+        lastName, 
         email
       }));
       navigation.navigate("Home");
@@ -96,15 +103,15 @@ export default function ProfileScreen({ navigation }) {
 
   const signupForm = (
     <SignupForm
-      submit={(firstname, lastname, email, password) =>
-        signUp(firstname, lastname, email, password)
+      submit={(firstName, lastName, email, password) =>
+        signUp(firstName, lastName, email, password)
       }
       closeModal={closeModal}
     />
   );
 
   const HandlePressLogout = () => {
-    console.log("HandlePressLogout");
+    //console.log("HandlePressLogout");
     dispatch(disconnect());
   };
 
@@ -114,8 +121,8 @@ export default function ProfileScreen({ navigation }) {
       <CustomText style={{color: 'black', fontSize: 36, margin: 40}}>Hello {userInfo.firstname} !</CustomText>
       <CustomText style={{color: 'black', fontSize: 26, margin: 20}}>My account info</CustomText>
       <View style={styles.userDetailsContainer}>
-        <CustomText style={styles.userDetail}>firstname: {userInfo.firstname}</CustomText>
-        <CustomText style={styles.userDetail}>lastname: {userInfo.lastname}</CustomText>
+        <CustomText style={styles.userDetail}>first name: {userInfo.firstName}</CustomText>
+        <CustomText style={styles.userDetail}>last name: {userInfo.lastName}</CustomText>
         <CustomText style={styles.userDetail}>email: {userInfo.email}</CustomText>
       </View>
       <TouchableOpacity

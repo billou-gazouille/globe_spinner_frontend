@@ -21,9 +21,9 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
     navigation.navigate("Payment");
   };
 
-  // console.log("-----------------------------");
-  // console.log(trip);
-  // console.log("-----------------------------");
+  console.log("-----------------------------");
+  console.log(trip.accommodation.accommodationBase.name);
+  console.log("-----------------------------");
 
   const activity = (name, date, timeStart, timeEnd, price, location) => {
     return (
