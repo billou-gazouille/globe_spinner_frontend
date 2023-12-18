@@ -7,40 +7,41 @@ import {
   KeyboardAvoidingView,
   Platform,
   Text,
-  ScrollView,
-  Modal,
-  Button,
   StatusBar,
 } from "react-native";
-// import DatePickerIOS from "../components/ios/DatePickerIOS";
 // import DatePickerAndroid from "../components/android/DatePickerAndroid";
 import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import { useDispatch } from "react-redux";
 import { addFiltersToStore } from "../reducers/filters";
+import DatePickerIOS from "../components/ios/DatePickerIOS";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 export default function FiltersScreen({ navigation }) {
   const [departureLocation, setDepartureLocation] = useState("");
   const [departureDate, setDepartureDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(new Date());
   const [budget, setBudget] = useState("");
-  const [nbrOfTravelers, setNbrOfTravelers] = useState(null);
+  const [nbrOfTravelers, setNbrOfTravelers] = useState(1);
   const [transportType, setTransportType] = useState("");
 
   const [showFieldsError, setShowFieldsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  let bouncyCheckboxRef = null;
+  const [checkboxState, setCheckboxState] = useState(false);
+
   const dispatch = useDispatch();
 
   const handlePressSubmit = () => {
     if (
-      !checkHasEmptyField([
-        departureDate,
-        returnDate,
+      checkHasEmptyField([
+        // departureDate,
+        // returnDate,
         departureLocation,
         budget,
         nbrOfTravelers,
-        transportType,
+        // transportType,
       ])
     ) {
       setShowFieldsError(true);
@@ -61,7 +62,7 @@ export default function FiltersScreen({ navigation }) {
       returnDate,
     };
     dispatch(addFiltersToStore(filters));
-    console.log(filters);
+    // console.log("coucou je suis là");
     navigation.navigate("Suggestions");
   };
 
@@ -84,14 +85,15 @@ export default function FiltersScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      {showFieldsError && <Text style={styles.fieldsError}>{errorMsg}</Text>}
+
       <StatusBar style="auto" />
       <BackButton />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingContainer}
       >
-        {/* {datePicker} */}
-        {/* <DatePickerIOS
+        <DatePickerIOS
           departureDate={departureDate}
           returnDate={returnDate}
           onDepartureDateChange={(event, selectedDate) => {
@@ -100,35 +102,54 @@ export default function FiltersScreen({ navigation }) {
           onReturnDateChange={(event, selectedDate) => {
             setReturnDate(selectedDate || returnDate);
           }}
-        /> */}
+        />
 
         {/* Other Inputs */}
+        <Text style={styles.text}> What's your budget ? (in euros)</Text>
         <TextInput
           style={styles.input}
           value={budget}
-          placeholder="Budget"
+          placeholder="E.g. 1000"
           keyboardType="numeric"
           onChangeText={(number) => setBudget(number)}
         />
+        <Text style={styles.text}> From where are you leaving ?</Text>
         <TextInput
           style={styles.input}
           value={departureLocation}
-          placeholder="Departure"
+          placeholder="E.g. Aveizieux"
           onChangeText={(text) => setDepartureLocation(text)}
         />
+        <Text style={styles.text}>How many travellers are there ?</Text>
         <TextInput
           style={styles.input}
           value={nbrOfTravelers}
-          placeholder="Number of people"
+          // placeholder="E.g. 3"
           keyboardType="numeric"
-          onChangeText={(number) => setNbrOfTravelers(number)}
+          onChangeText={(number) => setNbrOfTravelers(Number(number))}
         />
-        <TextInput
+        <View>
+          <Text style={styles.text}>
+            What kind of transportation would you like
+          </Text>
+          <View>
+            <Text>Train</Text>
+            <BouncyCheckbox
+              style={{ marginTop: 16 }}
+              ref={(ref) => (bouncyCheckboxRef = ref)}
+              isChecked={checkboxState}
+              disableText
+              // disableBuiltInState
+              onPress={() => setCheckboxState(!checkboxState)}
+            />
+          </View>
+        </View>
+        {/* <TextInput
           style={styles.input}
           value={transportType}
-          placeholder="Transport type"
+          placeholder="E.g. train"
           onChangeText={(text) => setTransportType(text)}
-        />
+        /> */}
         <TouchableOpacity
           onPress={callHandleAndHandlePress}
           style={styles.button}
@@ -180,10 +201,14 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: "bold",
-    letterSpacing: 2.5,
-    color: "white",
-    fontSize: 16,
+    letterSpacing: 0.5,
+    color: "#ba99fe",
+    fontSize: 11,
     textAlign: "center",
     justifyContent: "center",
+  },
+  transportCheckBox: {
+    justifyContent: "center",
+    textAlign: "center",
   },
 });
