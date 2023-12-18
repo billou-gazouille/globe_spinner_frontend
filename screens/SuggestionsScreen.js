@@ -13,9 +13,10 @@ import { CustomText } from "../components/CustomText";
 
 export default function SuggestionsScreen({ navigation }) {
   const handleSubmit = () => {
-    navigation.navigate("SelectedSuggestions");
+    navigation.navigate("SelectedSuggestionsHomeStack");
   };
 
+  //dès qu'on arrive sur CE screen on fait le fetch pour récupérer les valeurs du store
   //on importe les filtres depuis le store de Redux
   //on fetch les [trips] avec les filtres dans un useEffect pour re render la page suggestion
   //on map sur les [trips] afin d'afficher le contenu des 2 [trips] qui correspondent aux filtres
@@ -30,29 +31,33 @@ export default function SuggestionsScreen({ navigation }) {
   const [trips, setTrips] = useState([null, null]);
 
   const handlePressRegenerateAll = async () => {
-    console.log('handlePressRegenerateAll');
+    console.log("handlePressRegenerateAll");
     const data = await fetch("http://192.168.43.25:3000/trips/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ /* Mettre ici les filtres */ }),
+      body: JSON.stringify({
+        /* Mettre ici les filtres */
+      }),
     }).then((resp) => resp.json());
     console.log(data);
     if (data.result) {
-      console.log('noice');
+      console.log("noice");
       // setTrips(...)
     }
-    setTrips(['TRIP 0', 'TRIP 1']);
+    setTrips(["TRIP 0", "TRIP 1"]);
   };
 
   console.log(trips);
 
   const selectTrip = (tripIndex) => {
-    console.log('tripIndex: ', tripIndex);
-    // navigation.navigate('SelectedSuggestions', { 
-    //   screen: 'SelectedSuggestions',  
+    console.log("tripIndex: ", tripIndex);
+    // navigation.navigate('SelectedSuggestions', {
+    //   screen: 'SelectedSuggestions',
     //   params: { trip: trips[tripIndex] }
     // }
-    navigation.navigate('SelectedSuggestions', { trip: trips[tripIndex] });
+    navigation.navigate("SelectedSuggestionsHomeStack", {
+      trip: trips[tripIndex],
+    });
     //navigation.navigate('SelectedSuggestions', { hello: 'hello' });
   };
 
@@ -60,36 +65,40 @@ export default function SuggestionsScreen({ navigation }) {
     <View style={styles.container}>
       <CustomText style={styles.suggestionsText}>Suggestions</CustomText>
       <View style={styles.cardsContainer}>
-        <SuggestionCard 
-          tripIndex={0} 
-          cityName='AMSTERDAM' 
-          accommodationType='Hotel' 
-          leaveTransportType='Train' 
-          returnTransportType='Airplane' 
-          activities={['Visit Rijsk Museum', 'Red Light District', 'Cycle along the canals']}
-          img={require('../assets/noImage.jpg')} 
-          leaveDate='16 Feb' 
-          returnDate='29 Feb' 
-          price={1400} 
+        <SuggestionCard
+          tripIndex={0}
+          cityName="AMSTERDAM"
+          accommodationType="Hotel"
+          leaveTransportType="Train"
+          returnTransportType="Airplane"
+          activities={[
+            "Visit Rijsk Museum",
+            "Red Light District",
+            "Cycle along the canals",
+          ]}
+          img={require("../assets/noImage.jpg")}
+          leaveDate="16 Feb"
+          returnDate="29 Feb"
+          price={1400}
           selectTrip={selectTrip}
         />
-        <SuggestionCard 
-          tripIndex={1} 
-          cityName='LONDON' 
-          accommodationType='airBnB' 
-          leaveTransportType='Coach' 
-          returnTransportType='Train' 
-          activities={['Tour of Greenwich', 'Madam Tussauds', 'Camden Town']}
-          img={require('../assets/noImage.jpg')}
-          leaveDate='15 Feb' 
-          returnDate='28 Feb' 
-          price={1200} 
-          selectTrip={selectTrip} 
+        <SuggestionCard
+          tripIndex={1}
+          cityName="LONDON"
+          accommodationType="airBnB"
+          leaveTransportType="Coach"
+          returnTransportType="Train"
+          activities={["Tour of Greenwich", "Madam Tussauds", "Camden Town"]}
+          img={require("../assets/noImage.jpg")}
+          leaveDate="15 Feb"
+          returnDate="28 Feb"
+          price={1200}
+          selectTrip={selectTrip}
         />
       </View>
-      <TouchableOpacity 
-        style={styles.regenerateAllButton} 
-        onPress={handlePressRegenerateAll} 
+      <TouchableOpacity
+        style={styles.regenerateAllButton}
+        onPress={handlePressRegenerateAll}
       >
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
       </TouchableOpacity>
@@ -105,10 +114,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   nunitoText: {
-    fontFamily: 'NunitoSans_400Regular',
+    fontFamily: "NunitoSans_400Regular",
   },
   cardsContainer: {
-    width: '100%',
+    width: "100%",
     // height: '60%',
     justifyContent: "space-between",
     alignItems: "center",
@@ -119,16 +128,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   regenerateAllButton: {
-    width: '50%',
+    width: "50%",
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#3972D9',
+    backgroundColor: "#3972D9",
     borderRadius: 25,
     marginTop: 20,
   },
   regenerateAllText: {
     fontSize: 16,
-    color: 'white',
+    color: "white",
   },
 });
