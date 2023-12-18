@@ -53,6 +53,7 @@ const HomeStack = () => {
         name="SelectedSuggestions"
         component={SelectedSuggestionsScreen}
       />
+      <Stack.Screen name="Payment" component={PaymentScreen} />
     </Stack.Navigator>
   );
 };

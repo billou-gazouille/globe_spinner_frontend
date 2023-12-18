@@ -15,9 +15,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 export default function SelectedSuggestionsScreen({ navigation, route }) {
   const trip = route.params.trip;
 
-  // payment
+  // payment coucou
   const handleContinueToPaymentPress = () => {
-    navigation.navigate("PaymentScreen");
+    navigation.navigate("Payment");
   };
   console.log("############################");
   console.log(trip);
@@ -87,156 +87,163 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   ];
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <StatusBar style="auto" />
-      <Image
-        source={require("../assets/noImage.jpg")}
-        style={styles.cityImg}
-      ></Image>
+    <View style={styles.totalView}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <StatusBar style="auto" />
+        <Image
+          source={require("../assets/noImage.jpg")}
+          style={styles.cityImg}
+        ></Image>
 
-      <View style={styles.headingAndSectionPair}>
-        <CustomText style={styles.text}>Accommodation</CustomText>
-        <View style={styles.sectionContainer}>
-          <CustomText style={styles.accommodationName}>
-            Hostel Espresso City Center
-          </CustomText>
-          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-            <View style={{ flex: 1, marginLeft: 20 }}>
-              <View style={{ marginTop: 15, flexDirection: "row" }}>
-                <FontAwesome name="users" size={25} color="black" />
-                <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                  3
-                </CustomText>
+        <View style={styles.headingAndSectionPair}>
+          <CustomText style={styles.text}>Accommodation</CustomText>
+          <View style={styles.sectionContainer}>
+            <CustomText style={styles.accommodationName}>
+              Hostel Espresso City Center
+            </CustomText>
+            <View
+              style={{ flex: 1, flexDirection: "row", alignItems: "center" }}
+            >
+              <View style={{ flex: 1, marginLeft: 20 }}>
+                <View style={{ marginTop: 15, flexDirection: "row" }}>
+                  <FontAwesome name="users" size={25} color="black" />
+                  <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
+                    3
+                  </CustomText>
+                </View>
+                <View style={{ marginTop: 20, flexDirection: "row" }}>
+                  <FontAwesome name="clock-o" size={25} color="black" />
+                  <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
+                    4 nights
+                  </CustomText>
+                </View>
               </View>
-              <View style={{ marginTop: 20, flexDirection: "row" }}>
-                <FontAwesome name="clock-o" size={25} color="black" />
-                <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                  4 nights
-                </CustomText>
+              <View
+                style={{
+                  width: "60%",
+                  height: "100%",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <FontAwesome name="map-marker" size={30} color="black" />
+                <View>
+                  <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
+                    Overtoom 57, 1054 HC
+                  </CustomText>
+                  <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
+                    Amsterdam, Netherlands
+                  </CustomText>
+                </View>
               </View>
             </View>
+          </View>
+        </View>
+
+        <View style={styles.headingAndSectionPair}>
+          <CustomText style={styles.text}>Transports</CustomText>
+          <View
+            style={{
+              ...styles.sectionContainer,
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
             <View
               style={{
-                width: "60%",
-                height: "100%",
-                flexDirection: "row",
-                justifyContent: "flex-start",
+                width: "50%",
+                borderRightWidth: 1,
+                borderStyle: "dashed",
                 alignItems: "center",
               }}
             >
-              <FontAwesome name="map-marker" size={30} color="black" />
-              <View>
-                <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
-                  Overtoom 57, 1054 HC
+              <CustomText
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  marginTop: 10,
+                  marginBottom: 10,
+                }}
+              >
+                Outbound
+              </CustomText>
+              <CustomText style={{ fontSize: 16 }}>
+                LYS <CustomText>&#8594;</CustomText> AMS
+              </CustomText>
+              <FontAwesome name="train" size={25} color="black" />
+              <View style={{ marginTop: 10 }}>
+                <CustomText style={{ fontSize: 14 }}>
+                  Dep: 16 Feb, 10:30
                 </CustomText>
-                <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
-                  Amsterdam, Netherlands
+                <CustomText style={{ fontSize: 14 }}>
+                  Arr: 16 Feb, 14:50
+                </CustomText>
+              </View>
+            </View>
+            <View style={{ width: "50%", alignItems: "center" }}>
+              <CustomText
+                style={{
+                  fontSize: 20,
+                  fontWeight: "bold",
+                  marginTop: 10,
+                  marginBottom: 10,
+                }}
+              >
+                Inbound
+              </CustomText>
+              <CustomText style={{ fontSize: 16 }}>
+                AMS <CustomText>&#8594;</CustomText> LYS
+              </CustomText>
+              <FontAwesome name="plane" size={25} color="black" />
+              <View style={{ marginTop: 10 }}>
+                <CustomText style={{ fontSize: 14 }}>
+                  Dep: 29 Feb, 18:40
+                </CustomText>
+                <CustomText style={{ fontSize: 14 }}>
+                  Arr: 29 Feb, 20:50
                 </CustomText>
               </View>
             </View>
           </View>
         </View>
-      </View>
 
-      <View style={styles.headingAndSectionPair}>
-        <CustomText style={styles.text}>Transports</CustomText>
-        <View
-          style={{
-            ...styles.sectionContainer,
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
+        <View style={styles.headingAndSectionPair}>
+          <CustomText style={styles.text}>Activities</CustomText>
           <View
             style={{
-              width: "50%",
-              borderRightWidth: 1,
-              borderStyle: "dashed",
-              alignItems: "center",
+              ...styles.sectionContainer,
+              height: activities.length * 150,
             }}
           >
-            <CustomText
-              style={{
-                fontSize: 20,
-                fontWeight: "bold",
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            >
-              Outbound
-            </CustomText>
-            <CustomText style={{ fontSize: 16 }}>
-              LYS <CustomText>&#8594;</CustomText> AMS
-            </CustomText>
-            <FontAwesome name="train" size={25} color="black" />
-            <View style={{ marginTop: 10 }}>
-              <CustomText style={{ fontSize: 14 }}>
-                Dep: 16 Feb, 10:30
-              </CustomText>
-              <CustomText style={{ fontSize: 14 }}>
-                Arr: 16 Feb, 14:50
-              </CustomText>
-            </View>
-          </View>
-          <View style={{ width: "50%", alignItems: "center" }}>
-            <CustomText
-              style={{
-                fontSize: 20,
-                fontWeight: "bold",
-                marginTop: 10,
-                marginBottom: 10,
-              }}
-            >
-              Inbound
-            </CustomText>
-            <CustomText style={{ fontSize: 16 }}>
-              AMS <CustomText>&#8594;</CustomText> LYS
-            </CustomText>
-            <FontAwesome name="plane" size={25} color="black" />
-            <View style={{ marginTop: 10 }}>
-              <CustomText style={{ fontSize: 14 }}>
-                Dep: 29 Feb, 18:40
-              </CustomText>
-              <CustomText style={{ fontSize: 14 }}>
-                Arr: 29 Feb, 20:50
-              </CustomText>
-            </View>
+            {activities}
           </View>
         </View>
-      </View>
 
-      <View style={styles.headingAndSectionPair}>
-        <CustomText style={styles.text}>Activities</CustomText>
-        <View
-          style={{
-            ...styles.sectionContainer,
-            height: activities.length * 150,
-          }}
+        {/* <Text style={styles.text}>Selected Suggestions Screen</Text> */}
+        {/* <CustomText style={styles.text}>{trip}</CustomText> */}
+        <BackButton navigation={navigation} />
+
+        <TouchableOpacity
+          style={styles.continueToPaymentButton}
+          onPress={handleContinueToPaymentPress}
         >
-          {activities}
-        </View>
-      </View>
-
-      {/* <Text style={styles.text}>Selected Suggestions Screen</Text> */}
-      {/* <CustomText style={styles.text}>{trip}</CustomText> */}
-      <BackButton navigation={navigation} />
-
-      <TouchableOpacity
-        style={styles.continueToPaymentButton}
-        onPress={handleContinueToPaymentPress}
-      >
-        <Text style={styles.continueToPaymentButtonText}>
-          Continue to Payment
-        </Text>
-      </TouchableOpacity>
-    </ScrollView>
+          <Text style={styles.continueToPaymentButtonText}>
+            Continue to Payment
+          </Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  scrollViewContent: {
+  totalView: {
     flex: 1,
+  },
+  scrollViewContent: {
+    // flex: 1,
     // height: '500%',
     //flexGrow: 1,
     justifyContent: "space-between",
