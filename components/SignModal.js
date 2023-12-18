@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'space-evenly', 
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'red',
+    // borderWidth: 1,
+    // borderColor: 'red',
   },
   button: {
     marginVertical: 10,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   cancelButton: {

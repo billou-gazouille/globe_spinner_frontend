@@ -70,7 +70,7 @@ export default function SignupForm({submit, closeModal}) {
           <FontAwesome name='close' size={30} color='black'/>
         </TouchableOpacity>
       
-      <Text style={{fontSize: 24, color: 'white'}}>Sign up</Text>
+      <Text style={{fontSize: 24, color: 'black'}}>Sign up</Text>
       {showFieldsError && <Text style={styles.fieldsError}>{errorMsg}</Text>}
 
       <View style={styles.inputsContainer}>
@@ -81,6 +81,7 @@ export default function SignupForm({submit, closeModal}) {
             style={styles.textInput} 
             value={firstname}
             onChangeText={(text) => setFirstname(text)}
+            autoFocus={true}
           >
           </TextInput>
         </View>
@@ -136,7 +137,7 @@ export default function SignupForm({submit, closeModal}) {
         style={styles.submitButton}  
         onPress={handlePressSubmit} 
       >
-          <Text style={{fontSize: 25, color: 'white'}}>Submit</Text> 
+          <Text style={styles.submitButtonText}>Submit</Text> 
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
@@ -148,11 +149,11 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'space-evenly', 
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: 'red',
+    //borderWidth: 2,
+    //borderColor: 'red',
   },
   fieldsError: {
-    fontSize: 16,
+    fontSize: 20,
     color: 'red',
     fontWeight: 'bold',
   },
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     fontSize: 20,
     padding: 5,
-    color: '#ffffff'
+    color: 'black'
   },
   submitButton: {
     width: 250,
@@ -198,5 +199,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center', 
     alignItems: 'center', 
+  },
+  submitButton: {
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: '#3972D9',
+    borderRadius: 25,
+    width: 200,
+    height: 50,
+    alignItems: 'center',
+  },
+  submitButtonText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
