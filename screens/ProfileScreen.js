@@ -30,6 +30,11 @@ export default function ProfileScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
+  const closeModal = () => {
+    setIsSigningIn(false);
+    setIsSigningUp(false);
+  };
+
   const handleSubmit = () => {
     navigation.navigate("Suggestions");
   };
@@ -73,7 +78,10 @@ export default function ProfileScreen({ navigation }) {
   );
 
   const signinForm = (
-    <SigninForm submit={(email, password) => signIn(email, password)} />
+    <SigninForm 
+      submit={(email, password) => signIn(email, password)} 
+      closeModal={closeModal}
+    />
   );
 
   const signupForm = (
@@ -81,6 +89,7 @@ export default function ProfileScreen({ navigation }) {
       submit={(firstname, lastname, email, password) =>
         signUp(firstname, lastname, email, password)
       }
+      closeModal={closeModal}
     />
   );
 
@@ -102,6 +111,8 @@ export default function ProfileScreen({ navigation }) {
     </View>
   );
 
+
+
   const modalToShow = () => {
     if (isSigningIn) return signinForm;
     if (isSigningUp) return signupForm;
@@ -112,10 +123,9 @@ export default function ProfileScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      {/* <Text style={styles.text}>Hello this is the profile screen!!!</Text> */}
-      <Text style={{ ...styles.text, marginTop: 40 }}>
+      {/* <Text style={{ ...styles.text, marginTop: 40 }}>
         connected? {userInfo.isConnected ? "YES" : "NO"}
-      </Text>
+      </Text> */}
       {modalToShow()}
       <TouchableOpacity onPress={() => handleSubmit()}>
         <Text style={styles.text}>

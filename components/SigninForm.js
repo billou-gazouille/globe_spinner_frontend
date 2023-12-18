@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-export default function SigninForm({submit}) {
+export default function SigninForm({submit, closeModal}) {
 
   //const userInfo = useSelector(state => state.userInfo.value);
   //console.log(userInfo.isConnected);
@@ -17,7 +17,14 @@ export default function SigninForm({submit}) {
 
   return (
     <View style={styles.container}>
-      <Text style={{fontSize: 35, color: 'white'}}>Signin Form</Text> 
+      <TouchableOpacity 
+          style={styles.closeButton} 
+          onPress={closeModal}
+        >
+          <FontAwesome name='close' size={30} color='black'/>
+      </TouchableOpacity>
+
+      <Text style={{fontSize: 24, color: 'white'}}>Sign in</Text> 
       
       <View style={styles.inputsContainer}>
 
@@ -90,5 +97,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     margin: 50,
+  },
+  closeButton: {
+    width: 40,
+    height: 40,
+    right: 20,
+    top: 20,
+    //backgroundColor: 'orange',
+    borderWidth: 2,
+    position: 'absolute',
+    borderRadius: 10,
+    justifyContent: 'center', 
+    alignItems: 'center', 
   },
 });

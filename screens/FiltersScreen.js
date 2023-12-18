@@ -66,7 +66,8 @@ export default function FiltersScreen({ navigation }) {
   };
 
   const callHandleAndHandlePress = () => {
-    if (handlePressSubmit()) {
+    const result = handlePressSubmit();
+    if (result) {
       handleSubmit();
     }
     console.log(handlePressSubmit());

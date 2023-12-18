@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Modal, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Modal, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-export default function SignupForm({submit}) {
+export default function SignupForm({submit, closeModal}) {
 
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
@@ -58,10 +58,19 @@ export default function SignupForm({submit}) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{fontSize: 35, color: 'white'}}>Signup Form</Text> 
+    <KeyboardAvoidingView 
+      enabled={true}
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <TouchableOpacity 
+          style={styles.closeButton} 
+          onPress={closeModal}
+        >
+          <FontAwesome name='close' size={30} color='black'/>
+        </TouchableOpacity>
       
-      {/* {showFieldsError && <Text style={styles.fieldsError}>Some fields contain an error</Text>} */}
+      <Text style={{fontSize: 24, color: 'white'}}>Sign up</Text>
       {showFieldsError && <Text style={styles.fieldsError}>{errorMsg}</Text>}
 
       <View style={styles.inputsContainer}>
@@ -129,7 +138,7 @@ export default function SignupForm({submit}) {
       >
           <Text style={{fontSize: 25, color: 'white'}}>Submit</Text> 
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -139,6 +148,8 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'space-evenly', 
     alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'red',
   },
   fieldsError: {
     fontSize: 16,
@@ -147,13 +158,15 @@ const styles = StyleSheet.create({
   },
   inputsContainer: {
     width: '100%',
-    height: '40%',
+    // height: '40%',
+    // borderWidth: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   textAndInput: {
     width: '80%',
-    height: '30%',
+    // borderWidth: 1,
+    // borderColor: "red"
   },
   textInput: {
     width: '100%',
@@ -173,5 +186,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     margin: 100,
+  },
+  closeButton: {
+    width: 40,
+    height: 40,
+    right: 20,
+    top: 20,
+    //backgroundColor: 'orange',
+    borderWidth: 2,
+    position: 'absolute',
+    borderRadius: 10,
+    justifyContent: 'center', 
+    alignItems: 'center', 
   },
 });
