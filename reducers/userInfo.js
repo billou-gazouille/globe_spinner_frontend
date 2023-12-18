@@ -4,8 +4,8 @@ const initialState = {
   value: {
     isConnected: false,
     token: null,
-    firstname: null,
-    lastname: null,
+    firstName: null,
+    lastName: null,
     email: null,
   },
 };
@@ -15,10 +15,10 @@ export const userInfoSlice = createSlice({
   initialState,
   reducers: {
     loadDetails: (state, action) => {
-      console.log("loading user details");
+      //console.log("action.payload: ", action.payload);
       state.value.token = action.payload.token;
-      state.value.firstname = action.payload.firstname;
-      state.value.lastname = action.payload.lastname;
+      state.value.firstName = action.payload.firstName;
+      state.value.lastName = action.payload.lastName;
       state.value.email = action.payload.email;
     },
     connect: (state) => {

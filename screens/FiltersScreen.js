@@ -213,4 +213,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
   },
+  fieldsError: {
+    fontSize: 20,
+    marginBottom: 20,
+    color: 'red',
+    fontWeight: 'bold',
+  },
 });

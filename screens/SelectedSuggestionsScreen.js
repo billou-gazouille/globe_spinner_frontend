@@ -20,8 +20,10 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   const handleContinueToPaymentPress = () => {
     navigation.navigate("Payment");
   };
-  console.log("############################");
-  console.log(trip);
+
+  // console.log("-----------------------------");
+  // console.log(trip);
+  // console.log("-----------------------------");
 
   const activity = (name, date, timeStart, timeEnd, price, location) => {
     return (

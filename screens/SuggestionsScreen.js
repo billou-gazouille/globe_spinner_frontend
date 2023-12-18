@@ -12,9 +12,32 @@ import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 
 export default function SuggestionsScreen({ navigation }) {
+  
+  const [trips, setTrips] = useState([null, null]);
+  const [bookmarked, setBookmarked] = useState([false, false]);
+  
   const handleSubmit = () => {
     navigation.navigate("SelectedSuggestions");
   };
+
+  const userInfo = useSelector(state => state.userInfo.value);
+
+  const toggleBookmarkTrip = async (tripIndex) => {
+    //console.log("bookmared trip with index" + tripIndex);
+    //console.log(userInfo);
+    if (userInfo.isConnected){
+      const copy = [...bookmarked];
+      copy[tripIndex] = !copy[tripIndex];
+      setBookmarked(copy);
+    }
+    const url = `http://192.168.43.25:3000/users/${userInfo.token}/saveTrip/${tripIndex}`;
+    console.log(url);
+    const data = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    }).then((resp) => resp.json());
+    console.log('fetch response: ', data.savedTrip);
+  }
 
   //on importe les filtres depuis le store de Redux
   //on fetch les [trips] avec les filtres dans un useEffect pour re render la page suggestion
@@ -27,24 +50,32 @@ export default function SuggestionsScreen({ navigation }) {
   //   )
   // })
 
-  const [trips, setTrips] = useState([null, null]);
 
   const handlePressRegenerateAll = async () => {
     console.log('handlePressRegenerateAll');
+    const filters = {
+      budget: 10000,
+      nbrOfTravelers: 1,
+      departureMinOutbound: '2023-12-18',
+      departureMaxOutbound: '2023-12-22',
+      departureMinInbound: '2023-12-25',
+      departureMaxInbound: '2023-12-29',
+      types: ['Airplane', 'Coach', 'Train']
+    };
     const data = await fetch("http://192.168.43.25:3000/trips/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ /* Mettre ici les filtres */ }),
+      body: JSON.stringify(filters),
     }).then((resp) => resp.json());
     console.log(data);
     if (data.result) {
-      console.log('noice');
-      // setTrips(...)
+      console.log(data.trips);
+      setTrips(data.trips);
     }
-    setTrips(['TRIP 0', 'TRIP 1']);
+    //setTrips(['TRIP 0', 'TRIP 1']);
   };
 
-  console.log(trips);
+  //console.log(trips);
 
   const selectTrip = (tripIndex) => {
     console.log('tripIndex: ', tripIndex);
@@ -72,6 +103,8 @@ export default function SuggestionsScreen({ navigation }) {
           returnDate='29 Feb' 
           price={1400} 
           selectTrip={selectTrip}
+          toggleBookmarkTrip={toggleBookmarkTrip}
+          isBookmarked={bookmarked[0]}
         />
         <SuggestionCard 
           tripIndex={1} 
@@ -85,6 +118,8 @@ export default function SuggestionsScreen({ navigation }) {
           returnDate='28 Feb' 
           price={1200} 
           selectTrip={selectTrip} 
+          toggleBookmarkTrip={toggleBookmarkTrip}
+          isBookmarked={bookmarked[1]}
         />
       </View>
       <TouchableOpacity 
