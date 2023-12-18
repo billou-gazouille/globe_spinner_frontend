@@ -69,6 +69,7 @@ export default function FiltersScreen({ navigation }) {
     if (handlePressSubmit()) {
       handleSubmit();
     }
+    console.log(handlePressSubmit());
   };
 
   const checkHasEmptyField = (fields) => {

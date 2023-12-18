@@ -14,7 +14,7 @@ export default function HomeScreen({ navigation }) {
   const { height, width } = useWindowDimensions();
 
   const handleSubmit = () => {
-    navigation.navigate("Filters");
+    navigation.navigate("Suggestions");
   };
 
   return (
