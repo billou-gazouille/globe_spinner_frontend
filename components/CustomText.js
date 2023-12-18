@@ -18,6 +18,8 @@ export const CustomText = ({ style, ...props }) => {
 const styles = StyleSheet.create({
   text: {
     fontFamily: "NunitoSans_400Regular",
+    color: "#515151",
+    fontSize: 18,
     // Add other fonts/styles if needed
   },
 });

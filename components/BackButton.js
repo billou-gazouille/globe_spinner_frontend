@@ -13,7 +13,7 @@ const BackButton = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => handleBackClick()}>
-        <Icon name="chevron-left" size={30} color="#000" />
+        <Icon name="angle-left" size={35} color="#515151" />
       </TouchableOpacity>
     </View>
   );
@@ -21,8 +21,14 @@ const BackButton = () => {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 60,
-    left: 15,
+    top: 20,
+    backgroundColor: "white",
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    left: 20,
     zIndex: 99,
   },
 });

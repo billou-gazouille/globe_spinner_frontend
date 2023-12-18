@@ -2,10 +2,9 @@ import React from "react";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 const CustomCheckbox = ({ onPress, text }) => {
-  console.log(text);
   return (
     <BouncyCheckbox
-      size={28}
+      size={25}
       fillColor="#ba99fe"
       unfillColor="#FFFFFF"
       text={text}
