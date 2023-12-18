@@ -16,7 +16,7 @@ const RecapScreen = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/globe_spinner.jpg")} // Ajoutez le chemin correct
+        source={require("../assets/globe_spinner.jpg")}
         style={styles.backgroundImage}
         resizeMode="cover"
       />
@@ -95,9 +95,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     marginVertical: 5,
   },
-  itemContainer: {
-    marginBottom: 12,
-  },
+  // itemContainer: {
+  //   marginBottom: 12,
+  // },
   subtitle: {
     fontSize: 18,
     flex: 1,
