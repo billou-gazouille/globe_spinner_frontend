@@ -12,8 +12,8 @@ import {
   Button,
   StatusBar,
 } from "react-native";
-import DatePickerIOS from "../components/ios/DatePickerIOS";
-import DatePickerAndroid from "../components/android/DatePickerAndroid";
+// import DatePickerIOS from "../components/ios/DatePickerIOS";
+// import DatePickerAndroid from "../components/android/DatePickerAndroid";
 import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import { useDispatch } from "react-redux";
@@ -78,8 +78,8 @@ export default function FiltersScreen({ navigation }) {
     }
   };
 
-  let datePicker = <DatePickerIOS />;
-  if (Platform.OS === "android") datePicker = <DatePickerAndroid />;
+  // let datePicker = <DatePickerIOS />;
+  // if (Platform.OS === "android") datePicker = <DatePickerAndroid />;
 
   return (
     <View style={styles.container}>
@@ -90,7 +90,7 @@ export default function FiltersScreen({ navigation }) {
         style={styles.keyboardAvoidingContainer}
       >
         {/* {datePicker} */}
-        <DatePickerIOS
+        {/* <DatePickerIOS
           departureDate={departureDate}
           returnDate={returnDate}
           onDepartureDateChange={(event, selectedDate) => {
@@ -99,7 +99,7 @@ export default function FiltersScreen({ navigation }) {
           onReturnDateChange={(event, selectedDate) => {
             setReturnDate(selectedDate || returnDate);
           }}
-        />
+        /> */}
 
         {/* Other Inputs */}
         <TextInput
