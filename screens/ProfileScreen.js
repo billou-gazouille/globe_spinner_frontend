@@ -17,10 +17,11 @@ import SignModal from "../components/SignModal";
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { setIsConnected } from "../reducers/userInfo";
+import { connect, disconnect, loadDetails } from "../reducers/userInfo";
 
 import SigninForm from "../components/SigninForm";
 import SignupForm from "../components/SignupForm";
+import { CustomText } from "../components/CustomText";
 
 export default function ProfileScreen({ navigation }) {
   const userInfo = useSelector((state) => state.userInfo.value);
@@ -30,13 +31,18 @@ export default function ProfileScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
+  const closeModal = () => {
+    setIsSigningIn(false);
+    setIsSigningUp(false);
+  };
+
   const handleSubmit = () => {
     navigation.navigate("Suggestions");
   };
 
   const signIn = async (email, password) => {
     console.log("handleSubmitSigninForm");
-    setIsSigningIn(false);
+    // setIsSigningIn(false);
     const data = await fetch("http://192.168.43.25:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -44,14 +50,15 @@ export default function ProfileScreen({ navigation }) {
     }).then((resp) => resp.json());
     console.log(data);
     if (data.result) {
-      dispatch(setIsConnected(true));
+      dispatch(connect(true));
+      setIsSigningIn(false);
       navigation.navigate("Home");
     }
+    return data;
   };
 
   const signUp = async (firstname, lastname, email, password) => {
-    console.log("handleSubmitSignupForm");
-    setIsSigningUp(false);
+    // setIsSigningUp(false);
     const data = await fetch("http://192.168.43.25:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -59,9 +66,17 @@ export default function ProfileScreen({ navigation }) {
     }).then((resp) => resp.json());
     console.log(data);
     if (data.result) {
-      dispatch(setIsConnected(true));
+      dispatch(connect());
+      setIsSigningUp(false);
+      dispatch(loadDetails({
+        token: data.token, 
+        firstname, 
+        lastname, 
+        email
+      }));
       navigation.navigate("Home");
     }
+    return data;
   };
 
   const signModal = (
@@ -73,7 +88,10 @@ export default function ProfileScreen({ navigation }) {
   );
 
   const signinForm = (
-    <SigninForm submit={(email, password) => signIn(email, password)} />
+    <SigninForm 
+      submit={(email, password) => signIn(email, password)} 
+      closeModal={closeModal}
+    />
   );
 
   const signupForm = (
@@ -81,26 +99,36 @@ export default function ProfileScreen({ navigation }) {
       submit={(firstname, lastname, email, password) =>
         signUp(firstname, lastname, email, password)
       }
+      closeModal={closeModal}
     />
   );
 
   const HandlePressLogout = () => {
     console.log("HandlePressLogout");
-    dispatch(setIsConnected(false));
+    dispatch(disconnect());
   };
 
   const userDetails = (
-    <View>
-      <Text style={{ fontSize: 30, color: "white" }}>User details...</Text>
+    <View style={{borderWidth: 1}}>
+      {/* <Text style={{ fontSize: 30, color: "black" }}>User details...</Text> */}
+      <CustomText style={{color: 'black', fontSize: 36, margin: 40}}>Hello {userInfo.firstname} !</CustomText>
+      <CustomText style={{color: 'black', fontSize: 26, margin: 20}}>My account info</CustomText>
+      <View style={styles.userDetailsContainer}>
+        <CustomText style={styles.userDetail}>firstname: {userInfo.firstname}</CustomText>
+        <CustomText style={styles.userDetail}>lastname: {userInfo.lastname}</CustomText>
+        <CustomText style={styles.userDetail}>email: {userInfo.email}</CustomText>
+      </View>
       <TouchableOpacity
         style={styles.logoutButton}
         onPress={() => HandlePressLogout()}
       >
-        <Text style={{ fontSize: 16, color: "white" }}>Logout</Text>
+        <Text style={{ fontSize: 16, color: "black" }}>Logout</Text>
         {/* <FontAwesome name='logout' size={25} color='white'/> */}
       </TouchableOpacity>
     </View>
   );
+
+
 
   const modalToShow = () => {
     if (isSigningIn) return signinForm;
@@ -112,10 +140,9 @@ export default function ProfileScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      {/* <Text style={styles.text}>Hello this is the profile screen!!!</Text> */}
-      <Text style={{ ...styles.text, marginTop: 40 }}>
+      {/* <Text style={{ ...styles.text, marginTop: 40 }}>
         connected? {userInfo.isConnected ? "YES" : "NO"}
-      </Text>
+      </Text> */}
       {modalToShow()}
       <TouchableOpacity onPress={() => handleSubmit()}>
         <Text style={styles.text}>
@@ -130,7 +157,7 @@ export default function ProfileScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "blue",
+    backgroundColor: "white",
     alignItems: "center",
     //justifyContent: "center",
     justifyContent: "space-between",
@@ -143,4 +170,14 @@ const styles = StyleSheet.create({
     height: 60,
     borderWidth: 1,
   },
+  userDetailsContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'left',
+  },
+  userDetail: {
+    color: 'black',
+    fontSize: 24,
+    marginBottom: 20,
+  }
 });

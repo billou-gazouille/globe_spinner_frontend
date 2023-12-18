@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Modal, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Modal, Text, TextInput, TouchableOpacity, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 
-export default function SignupForm({submit}) {
+export default function SignupForm({submit, closeModal}) {
 
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
@@ -27,7 +27,7 @@ export default function SignupForm({submit}) {
     return false;
   };
 
-  const handlePressSubmit = () => {
+  const handlePressSubmit = async () => {
     if (checkHasEmptyField([
       firstname, 
       lastname, 
@@ -54,30 +54,46 @@ export default function SignupForm({submit}) {
       setErrorMsg('password must be at least 5 characters long !');
       return;
     }
-    submit(firstname, lastname, email, password);
+    const response = await submit(firstname, lastname, email, password);
+    //console.log(response);
+    if (!response.result){
+      setShowFieldsError(true);
+      setErrorMsg(response.error);
+      return;
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={{fontSize: 35, color: 'white'}}>Signup Form</Text> 
+    <KeyboardAvoidingView 
+      enabled={true}
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <TouchableOpacity 
+          style={styles.closeButton} 
+          onPress={closeModal}
+        >
+          <FontAwesome name='close' size={30} color='black'/>
+        </TouchableOpacity>
       
-      {/* {showFieldsError && <Text style={styles.fieldsError}>Some fields contain an error</Text>} */}
+      <Text style={{fontSize: 24, color: 'black'}}>Sign up</Text>
       {showFieldsError && <Text style={styles.fieldsError}>{errorMsg}</Text>}
 
       <View style={styles.inputsContainer}>
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>first name</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>first name</Text>
           <TextInput 
             placeholder='firstname' 
             style={styles.textInput} 
             value={firstname}
             onChangeText={(text) => setFirstname(text)}
+            autoFocus={true}
           >
           </TextInput>
         </View>
         
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>last name</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>last name</Text>
           <TextInput 
             placeholder='lastname' 
             style={styles.textInput} 
@@ -88,7 +104,7 @@ export default function SignupForm({submit}) {
         </View>
 
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>email</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>email</Text>
           <TextInput 
             placeholder='email' 
             style={styles.textInput} 
@@ -99,7 +115,7 @@ export default function SignupForm({submit}) {
         </View>
 
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>password</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>password</Text>
           <TextInput 
             placeholder='password' 
             secureTextEntry={true} 
@@ -111,7 +127,7 @@ export default function SignupForm({submit}) {
         </View>
 
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>confirm password</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>confirm password</Text>
           <TextInput 
             placeholder='confirm password' 
             secureTextEntry={true} 
@@ -127,9 +143,9 @@ export default function SignupForm({submit}) {
         style={styles.submitButton}  
         onPress={handlePressSubmit} 
       >
-          <Text style={{fontSize: 25, color: 'white'}}>Submit</Text> 
+          <Text style={styles.submitButtonText}>Submit</Text> 
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -139,39 +155,59 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'space-evenly', 
     alignItems: 'center',
+    //borderWidth: 2,
+    //borderColor: 'red',
   },
   fieldsError: {
-    fontSize: 16,
+    fontSize: 20,
     color: 'red',
     fontWeight: 'bold',
   },
   inputsContainer: {
     width: '100%',
-    height: '40%',
+    // height: '40%',
+    // borderWidth: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   textAndInput: {
     width: '80%',
-    height: '30%',
+    // borderWidth: 1,
+    // borderColor: "red"
+    marginBottom: 10,
   },
   textInput: {
     width: '100%',
     borderWidth: 1,
     fontSize: 20,
-    padding: 5,
-    color: '#ffffff'
+    padding: 2,
+    color: 'black',
+    marginTop: 2,
   },
-  submitButton: {
-    width: 250,
-    height: 50,
+  closeButton: {
+    width: 40,
+    height: 40,
     right: 20,
     top: 20,
     //backgroundColor: 'orange',
-    borderWidth: 3,
+    borderWidth: 2,
+    position: 'absolute',
     borderRadius: 10,
     justifyContent: 'center', 
     alignItems: 'center', 
-    margin: 100,
+  },
+  submitButton: {
+    marginVertical: 10,
+    padding: 10,
+    backgroundColor: '#3972D9',
+    borderRadius: 25,
+    width: 200,
+    height: 50,
+    alignItems: 'center',
+  },
+  submitButtonText: {
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
