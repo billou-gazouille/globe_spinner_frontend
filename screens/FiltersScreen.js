@@ -75,9 +75,11 @@ export default function FiltersScreen({ navigation }) {
   };
 
   const checkHasEmptyField = (fields) => {
-    for (let field of fields) {
-      return !field || field === " ";
+    for (let field of fields){
+      if (!field || field === ' ')
+        return true;
     }
+    return false;
   };
 
   // let datePicker = <DatePickerIOS />;
@@ -93,7 +95,7 @@ export default function FiltersScreen({ navigation }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingContainer}
       >
-        <DatePickerIOS
+        {/* <DatePickerIOS
           departureDate={departureDate}
           returnDate={returnDate}
           onDepartureDateChange={(event, selectedDate) => {
@@ -102,7 +104,7 @@ export default function FiltersScreen({ navigation }) {
           onReturnDateChange={(event, selectedDate) => {
             setReturnDate(selectedDate || returnDate);
           }}
-        />
+        /> */}
 
         {/* Other Inputs */}
         <Text style={styles.text}> What's your budget ? (in euros)</Text>
