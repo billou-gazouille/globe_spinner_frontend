@@ -26,7 +26,7 @@ const SignModal = ({onClose, onSignIn, onSignUp, closeSignModal }) => {
         <CustomText style={styles.buttonText}>Sign In</CustomText> 
       </TouchableOpacity>
       <View style={{alignItems: 'center'}}>
-        <CustomText>Don't have an account ?</CustomText> 
+        <CustomText style={{fontSize: 18}}>Don't have an account ?</CustomText> 
         <TouchableOpacity style={styles.button} onPress={onSignUp}>
           <CustomText style={styles.buttonText}>Sign Up</CustomText>
         </TouchableOpacity>
