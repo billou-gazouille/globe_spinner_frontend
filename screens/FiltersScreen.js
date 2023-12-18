@@ -113,13 +113,13 @@ export default function FiltersScreen({ navigation }) {
           />
         </View>
 
-        <ImageBackground
+        {/* <ImageBackground
           source={require("../assets/bendy-dotted-line_2.jpg")}
           style={styles.background}
           resizeMode="cover"
         >
           <Text>Date</Text>
-        </ImageBackground>
+        </ImageBackground> */}
 
         {/* Other Inputs */}
         <View style={styles.rowContainer}>
