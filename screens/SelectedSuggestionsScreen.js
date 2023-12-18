@@ -16,9 +16,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 export default function SelectedSuggestionsScreen({ navigation, route }) {
   const trip = route.params.trip;
 
-  // payment
+  // payment coucou
   const handleContinueToPaymentPress = () => {
-    navigation.navigate("PaymentScreen");
+    navigation.navigate("Payment");
   };
   console.log("############################");
   console.log(trip);
@@ -207,7 +207,12 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         </View>
       </View>
 
-      <View style={{... styles.headingAndSectionPair, height: activities.length*150+50}}>
+      <View
+        style={{
+          ...styles.headingAndSectionPair,
+          height: activities.length * 150 + 50,
+        }}
+      >
         <CustomText style={styles.text}>Activities</CustomText>
         <View
           style={{
@@ -218,9 +223,6 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
           {activities}
         </View>
       </View>
-
-      {/* <Text style={styles.text}>Selected Suggestions Screen</Text> */}
-      {/* <CustomText style={styles.text}>{trip}</CustomText> */}
       <BackButton navigation={navigation} />
 
       <TouchableOpacity
@@ -237,7 +239,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   scrollViewContent: {
-    flex: 1,
+    // flex: 1,
     // height: '500%',
     //flexGrow: 1,
     justifyContent: "space-between",
