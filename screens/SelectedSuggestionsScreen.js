@@ -275,15 +275,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 10,
   },
-
   continueToPaymentButton: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
     backgroundColor: "#3498db",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,
+    margin: 50,
   },
   continueToPaymentButtonText: {
     color: "white",
