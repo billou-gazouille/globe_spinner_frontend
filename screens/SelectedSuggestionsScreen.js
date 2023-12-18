@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, StatusBar, Image, ScrollView } from "react-native";
+import { View, StyleSheet, Text, StatusBar, Image, ScrollView, SafeAreaView } from "react-native";
 import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -99,7 +99,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         </View>
       </View>
 
-      <View style={styles.headingAndSectionPair}>
+      <View style={{... styles.headingAndSectionPair, height: activities.length*150+50}}>
         <CustomText style={styles.text}>Activities</CustomText>
         <View style={{...styles.sectionContainer, height: activities.length*150}}>
           {activities}
