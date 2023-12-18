@@ -27,7 +27,7 @@ export default function SignupForm({submit, closeModal}) {
     return false;
   };
 
-  const handlePressSubmit = () => {
+  const handlePressSubmit = async () => {
     if (checkHasEmptyField([
       firstname, 
       lastname, 
@@ -54,7 +54,13 @@ export default function SignupForm({submit, closeModal}) {
       setErrorMsg('password must be at least 5 characters long !');
       return;
     }
-    submit(firstname, lastname, email, password);
+    const response = await submit(firstname, lastname, email, password);
+    //console.log(response);
+    if (!response.result){
+      setShowFieldsError(true);
+      setErrorMsg(response.error);
+      return;
+    }
   };
 
   return (
@@ -75,7 +81,7 @@ export default function SignupForm({submit, closeModal}) {
 
       <View style={styles.inputsContainer}>
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>first name</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>first name</Text>
           <TextInput 
             placeholder='firstname' 
             style={styles.textInput} 
@@ -87,7 +93,7 @@ export default function SignupForm({submit, closeModal}) {
         </View>
         
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>last name</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>last name</Text>
           <TextInput 
             placeholder='lastname' 
             style={styles.textInput} 
@@ -98,7 +104,7 @@ export default function SignupForm({submit, closeModal}) {
         </View>
 
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>email</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>email</Text>
           <TextInput 
             placeholder='email' 
             style={styles.textInput} 
@@ -109,7 +115,7 @@ export default function SignupForm({submit, closeModal}) {
         </View>
 
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>password</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>password</Text>
           <TextInput 
             placeholder='password' 
             secureTextEntry={true} 
@@ -121,7 +127,7 @@ export default function SignupForm({submit, closeModal}) {
         </View>
 
         <View style={styles.textAndInput}>
-          <Text style={{fontSize: 20, color: 'white'}}>confirm password</Text>
+          <Text style={{fontSize: 20, color: 'black'}}>confirm password</Text>
           <TextInput 
             placeholder='confirm password' 
             secureTextEntry={true} 
@@ -168,25 +174,15 @@ const styles = StyleSheet.create({
     width: '80%',
     // borderWidth: 1,
     // borderColor: "red"
+    marginBottom: 10,
   },
   textInput: {
     width: '100%',
     borderWidth: 1,
     fontSize: 20,
-    padding: 5,
-    color: 'black'
-  },
-  submitButton: {
-    width: 250,
-    height: 50,
-    right: 20,
-    top: 20,
-    //backgroundColor: 'orange',
-    borderWidth: 3,
-    borderRadius: 10,
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    margin: 100,
+    padding: 2,
+    color: 'black',
+    marginTop: 2,
   },
   closeButton: {
     width: 40,
