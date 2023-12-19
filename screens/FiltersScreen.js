@@ -12,10 +12,11 @@ import {
   ImageBackground,
   useWindowDimensions,
   Alert,
+  SafeAreaView,
 } from "react-native";
 // import DatePickerAndroid from "../components/android/DatePickerAndroid";
 import CustomCheckbox from "../components/CustomCheckbox";
-import BackButton from "../components/BackButton";
+// import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import { useDispatch, useSelector } from "react-redux";
 import { addFiltersToStore } from "../reducers/filters";
@@ -104,97 +105,95 @@ export default function FiltersScreen({ navigation }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardAvoidingContainer}
-      > */}
-      <StatusBar style="auto" />
-      <BackButton />
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Your </Text>
-        <GradientFontColor style={styles.title}>filters</GradientFontColor>
-      </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.keyboardAvoidingContainer}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
+        <StatusBar style="auto" />
+        {/* <BackButton /> */}
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Your </Text>
+          <GradientFontColor style={styles.title}>filters</GradientFontColor>
+        </View>
 
-      <View style={styles.inputContainerRow}>
-        <View style={styles.inputContainer}>
-          <CustomText>Departure</CustomText>
-          <TextInput
-            style={styles.input}
-            // onChangeText={handleTextChange}
-            // value={"test"}
-            placeholder="E.g. Davézieux"
-            onChangeText={(text) => setDepartureLocation(text)}
-          />
+        <View style={styles.inputDepartureContainerRow}>
+          <View style={styles.inputContainer}>
+            <CustomText>Departure</CustomText>
+            <TextInput
+              style={styles.input}
+              // onChangeText={handleTextChange}
+              // value={"test"}
+              placeholder="E.g. Davézieux"
+              onChangeText={(text) => setDepartureLocation(text)}
+            />
+          </View>
         </View>
-      </View>
 
-      <ImageBackground
-        source={require("../assets/bendy-dotted-line_2.jpg")}
-        style={styles.imageBackground}
-      >
-        <View style={[styles.sectionTitle, { width: width }]}>
-          <CustomText style={styles.sectionTextTitle}>DATES</CustomText>
-        </View>
-        <View style={styles.date}></View>
-      </ImageBackground>
-      {/* <DatePickerIOS
-        departureDate={departureDate}
-        returnDate={returnDate}
-        onDepartureDateChange={(event, selectedDate) => {
-          setDepartureDate(selectedDate || departureDate);
-        }}
-        onReturnDateChange={(event, selectedDate) => {
-          setReturnDate(selectedDate || returnDate);
-        }}
-      /> */}
-      <ImageBackground
-        source={require("../assets/bendy-dotted-line_2.jpg")}
-        style={styles.imageBackground}
-      >
-        <View style={[styles.sectionTitle, { width: width }]}>
-          <CustomText style={styles.sectionTextTitle}>Details</CustomText>
-        </View>
-      </ImageBackground>
+        <CustomText style={styles.travelText}>How will you travel?</CustomText>
 
-      <View style={styles.inputContainerRow}>
-        <View style={styles.inputContainer}>
-          <CustomText>How many people:</CustomText>
-          <TextInput
-            style={styles.input}
-            // onChangeText={handleTextChange}
-            // value={"test"}
-            keyboardType="numeric"
-            placeholder="E.g. 3"
-            onChangeText={(number) => setNbrOfTravelers(Number(number))}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <CustomText>Budget:</CustomText>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            // onChangeText={handleTextChange}
-            // value={"test"}
-            placeholder="E.g. 300€"
-            onChangeText={(number) => setBudget(number)}
-          />
-        </View>
-      </View>
-
-      <View style={styles.inputContainerRow}>
-        <CustomText>What kind of transportation would you like ?</CustomText>
         <View style={styles.checkboxes}>{checkboxes}</View>
-      </View>
+        <ImageBackground
+          source={require("../assets/bendy-dotted-line_2.jpg")}
+          style={styles.imageBackground}
+        >
+          <View style={[styles.sectionTitle, { width: width }]}>
+            <CustomText style={styles.sectionTextTitle}>DATES</CustomText>
+          </View>
+          <View style={styles.date}></View>
+        </ImageBackground>
+        {/* <DatePickerIOS
+          departureDate={departureDate}
+          returnDate={returnDate}
+          onDepartureDateChange={(event, selectedDate) => {
+            setDepartureDate(selectedDate || departureDate);
+          }}
+          onReturnDateChange={(event, selectedDate) => {
+            setReturnDate(selectedDate || returnDate);
+          }}
+        /> */}
+        <ImageBackground
+          source={require("../assets/bendy-dotted-line_2.jpg")}
+          style={styles.imageBackground}
+        >
+          <View style={[styles.sectionTitle, { width: width }]}>
+            <CustomText style={styles.sectionTextTitle}>Details</CustomText>
+          </View>
+        </ImageBackground>
 
-      <TouchableOpacity
-        onPress={callHandleAndHandlePress}
-        style={styles.button}
-      >
-        <CustomText style={styles.buttonText}>Go!</CustomText>
-      </TouchableOpacity>
-      {/* </KeyboardAvoidingView> */}
-    </ScrollView>
+        <View style={styles.inputContainerRow}>
+          <View style={styles.inputContainer}>
+            <CustomText>How many people:</CustomText>
+            <TextInput
+              style={styles.input}
+              // onChangeText={handleTextChange}
+              // value={"test"}
+              keyboardType="numeric"
+              placeholder="E.g. 3"
+              onChangeText={(number) => setNbrOfTravelers(Number(number))}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <CustomText>Budget:</CustomText>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              // onChangeText={handleTextChange}
+              // value={"test"}
+              placeholder="E.g. 300€"
+              onChangeText={(number) => setBudget(number)}
+            />
+          </View>
+        </View>
+
+        <TouchableOpacity
+          onPress={callHandleAndHandlePress}
+          style={styles.button}
+        >
+          <CustomText style={styles.buttonText}>Go!</CustomText>
+        </TouchableOpacity>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -208,7 +207,6 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: "row",
-    marginTop: 60,
     marginBottom: 30,
   },
   title: {
@@ -220,11 +218,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     alignItems: "center",
   },
-  imageBackground: {
-    // // flex: 1,
-    // resizeMode: "contain",
-    // justifyContent: "center",
-  },
+
   sectionTextTitle: {
     backgroundColor: "white",
     fontSize: 20,
@@ -232,13 +226,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     textTransform: "uppercase",
   },
+  inputDepartureContainerRow: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
   inputContainerRow: {
     width: "100%",
     marginVertical: 20,
-
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "baseline",
+    alignItemps: "baseline",
     flexWrap: "wrap",
   },
   inputContainer: {
@@ -252,9 +250,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   checkboxes: {
-    minHeight: 0,
-    // flexDirection: "row",
-    // height: 110,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  travelText: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
+    marginBottom: 15,
   },
   fieldsError: {
     fontSize: 20,
@@ -263,6 +267,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   button: {
+    marginTop: 10,
     borderRadius: 50,
     paddingVertical: 12,
     paddingHorizontal: 60,

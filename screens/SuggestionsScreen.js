@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
-import BackButton from "../components/BackButton";
+// import BackButton from "../components/BackButton";
 import { useDispatch, useSelector } from "react-redux";
 import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
@@ -143,10 +143,7 @@ export default function SuggestionsScreen({ navigation }) {
                 leaveTransportType={t.outboundJourney.type}
                 returnTransportType={t.inboundJourney.type}
                 activities={actvitiesMax3.map((a) => a.activityBase.name)}
-                //img={require("../assets/noImage.jpg")}
-                //img={{uri: getPlaceImageURL(t.destination.name)}}
                 img={imageURLs[i] ? { uri: imageURLs[i] } : require("../assets/noImage.jpg")}
-                //img={{uri: getPlaceImageURL(i, t.destination.name)}}
                 leaveDate={formattedDate(t.outboundJourney.departure)}
                 returnDate={formattedDate(t.inboundJourney.arrival)}
                 price={1400}
@@ -162,7 +159,7 @@ export default function SuggestionsScreen({ navigation }) {
       >
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
       </TouchableOpacity>
-      <BackButton />
+      {/* <BackButton /> */}
     </View>
   );
 }
