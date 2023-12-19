@@ -11,6 +11,7 @@ import {
   StatusBar,
   ImageBackground,
   useWindowDimensions,
+  Alert,
 } from "react-native";
 // import DatePickerAndroid from "../components/android/DatePickerAndroid";
 import CustomCheckbox from "../components/CustomCheckbox";
@@ -41,9 +42,6 @@ export default function FiltersScreen({ navigation }) {
     "Coach",
   ]);
 
-  const [showFieldsError, setShowFieldsError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
-
   const selectTransportationMode = (type) => {
     if (!transportType.includes(type)) {
       setTransportType((prevTypes) => [...prevTypes, type]);
@@ -70,19 +68,14 @@ export default function FiltersScreen({ navigation }) {
     };
 
     dispatch(addFiltersToStore({ filters }));
-    // console.log(filters);
+    console.log(
+      "************************************************************",
+      { filters },
+      "************************************************************"
+    );
     navigation.navigate("SuggestionsHomeStack");
   };
 
-  // const checkHasEmptyField = (fields) => {
-  //   for (let field of fields) {
-  //     if (!field || field === " " || field.length === 0) {
-  //       console.log("field", field);
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // };
   const checkHasEmptyField = (fields) =>
     fields.some((field) => !field || field === "" || field.length === 0);
 
@@ -97,11 +90,8 @@ export default function FiltersScreen({ navigation }) {
     ];
     console.log("coucou", departureDate, returnDate);
     if (checkHasEmptyField(requiredFields)) {
-      setShowFieldsError(true);
-      setErrorMsg("Some fields are empty !");
-      return false;
+      return Alert.alert("Some fields are missing!");
     }
-    setShowFieldsError(false);
     return true;
   };
 
@@ -125,9 +115,6 @@ export default function FiltersScreen({ navigation }) {
         <Text style={styles.title}>Your </Text>
         <GradientFontColor style={styles.title}>filters</GradientFontColor>
       </View>
-      {showFieldsError && (
-        <CustomText style={styles.fieldsError}>{errorMsg}</CustomText>
-      )}
 
       <View style={styles.inputContainerRow}>
         <View style={styles.inputContainer}>
@@ -265,7 +252,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   checkboxes: {
-    // minHeight: 0,
+    minHeight: 0,
     // flexDirection: "row",
     // height: 110,
   },

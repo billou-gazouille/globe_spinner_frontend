@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 35,
     left: 1,
-    backgroundColor: "white",
     width: 60,
     height: 60,
     justifyContent: "center",
