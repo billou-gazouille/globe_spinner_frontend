@@ -30,7 +30,7 @@ export default function SuggestionsScreen({ navigation }) {
       copy[tripIndex] = !copy[tripIndex];
       setBookmarked(copy);
     }
-    const url = `http://192.168.43.25:3000/users/${userInfo.token}/saveTrip/${tripIndex}`;
+    const url = `http://10.0.2.210:3000/users/${userInfo.token}/saveTrip/${tripIndex}`;
     console.log(url);
     const data = await fetch(url, {
       method: "POST",
@@ -63,7 +63,8 @@ export default function SuggestionsScreen({ navigation }) {
       types: ["Airplane", "Coach", "Train"],
     };
     const generatedTtrips = await fetch(
-      "http://192.168.43.25:3000/trips/generate",
+      //DON'T FORGET TO CHANGE YOUR IP ADRESS
+      "http://10.0.2.210:8081/trips/generate",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

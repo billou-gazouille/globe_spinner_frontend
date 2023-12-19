@@ -19,7 +19,7 @@ import { CustomText } from "../components/CustomText";
 import { useDispatch, useSelector } from "react-redux";
 import { addFiltersToStore } from "../reducers/filters";
 
-// import DatePickerIOS from "../components/ios/DatePickerIOS";
+import DatePickerIOS from "../components/ios/DatePickerIOS";
 
 import GradientFontColor from "../components/GradientFontColor";
 
@@ -92,10 +92,10 @@ export default function FiltersScreen({ navigation }) {
       budget,
       nbrOfTravelers,
       transportType,
-      // departureDate,
-      // returnDate
+      departureDate,
+      returnDate,
     ];
-
+    console.log("coucou", departureDate, returnDate);
     if (checkHasEmptyField(requiredFields)) {
       setShowFieldsError(true);
       setErrorMsg("Some fields are empty !");
@@ -113,91 +113,13 @@ export default function FiltersScreen({ navigation }) {
     // console.log("handlePressSubmit", handlePressSubmit());
   };
 
-  // let datePicker = <DatePickerIOS />;
-
   return (
-    // <View style={styles.container}>
-    //   <Text>
-    //     Your<GradientFontColor style={styles.title}>filters</GradientFontColor>
-    //   </Text>
-    //   {showFieldsError && <Text style={styles.fieldsError}>{errorMsg}</Text>}
-
-    //   <StatusBar style="auto" />
-    //   <BackButton />
-    //   <KeyboardAvoidingView
-    //     behavior={Platform.OS === "ios" ? "padding" : "height"}
-    //     style={styles.keyboardAvoidingContainer}
-    //   >
-    //     {/* <View style={styles.date}>
-    //       <DatePickerIOS
-    //         departureDate={departureDate}
-    //         returnDate={returnDate}
-    //         onDepartureDateChange={(event, selectedDate) => {
-    //           setDepartureDate(selectedDate || departureDate);
-    //         }}
-    //         onReturnDateChange={(event, selectedDate) => {
-    //           setReturnDate(selectedDate || returnDate);
-    //         }}
-    //       />
-    //     </View> */}
-
-    //     {/* <ImageBackground
-    //       source={require("../assets/bendy-dotted-line_2.jpg")}
-    //       style={styles.background}
-    //       resizeMode="cover"
-    //     >
-    //       <Text>Date</Text>
-    //     </ImageBackground> */}
-
-    //     {/* Other Inputs */}
-    //     <View style={styles.rowContainer}>
-    //       <View style={{ flex: 1, marginRight: 10 }}>
-    //         <Text style={styles.text}>What's your budget? (in euros)</Text>
-    //         <TextInput
-    //           style={styles.input}
-    //           value={budget}
-    //           placeholder="E.g. 1000"
-    //           keyboardType="numeric"
-    //           onChangeText={(number) => setBudget(number)}
-    //         />
-    //       </View>
-    //       <View style={{ flex: 1 }}>
-    //         <Text style={styles.text}>From where are you leaving?</Text>
-    //         <TextInput
-    //           style={styles.input}
-    //           value={departureLocation}
-    //           placeholder="E.g. Davézieux"
-    //           onChangeText={(text) => setDepartureLocation(text)}
-    //         />
-    //       </View>
-    //     </View>
-    //     <View style={styles.rowContainer}>
-    //       <View style={{ flex: 1, marginRight: 10 }}>
-    //         <Text style={styles.text}>How many travelers are there?</Text>
-    //         <TextInput
-    //           style={styles.input}
-    //           value={nbrOfTravelers}
-    //           keyboardType="numeric"
-    //           onChangeText={(number) => setNbrOfTravelers(Number(number))}
-    //         />
-    //       </View>
-
-    //       <View style={{ flex: 1 }}>
-    //         <Text style={styles.text}>
-    //           What kind of transportation would you like ?
-    //         </Text>
-    //         <View>{checkboxes}</View>
-    //       </View>
-    //     </View>
-    //     <TouchableOpacity
-    //       onPress={callHandleAndHandlePress}
-    //       style={styles.button}
-    //     >
-    //       <CustomText style={styles.buttonText}>Go!</CustomText>
-    //     </TouchableOpacity>
-    //   </KeyboardAvoidingView>
-    // </View>
     <ScrollView contentContainerStyle={styles.container}>
+      {/* <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingContainer}
+      > */}
+      <StatusBar style="auto" />
       <BackButton />
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Your </Text>
@@ -206,12 +128,6 @@ export default function FiltersScreen({ navigation }) {
       {showFieldsError && (
         <CustomText style={styles.fieldsError}>{errorMsg}</CustomText>
       )}
-
-      {/* <StatusBar style="auto" /> */}
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardAvoidingContainer}
-      /> */}
 
       <View style={styles.inputContainerRow}>
         <View style={styles.inputContainer}>
@@ -233,13 +149,24 @@ export default function FiltersScreen({ navigation }) {
         <View style={[styles.sectionTitle, { width: width }]}>
           <CustomText style={styles.sectionTextTitle}>DATES</CustomText>
         </View>
+        <View style={styles.date}></View>
       </ImageBackground>
+      <DatePickerIOS
+        departureDate={departureDate}
+        returnDate={returnDate}
+        onDepartureDateChange={(event, selectedDate) => {
+          setDepartureDate(selectedDate || departureDate);
+        }}
+        onReturnDateChange={(event, selectedDate) => {
+          setReturnDate(selectedDate || returnDate);
+        }}
+      />
       <ImageBackground
         source={require("../assets/bendy-dotted-line_2.jpg")}
         style={styles.imageBackground}
       >
         <View style={[styles.sectionTitle, { width: width }]}>
-          <CustomText style={styles.sectionTextTitle}>Détails</CustomText>
+          <CustomText style={styles.sectionTextTitle}>Details</CustomText>
         </View>
       </ImageBackground>
 
@@ -279,6 +206,7 @@ export default function FiltersScreen({ navigation }) {
       >
         <CustomText style={styles.buttonText}>Go!</CustomText>
       </TouchableOpacity>
+      {/* </KeyboardAvoidingView> */}
     </ScrollView>
   );
 }
@@ -315,7 +243,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingVertical: 20,
     paddingHorizontal: 20,
-    marginBottom: -15,
     textTransform: "uppercase",
   },
   inputContainerRow: {
@@ -338,6 +265,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   checkboxes: {
+    // minHeight: 0,
     // flexDirection: "row",
     // height: 110,
   },
@@ -353,7 +281,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 60,
     elevation: 3,
     backgroundColor: "#3972D9",
-    marginVertical: 10,
   },
   buttonText: {
     color: "white",
@@ -362,77 +289,3 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
 });
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     flexGrow: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   title: {
-//     fontSize: 50,
-//     fontFamily: "KronaOne_400Regular",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     marginBottom: 25,
-//   },
-//   date: {},
-//   rowContainer: {
-//     marginTop: 50,
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//   },
-//   // rowContainerTwo: {
-//   //   // marginTop: 10,
-//   //   flexDirection: "row",
-//   //   justifyContent: "space-between",
-//   // },
-//   input: {
-//     marginTop: 10,
-//     height: 40,
-//     margin: 12,
-//     borderWidth: 0,
-//     borderBottomWidth: 1,
-//     borderBottomColor: "#515151",
-//     padding: 10,
-//     borderRadius: 20,
-//   },
-//   background: {
-//     flex: 1,
-//     width: "100%",
-//     height: "30%",
-//     justifyContent: "center",
-//   },
-//   keyboardAvoidingContainer: {
-//     width: "100%",
-//     alignItems: "center",
-//   },
-//   dateInput: {
-//     backgroundColor: "#F5FCFF",
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   button: {
-//     borderRadius: 50,
-//     paddingVertical: 15,
-//     paddingHorizontal: 60,
-//     elevation: 4,
-//     backgroundColor: "#3972D9",
-//     marginTop: 20,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   buttonText: {
-//     justifyContent: "center",
-//     alignItems: "center",
-//     color: "white",
-//   },
-//   text: {
-//     fontWeight: "bold",
-//     letterSpacing: 0,
-//     color: "#515151",
-//     fontSize: 17,
-//     textAlign: "center",
-//     justifyContent: "center",
-//   },
-// });
