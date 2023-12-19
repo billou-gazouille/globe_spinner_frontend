@@ -22,7 +22,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   };
 
   console.log("-----------------------------");
-  console.log(trip.accommodation.accommodationBase.name);
+  console.log(trip);
   console.log("-----------------------------");
 
   const activity = (name, date, timeStart, timeEnd, price, location) => {
