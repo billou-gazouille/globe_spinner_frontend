@@ -138,7 +138,7 @@ export default function FiltersScreen({ navigation }) {
         </View>
         <View style={styles.date}></View>
       </ImageBackground>
-      <DatePickerIOS
+      {/* <DatePickerIOS
         departureDate={departureDate}
         returnDate={returnDate}
         onDepartureDateChange={(event, selectedDate) => {
@@ -147,7 +147,7 @@ export default function FiltersScreen({ navigation }) {
         onReturnDateChange={(event, selectedDate) => {
           setReturnDate(selectedDate || returnDate);
         }}
-      />
+      /> */}
       <ImageBackground
         source={require("../assets/bendy-dotted-line_2.jpg")}
         style={styles.imageBackground}

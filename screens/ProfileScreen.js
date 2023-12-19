@@ -23,6 +23,9 @@ import SigninForm from "../components/SigninForm";
 import SignupForm from "../components/SignupForm";
 import { CustomText } from "../components/CustomText";
 
+const { ipAddress, port } = require('../myVariables');
+
+
 export default function ProfileScreen({ navigation }) {
   const userInfo = useSelector((state) => state.userInfo.value);
 
@@ -43,7 +46,7 @@ export default function ProfileScreen({ navigation }) {
   const signIn = async (email, password) => {
     //console.log("handleSubmitSigninForm");
     // setIsSigningIn(false);
-    const data = await fetch("http://192.168.43.25:3000/users/signin", {
+    const data = await fetch(`http://${ipAddress}:${port}/users/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -65,7 +68,7 @@ export default function ProfileScreen({ navigation }) {
 
   const signUp = async (firstName, lastName, email, password) => {
     // setIsSigningUp(false);
-    const data = await fetch("http://192.168.43.25:3000/users/signup", {
+    const data = await fetch(`http://${ipAddress}:${port}/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstName, lastName, email, password }),
