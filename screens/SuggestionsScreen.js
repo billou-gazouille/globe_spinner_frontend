@@ -178,12 +178,12 @@ const styles = StyleSheet.create({
     // height: '60%',
     justifyContent: "space-between",
     alignItems: "center",
-    //  borderWidth: 1,
+    // borderWidth: 1,
   },
   suggestionsText: {
     fontSize: 28,
-    marginBottom: 20,
-    marginTop: 60,
+    marginBottom: 10,
+    marginTop: 20,
   },
   regenerateAllButton: {
     width: "50%",
