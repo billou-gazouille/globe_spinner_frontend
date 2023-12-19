@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, Image, ImageBackground, TouchableOpacity } from "react-native";
 import { CustomText } from "./CustomText";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -39,6 +39,7 @@ export default function SuggestionCard({
                 />
                 <CustomText style={{...styles.cityTitle, color: '#ffffff', width:'100%', textAlign: 'center'}}>{cityName}</CustomText>
                 <Image source={img} style={styles.cityImg}></Image>
+                {/* <ImageBackground source={img} style={{width: 200,height: 100}} imageStyle={{ resizeMode: 'cover' }} overlayColor='#00000088'></ImageBackground> */}
             </View>
             <View style={styles.infosContainer}>                
                 <View style={styles.activitiesContainer}>
