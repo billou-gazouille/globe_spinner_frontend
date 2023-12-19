@@ -3,6 +3,8 @@
 # dependencies
 node_modules/
 
+myVariables.js
+
 # Expo
 .expo/
 dist/

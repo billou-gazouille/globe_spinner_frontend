@@ -12,6 +12,7 @@ import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 import LoadingWheel from "../components/LoadingWheel";
 
+const { ipAddress, port } = require('../myVariables');
 
 export default function SuggestionsScreen({ navigation }) {
   
@@ -33,7 +34,7 @@ export default function SuggestionsScreen({ navigation }) {
       copy[tripIndex] = !copy[tripIndex];
       setBookmarked(copy);
     }
-    const url = `http://10.0.2.210:3000/users/${userInfo.token}/saveTrip/${tripIndex}`;
+    const url = `http://${ipAddress}:${port}/users/${userInfo.token}/saveTrip/${tripIndex}`;
     console.log(url);
     const data = await fetch(url, {
       method: "POST",
@@ -49,6 +50,8 @@ export default function SuggestionsScreen({ navigation }) {
     console.log("regenerateAll");
     setTrips([]);
     const filters = {
+      lat: 49,
+      lon: 2,
       budget: 10000,
       nbrOfTravelers: 1,
       departureMinOutbound: "2023-12-18",
@@ -59,7 +62,7 @@ export default function SuggestionsScreen({ navigation }) {
     };
     const generatedTtrips = await fetch(
       //DON'T FORGET TO CHANGE YOUR IP ADRESS
-      "http://10.0.2.210:8081/trips/generate",
+      `http://${ipAddress}:${port}/trips/generate`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -140,10 +143,7 @@ export default function SuggestionsScreen({ navigation }) {
                 leaveTransportType={t.outboundJourney.type}
                 returnTransportType={t.inboundJourney.type}
                 activities={actvitiesMax3.map((a) => a.activityBase.name)}
-                //img={require("../assets/noImage.jpg")}
-                //img={{uri: getPlaceImageURL(t.destination.name)}}
                 img={imageURLs[i] ? { uri: imageURLs[i] } : require("../assets/noImage.jpg")}
-                //img={{uri: getPlaceImageURL(i, t.destination.name)}}
                 leaveDate={formattedDate(t.outboundJourney.departure)}
                 returnDate={formattedDate(t.inboundJourney.arrival)}
                 price={1400}
