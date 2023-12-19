@@ -23,11 +23,11 @@ import SigninForm from "../components/SigninForm";
 import SignupForm from "../components/SignupForm";
 import { CustomText } from "../components/CustomText";
 
-const { ipAddress, port } = require('../myVariables');
-
+const { ipAddress, port } = require("../myVariables");
 
 export default function ProfileScreen({ navigation }) {
   const userInfo = useSelector((state) => state.userInfo.value);
+  const userToken = useSelector((state) => state.userInfo.value.token);
 
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
@@ -55,12 +55,14 @@ export default function ProfileScreen({ navigation }) {
     if (data.result) {
       dispatch(connect(true));
       setIsSigningIn(false);
-      dispatch(loadDetails({
-        token: data.token, 
-        firstName: data.firstName, 
-        lastName: data.lastName, 
-        email: data.email,
-      }));
+      dispatch(
+        loadDetails({
+          token: data.token,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+        })
+      );
       navigation.navigate("Home");
     }
     return data;
@@ -78,12 +80,14 @@ export default function ProfileScreen({ navigation }) {
       dispatch(connect());
       setIsSigningUp(false);
       //console.log('okkk');
-      dispatch(loadDetails({
-        token: data.token, 
-        firstName, 
-        lastName, 
-        email
-      }));
+      dispatch(
+        loadDetails({
+          token: data.token,
+          firstName,
+          lastName,
+          email,
+        })
+      );
       navigation.navigate("Home");
     }
     return data;
@@ -98,8 +102,8 @@ export default function ProfileScreen({ navigation }) {
   );
 
   const signinForm = (
-    <SigninForm 
-      submit={(email, password) => signIn(email, password)} 
+    <SigninForm
+      submit={(email, password) => signIn(email, password)}
       closeModal={closeModal}
     />
   );
@@ -118,15 +122,46 @@ export default function ProfileScreen({ navigation }) {
     dispatch(disconnect());
   };
 
+  //Charger depuis la db les trips bookmarked et les trips reserved
+  // useEffect(() => {
+  //   if (userToken) {
+  //     fetchSavedTrips(userToken);
+  //   }
+  // }, [userToken]);
+
+  // function fetchSavedTrips(userToken) {
+  //   const url = `http://${ipAddress}:3000/${userToken}/savedTrips`;
+  //   fetch(url)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Oops t'as fait de la merde");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((savedTrips) => {
+  //       console.log(savedTrips);
+  //     });
+  // }
+
   const userDetails = (
-    <View style={{borderWidth: 1}}>
+    <View style={{ borderWidth: 1 }}>
       {/* <Text style={{ fontSize: 30, color: "black" }}>User details...</Text> */}
-      <CustomText style={{color: 'black', fontSize: 36, margin: 40}}>Hello {userInfo.firstname} !</CustomText>
-      <CustomText style={{color: 'black', fontSize: 26, margin: 20}}>My account info</CustomText>
+      <CustomText style={{ color: "black", fontSize: 36, margin: 40 }}>
+        Hello {userInfo.firstname} !
+      </CustomText>
+      <CustomText style={{ color: "black", fontSize: 26, margin: 20 }}>
+        My account info
+      </CustomText>
       <View style={styles.userDetailsContainer}>
-        <CustomText style={styles.userDetail}>first name: {userInfo.firstName}</CustomText>
-        <CustomText style={styles.userDetail}>last name: {userInfo.lastName}</CustomText>
-        <CustomText style={styles.userDetail}>email: {userInfo.email}</CustomText>
+        <CustomText style={styles.userDetail}>
+          first name: {userInfo.firstName}
+        </CustomText>
+        <CustomText style={styles.userDetail}>
+          last name: {userInfo.lastName}
+        </CustomText>
+        <CustomText style={styles.userDetail}>
+          email: {userInfo.email}
+        </CustomText>
       </View>
       <TouchableOpacity
         style={styles.logoutButton}
@@ -137,8 +172,6 @@ export default function ProfileScreen({ navigation }) {
       </TouchableOpacity>
     </View>
   );
-
-
 
   const modalToShow = () => {
     if (isSigningIn) return signinForm;
@@ -182,12 +215,12 @@ const styles = StyleSheet.create({
   },
   userDetailsContainer: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'left',
+    justifyContent: "flex-start",
+    alignItems: "left",
   },
   userDetail: {
-    color: 'black',
+    color: "black",
     fontSize: 24,
     marginBottom: 20,
-  }
+  },
 });
