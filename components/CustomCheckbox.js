@@ -1,13 +1,15 @@
 import React from "react";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { View } from "react-native";
 
-const CustomCheckbox = ({ onPress, text }) => {
+const CustomCheckbox = ({ selectTransportationMode, text }) => {
   return (
     <BouncyCheckbox
       size={25}
       fillColor="#ba99fe"
       unfillColor="#FFFFFF"
       text={text}
+      isChecked={true}
       iconStyle={{ borderColor: "#FFFFFF" }}
       innerIconStyle={{ borderWidth: 2 }}
       textStyle={{
@@ -17,7 +19,7 @@ const CustomCheckbox = ({ onPress, text }) => {
         fontSize: 18,
         color: "#515151",
       }}
-      onPress={onPress}
+      onPress={() => selectTransportationMode(text)}
     />
   );
 };

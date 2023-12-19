@@ -16,7 +16,7 @@ import {
 import CustomCheckbox from "../components/CustomCheckbox";
 import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addFiltersToStore } from "../reducers/filters";
 
 // import DatePickerIOS from "../components/ios/DatePickerIOS";
@@ -26,42 +26,38 @@ import GradientFontColor from "../components/GradientFontColor";
 const transportationMode = ["Train", "Airplane", "Coach"];
 
 export default function FiltersScreen({ navigation }) {
+  const dispatch = useDispatch();
   const { height, width } = useWindowDimensions();
+  // const filtersFromStore = useSelector((state) => state.filters.value);
 
   const [departureLocation, setDepartureLocation] = useState("");
   const [departureDate, setDepartureDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(new Date());
   const [budget, setBudget] = useState("");
   const [nbrOfTravelers, setNbrOfTravelers] = useState(1);
-  const [transportType, setTransportType] = useState("");
+  const [transportType, setTransportType] = useState([
+    "Train",
+    "Airplane",
+    "Coach",
+  ]);
 
   const [showFieldsError, setShowFieldsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const checkboxes = transportationMode.map((e, i) => (
-    <CustomCheckbox key={i} text={e} />
-  ));
-
-  const dispatch = useDispatch();
-
-  const handlePressSubmit = () => {
-    if (
-      checkHasEmptyField([
-        // departureDate,
-        // returnDate,
-        departureLocation,
-        budget,
-        nbrOfTravelers,
-        // transportType,
-      ])
-    ) {
-      setShowFieldsError(true);
-      setErrorMsg("Some fields are empty !");
-      return false;
+  const selectTransportationMode = (type) => {
+    if (!transportType.includes(type)) {
+      setTransportType((prevTypes) => [...prevTypes, type]);
+    } else {
+      setTransportType((prevTypes) => prevTypes.filter((e) => e !== type));
     }
-    setShowFieldsError(false);
-    return true;
   };
+  const checkboxes = transportationMode.map((e, i) => (
+    <CustomCheckbox
+      key={i}
+      text={e}
+      selectTransportationMode={selectTransportationMode}
+    />
+  ));
 
   const handleSubmit = () => {
     const filters = {
@@ -72,9 +68,41 @@ export default function FiltersScreen({ navigation }) {
       departureDate,
       returnDate,
     };
-    dispatch(addFiltersToStore(filters));
-    // console.log("coucou je suis là");
+
+    dispatch(addFiltersToStore({ filters }));
+    // console.log(filters);
     navigation.navigate("SuggestionsHomeStack");
+  };
+
+  // const checkHasEmptyField = (fields) => {
+  //   for (let field of fields) {
+  //     if (!field || field === " " || field.length === 0) {
+  //       console.log("field", field);
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // };
+  const checkHasEmptyField = (fields) =>
+    fields.some((field) => !field || field === "" || field.length === 0);
+
+  const handlePressSubmit = () => {
+    const requiredFields = [
+      departureLocation,
+      budget,
+      nbrOfTravelers,
+      transportType,
+      // departureDate,
+      // returnDate
+    ];
+
+    if (checkHasEmptyField(requiredFields)) {
+      setShowFieldsError(true);
+      setErrorMsg("Some fields are empty !");
+      return false;
+    }
+    setShowFieldsError(false);
+    return true;
   };
 
   const callHandleAndHandlePress = () => {
@@ -82,14 +110,7 @@ export default function FiltersScreen({ navigation }) {
     if (result) {
       handleSubmit();
     }
-    console.log(handlePressSubmit());
-  };
-
-  const checkHasEmptyField = (fields) => {
-    for (let field of fields) {
-      if (!field || field === " ") return true;
-    }
-    return false;
+    // console.log("handlePressSubmit", handlePressSubmit());
   };
 
   // let datePicker = <DatePickerIOS />;
@@ -177,13 +198,16 @@ export default function FiltersScreen({ navigation }) {
     //   </KeyboardAvoidingView>
     // </View>
     <ScrollView contentContainerStyle={styles.container}>
+      <BackButton />
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Your </Text>
         <GradientFontColor style={styles.title}>filters</GradientFontColor>
       </View>
+      {showFieldsError && (
+        <CustomText style={styles.fieldsError}>{errorMsg}</CustomText>
+      )}
 
       {/* <StatusBar style="auto" /> */}
-      <BackButton />
       {/* <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.keyboardAvoidingContainer}
@@ -197,6 +221,7 @@ export default function FiltersScreen({ navigation }) {
             // onChangeText={handleTextChange}
             // value={"test"}
             placeholder="E.g. Davézieux"
+            onChangeText={(text) => setDepartureLocation(text)}
           />
         </View>
       </View>
@@ -225,7 +250,9 @@ export default function FiltersScreen({ navigation }) {
             style={styles.input}
             // onChangeText={handleTextChange}
             // value={"test"}
-            placeholder="Type something..."
+            keyboardType="numeric"
+            placeholder="E.g. 3"
+            onChangeText={(number) => setNbrOfTravelers(Number(number))}
           />
         </View>
         <View style={styles.inputContainer}>
@@ -235,7 +262,8 @@ export default function FiltersScreen({ navigation }) {
             keyboardType="numeric"
             // onChangeText={handleTextChange}
             // value={"test"}
-            placeholder="Type something..."
+            placeholder="E.g. 300€"
+            onChangeText={(number) => setBudget(number)}
           />
         </View>
       </View>
@@ -244,6 +272,13 @@ export default function FiltersScreen({ navigation }) {
         <CustomText>What kind of transportation would you like ?</CustomText>
         <View style={styles.checkboxes}>{checkboxes}</View>
       </View>
+
+      <TouchableOpacity
+        onPress={callHandleAndHandlePress}
+        style={styles.button}
+      >
+        <CustomText style={styles.buttonText}>Go!</CustomText>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -254,10 +289,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 20,
     backgroundColor: "white",
+    // paddingBottom: 130,
   },
   titleContainer: {
     flexDirection: "row",
     marginTop: 60,
+    marginBottom: 30,
   },
   title: {
     fontFamily: "KronaOne_400Regular",
@@ -302,16 +339,27 @@ const styles = StyleSheet.create({
   },
   checkboxes: {
     // flexDirection: "row",
-  },
-  transportCheckBox: {
-    justifyContent: "center",
-    textAlign: "center",
+    // height: 110,
   },
   fieldsError: {
     fontSize: 20,
     marginBottom: 20,
     color: "red",
     fontWeight: "bold",
+  },
+  button: {
+    borderRadius: 50,
+    paddingVertical: 12,
+    paddingHorizontal: 60,
+    elevation: 3,
+    backgroundColor: "#3972D9",
+    marginVertical: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    letterSpacing: 1.5,
+    textTransform: "uppercase",
   },
 });
 // const styles = StyleSheet.create({

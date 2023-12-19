@@ -12,23 +12,20 @@ import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 
 export default function SuggestionsScreen({ navigation }) {
-
   const [trips, setTrips] = useState([null, null]);
   const [bookmarked, setBookmarked] = useState([false, false]);
-  
 
   const handleSubmit = () => {
     navigation.navigate("SelectedSuggestions");
   };
 
-  const userInfo = useSelector(state => state.userInfo.value);
+  const userInfo = useSelector((state) => state.userInfo.value);
 
   const toggleBookmarkTrip = async (tripIndex) => {
     //console.log("bookmared trip with index" + tripIndex);
     //console.log(userInfo);
 
-    if (userInfo.isConnected){
-
+    if (userInfo.isConnected) {
       const copy = [...bookmarked];
       copy[tripIndex] = !copy[tripIndex];
       setBookmarked(copy);
@@ -40,8 +37,8 @@ export default function SuggestionsScreen({ navigation }) {
       headers: { "Content-Type": "application/json" },
     }).then((resp) => resp.json());
 
-    console.log('fetch response: ', data.savedTrip);
-  }
+    console.log("fetch response: ", data.savedTrip);
+  };
 
   //on importe les filtres depuis le store de Redux
   //on fetch les [trips] avec les filtres dans un useEffect pour re render la page suggestion
@@ -65,11 +62,14 @@ export default function SuggestionsScreen({ navigation }) {
       departureMaxInbound: "2023-12-29",
       types: ["Airplane", "Coach", "Train"],
     };
-    const generatedTtrips = await fetch("http://192.168.43.25:3000/trips/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(filters),
-    }).then((resp) => resp.json());
+    const generatedTtrips = await fetch(
+      "http://192.168.43.25:3000/trips/generate",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filters),
+      }
+    ).then((resp) => resp.json());
     console.log(generatedTtrips[0]);
     if (generatedTtrips.length > 0) {
       setTrips(generatedTtrips);
@@ -80,7 +80,6 @@ export default function SuggestionsScreen({ navigation }) {
   useEffect(() => {
     regenerateAll().then();
   }, []);
-
 
   const handlePressRegenerateAll = async () => {
     console.log("handlePressRegenerateAll");
@@ -99,22 +98,30 @@ export default function SuggestionsScreen({ navigation }) {
     //navigation.navigate('SelectedSuggestions', { hello: 'hello' });
   };
 
-  const formattedDate = stringDate => {
+  const formattedDate = (stringDate) => {
     const date = new Date(stringDate);
     const day = date.getUTCDate();
     const month = date.getUTCMonth() + 1; // Note: Months are zero-based, so we add 1
     // Format the result as "dd/mm"
-    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}`;
-  }
+    return `${day.toString().padStart(2, "0")}/${month
+      .toString()
+      .padStart(2, "0")}`;
+  };
 
-  const [imageURLs, setImageURLs] = useState(['', '']);
+  const [imageURLs, setImageURLs] = useState(["", ""]);
   const [receivedImageURLs, setReceivedImageURLs] = useState(false);
 
   const getPlaceImageURL = async (index, placeName) => {
     console.log(placeName);
-    const data = await fetch(`https://api.pexels.com/v1/search?query=${placeName}+aerial`, {
-      headers: {'Authorization': '5t6cWcJQKyLgJsDtnmjZX8fLomdIIvsa46xUgeXPcL5AZMAK4r2GODOm'}
-    }).then(resp => resp.json());
+    const data = await fetch(
+      `https://api.pexels.com/v1/search?query=${placeName}+aerial`,
+      {
+        headers: {
+          Authorization:
+            "5t6cWcJQKyLgJsDtnmjZX8fLomdIIvsa46xUgeXPcL5AZMAK4r2GODOm",
+        },
+      }
+    ).then((resp) => resp.json());
     //console.log(data);
     const imageURL = data.photos[0].src.landscape;
     const copy = [...imageURLs];
@@ -125,39 +132,39 @@ export default function SuggestionsScreen({ navigation }) {
     //return imageURL;
   };
 
-  if (trips[0] !== null && trips[1] !== null){
+  if (trips[0] !== null && trips[1] !== null) {
     trips.forEach((t, i) => {
-      if (!receivedImageURLs)
-        getPlaceImageURL(i, t.destination.name);
+      if (!receivedImageURLs) getPlaceImageURL(i, t.destination.name);
     });
   }
- 
+
   return (
     <View style={styles.container}>
       <CustomText style={styles.suggestionsText}>Suggestions</CustomText>
       <View style={styles.cardsContainer}>
-        {(trips[0] !== null && trips[1] !== null) 
-        && trips.map((t, i) => 
-          <SuggestionCard
-            key={i}
-            tripIndex={i}
-            cityName={t.destination.name}
-            accommodationType={t.accommodation.accommodationBase.type}
-            leaveTransportType={t.outboundJourney.type}
-            returnTransportType={t.inboundJourney.type}
-            activities={t.activities.map(a => a.activityBase.name)}
-            //img={require("../assets/noImage.jpg")}
-            //img={{uri: getPlaceImageURL(t.destination.name)}}
-            img={{uri: imageURLs[i]}}
-            //img={{uri: getPlaceImageURL(i, t.destination.name)}}
-            leaveDate={formattedDate(t.outboundJourney.departure)}
-            returnDate={formattedDate(t.inboundJourney.arrival)}
-            price={1400}
-            selectTrip={selectTrip}
-            toggleBookmarkTrip={toggleBookmarkTrip}
-            isBookmarked={bookmarked[i]}
-          />
-        )}
+        {trips[0] !== null &&
+          trips[1] !== null &&
+          trips.map((t, i) => (
+            <SuggestionCard
+              key={i}
+              tripIndex={i}
+              cityName={t.destination.name}
+              accommodationType={t.accommodation.accommodationBase.type}
+              leaveTransportType={t.outboundJourney.type}
+              returnTransportType={t.inboundJourney.type}
+              activities={t.activities.map((a) => a.activityBase.name)}
+              //img={require("../assets/noImage.jpg")}
+              //img={{uri: getPlaceImageURL(t.destination.name)}}
+              img={{ uri: imageURLs[i] }}
+              //img={{uri: getPlaceImageURL(i, t.destination.name)}}
+              leaveDate={formattedDate(t.outboundJourney.departure)}
+              returnDate={formattedDate(t.inboundJourney.arrival)}
+              price={1400}
+              selectTrip={selectTrip}
+              toggleBookmarkTrip={toggleBookmarkTrip}
+              isBookmarked={bookmarked[i]}
+            />
+          ))}
         {/* <SuggestionCard
           tripIndex={0}
           cityName="AMSTERDAM"
