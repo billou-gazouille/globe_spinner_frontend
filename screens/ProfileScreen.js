@@ -23,11 +23,11 @@ import SigninForm from "../components/SigninForm";
 import SignupForm from "../components/SignupForm";
 import { CustomText } from "../components/CustomText";
 
-const { ipAddress, port } = require('../myVariables');
-
+const { ipAddress, port } = require("../myVariables");
 
 export default function ProfileScreen({ navigation }) {
   const userInfo = useSelector((state) => state.userInfo.value);
+  const userToken = useSelector((state) => state.userInfo.value.token);
 
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
@@ -70,11 +70,7 @@ export default function ProfileScreen({ navigation }) {
 
   const signUp = async (firstName, lastName, email, password) => {
     // setIsSigningUp(false);
-<<<<<<< HEAD
-    const data = await fetch("http://10.0.2.210:3000/users/signup", {
-=======
     const data = await fetch(`http://${ipAddress}:${port}/users/signup`, {
->>>>>>> 90fdf6a63ad36ac49e5ab27a030aae6ad3da89be
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstName, lastName, email, password }),
@@ -125,6 +121,27 @@ export default function ProfileScreen({ navigation }) {
     //console.log("HandlePressLogout");
     dispatch(disconnect());
   };
+
+  //Charger depuis la db les trips bookmarked et les trips reserved
+  useEffect(() => {
+    if (userToken) {
+      fetchSavedTrips(userToken);
+    }
+  }, [userToken]);
+
+  function fetchSavedTrips(userToken) {
+    const url = `http://${ipAddress}:3000/${userToken}/savedTrips`;
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Oops t'as fait de la merde");
+        }
+        return response.json();
+      })
+      .then((savedTrips) => {
+        console.log(savedTrips);
+      });
+  }
 
   const userDetails = (
     <View style={{ borderWidth: 1 }}>
