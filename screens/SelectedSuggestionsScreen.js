@@ -12,18 +12,34 @@ import {
 // import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import moment from "moment";
+
+const colors = {
+  black: "#515151",
+};
 
 export default function SelectedSuggestionsScreen({ navigation, route }) {
   const trip = route.params.trip;
+  const outboundJourneyType = trip.outboundJourney.type;
+  const inboundJourneyType = trip.inboundJourney.type;
+
+  const iconMapping = {
+    Train: "train",
+    Airplane: "airplane",
+    Coach: "bus",
+  };
+  const iconOutbound = iconMapping[outboundJourneyType] || "defaultIconName";
+  const iconInbound = iconMapping[inboundJourneyType] || "defaultIconName";
+  const formattedDate = (date) => {
+    return moment(date).format("DD MMM, HH:mm");
+  };
+
+  // console.log("trip", trip);
 
   // payment coucou
   const handleContinueToPaymentPress = () => {
     navigation.navigate("Payment");
   };
-
-  console.log("-----------------------------");
-  console.log(trip.accommodation.accommodationBase.name);
-  console.log("-----------------------------");
 
   const activity = (name, date, timeStart, timeEnd, price, location) => {
     return (
@@ -36,13 +52,13 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
           <View style={{ flex: 1, marginLeft: 20 }}>
             <View style={{ marginTop: 15, flexDirection: "row" }}>
-              <FontAwesome name="clock-o" size={25} color="black" />
+              <FontAwesome name="clock-o" size={25} color={colors.black} />
               <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
                 {timeStart} to {timeEnd}
               </CustomText>
             </View>
             <View style={{ marginTop: 20, flexDirection: "row" }}>
-              <FontAwesome name="money" size={25} color="black" />
+              <FontAwesome name="money" size={25} color={colors.black} />
               <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
                 {price}€
               </CustomText>
@@ -57,7 +73,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
               alignItems: "center",
             }}
           >
-            <FontAwesome name="map-marker" size={30} color="black" />
+            <FontAwesome name="map-marker" size={30} color={colors.black} />
             <View>
               <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
                 {location}
@@ -101,20 +117,20 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         <CustomText style={styles.text}>Accommodation</CustomText>
         <View style={styles.sectionContainer}>
           <CustomText style={styles.accommodationName}>
-            Hostel Espresso City Center
+            {trip.accommodation.accommodationBase.name}
           </CustomText>
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1, marginLeft: 20 }}>
               <View style={{ marginTop: 15, flexDirection: "row" }}>
-                <FontAwesome name="users" size={25} color="black" />
+                <FontAwesome name="users" size={25} color={colors.black} />
                 <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                  3
+                  {trip.numberOfTravelers}
                 </CustomText>
               </View>
               <View style={{ marginTop: 20, flexDirection: "row" }}>
-                <FontAwesome name="clock-o" size={25} color="black" />
+                <FontAwesome name="clock-o" size={25} color={colors.black} />
                 <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                  4 nights
+                  {trip.nbrOfNights} nights
                 </CustomText>
               </View>
             </View>
@@ -127,13 +143,10 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
                 alignItems: "center",
               }}
             >
-              <FontAwesome name="map-marker" size={30} color="black" />
+              <FontAwesome name="map-marker" size={30} color={colors.black} />
               <View>
                 <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
-                  Overtoom 57, 1054 HC
-                </CustomText>
-                <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
-                  Amsterdam, Netherlands
+                  {trip.accommodation.accommodationBase.address}
                 </CustomText>
               </View>
             </View>
@@ -170,15 +183,17 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
               Outbound
             </CustomText>
             <CustomText style={{ fontSize: 16 }}>
-              LYS <CustomText>&#8594;</CustomText> AMS
+              {trip.departureLocation.name.substring(0, 3).toUpperCase()}{" "}
+              <CustomText>&#8594;</CustomText>{" "}
+              {trip.destination.name.substring(0, 3).toUpperCase()}
             </CustomText>
-            <FontAwesome name="train" size={25} color="black" />
+            <FontAwesome name={iconOutbound} size={25} color={colors.black} />
             <View style={{ marginTop: 10 }}>
               <CustomText style={{ fontSize: 14 }}>
-                Dep: 16 Feb, 10:30
+                Dep: {formattedDate(trip.outboundJourney.departure)}
               </CustomText>
               <CustomText style={{ fontSize: 14 }}>
-                Arr: 16 Feb, 14:50
+                Arr: {formattedDate(trip.outboundJourney.arrival)}
               </CustomText>
             </View>
           </View>
@@ -194,15 +209,17 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
               Inbound
             </CustomText>
             <CustomText style={{ fontSize: 16 }}>
-              AMS <CustomText>&#8594;</CustomText> LYS
+              {trip.destination.name.substring(0, 3).toUpperCase()}
+              <CustomText>&#8594;</CustomText>{" "}
+              {trip.departureLocation.name.substring(0, 3).toUpperCase()}
             </CustomText>
-            <FontAwesome name="plane" size={25} color="black" />
+            <FontAwesome name={iconInbound} size={25} color={colors.black} />
             <View style={{ marginTop: 10 }}>
               <CustomText style={{ fontSize: 14 }}>
-                Dep: 29 Feb, 18:40
+                Dep: {formattedDate(trip.inboundJourney.departure)}
               </CustomText>
               <CustomText style={{ fontSize: 14 }}>
-                Arr: 29 Feb, 20:50
+                Arr: {formattedDate(trip.inboundJourney.arrival)}
               </CustomText>
             </View>
           </View>
@@ -259,7 +276,7 @@ const styles = StyleSheet.create({
     height: 150,
     marginTop: 10,
     // color: '#ECECEC',
-    shadowColor: "black",
+    shadowColor: colors.black,
     elevation: 10,
     backgroundColor: "#DCDCDC",
     borderRadius: 25,

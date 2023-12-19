@@ -12,10 +12,9 @@ import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 import LoadingWheel from "../components/LoadingWheel";
 
-const { ipAddress, port } = require('../myVariables');
+const { ipAddress, port } = require("../myVariables");
 
 export default function SuggestionsScreen({ navigation }) {
-  
   const [trips, setTrips] = useState([]);
   const [bookmarked, setBookmarked] = useState([false, false]);
 
@@ -35,19 +34,19 @@ export default function SuggestionsScreen({ navigation }) {
       setBookmarked(copy);
     }
     const url = `http://${ipAddress}:${port}/users/${userInfo.token}/saveTrip/${tripIndex}`;
-    console.log(url);
+    // console.log(url);
     const data = await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
     }).then((resp) => resp.json());
 
-    console.log("fetch response: ", data.savedTrip);
+    // console.log("fetch response: ", data.savedTrip);
   };
-  
-  const [imageURLs, setImageURLs] = useState(['', '']);
+
+  const [imageURLs, setImageURLs] = useState(["", ""]);
 
   const regenerateAll = async () => {
-    console.log("regenerateAll");
+    // console.log("regenerateAll");
     setTrips([]);
     const filters = {
       lat: 49,
@@ -69,23 +68,23 @@ export default function SuggestionsScreen({ navigation }) {
         body: JSON.stringify(filters),
       }
     ).then((resp) => resp.json());
-    console.log(generatedTtrips);
+    // console.log(generatedTtrips);
     if (generatedTtrips.length > 0) {
       setTrips(generatedTtrips);
-      setImageURLs(['', '']);
-      for (let i = 0; i < generatedTtrips.length; i++){
+      setImageURLs(["", ""]);
+      for (let i = 0; i < generatedTtrips.length; i++) {
         getPlaceImageURL(i, generatedTtrips[i].destination.name);
       }
     }
   };
 
   useEffect(() => {
-    console.log('useEffect');
+    // console.log('useEffect');
     regenerateAll().then();
   }, []);
 
   const handlePressRegenerateAll = async () => {
-    console.log("handlePressRegenerateAll");
+    // console.log("handlePressRegenerateAll");
     regenerateAll().then();
   };
 
@@ -106,9 +105,8 @@ export default function SuggestionsScreen({ navigation }) {
       .padStart(2, "0")}`;
   };
 
-
   const getPlaceImageURL = async (index, placeName) => {
-    console.log(placeName);
+    // console.log(placeName);
     const data = await fetch(
       `https://api.pexels.com/v1/search?query=${placeName}+aerial`,
       {
@@ -118,7 +116,7 @@ export default function SuggestionsScreen({ navigation }) {
         },
       }
     ).then((resp) => resp.json());
-    console.log(data);
+    // console.log(data);
     const imageURL = data.photos[0].src.landscape;
     const copy = [...imageURLs];
     copy[index] = imageURL;
@@ -128,13 +126,16 @@ export default function SuggestionsScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      {trips.length !== 2 && <LoadingWheel/>}
+      {trips.length !== 2 && <LoadingWheel />}
       <CustomText style={styles.suggestionsText}>Suggestions</CustomText>
       <View style={styles.cardsContainer}>
         {trips.length === 2 &&
-          trips.map((t, i) => { 
-            const actvitiesMax3 = t.activities.length <= 3 ? t.activities : t.activities.slice(0, 3);
-            return(
+          trips.map((t, i) => {
+            const actvitiesMax3 =
+              t.activities.length <= 3
+                ? t.activities
+                : t.activities.slice(0, 3);
+            return (
               <SuggestionCard
                 key={i}
                 tripIndex={i}
@@ -143,15 +144,20 @@ export default function SuggestionsScreen({ navigation }) {
                 leaveTransportType={t.outboundJourney.type}
                 returnTransportType={t.inboundJourney.type}
                 activities={actvitiesMax3.map((a) => a.activityBase.name)}
-                img={imageURLs[i] ? { uri: imageURLs[i] } : require("../assets/noImage.jpg")}
+                img={
+                  imageURLs[i]
+                    ? { uri: imageURLs[i] }
+                    : require("../assets/noImage.jpg")
+                }
                 leaveDate={formattedDate(t.outboundJourney.departure)}
                 returnDate={formattedDate(t.inboundJourney.arrival)}
                 price={1400}
                 selectTrip={selectTrip}
                 toggleBookmarkTrip={toggleBookmarkTrip}
                 isBookmarked={bookmarked[i]}
-              />)}
-          )}
+              />
+            );
+          })}
       </View>
       <TouchableOpacity
         style={styles.regenerateAllButton}
