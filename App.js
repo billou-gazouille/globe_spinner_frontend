@@ -43,7 +43,15 @@ const Tab = createBottomTabNavigator();
 
 const HomeStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: true,
+        headerTitle: "",
+        headerBackTitleVisible: false,
+        headerBackVisible: true,
+        headerTintColor: "#ba99FE",
+      }}
+    >
       <Stack.Screen name="HomeStack" component={HomeScreen} />
       <Stack.Screen name="FiltersHomeStack" component={FiltersScreen} />
       <Stack.Screen name="SuggestionsHomeStack" component={SuggestionsScreen} />
@@ -59,7 +67,15 @@ const HomeStack = () => {
 
 const ProfileStack = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: true,
+        headerTitle: "",
+        headerBackTitleVisible: false,
+        headerBackVisible: true,
+        headerTintColor: "#ba99FE",
+      }}
+    >
       <Stack.Screen name="ProfileStack" component={ProfileScreen} />
       <Stack.Screen name="SuggestionsStack" component={SuggestionsScreen} />
       <Stack.Screen

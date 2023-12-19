@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
-import BackButton from "../components/BackButton";
+// import BackButton from "../components/BackButton";
 import { useDispatch, useSelector } from "react-redux";
 import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
@@ -208,7 +208,7 @@ export default function SuggestionsScreen({ navigation }) {
       >
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
       </TouchableOpacity>
-      <BackButton />
+      {/* <BackButton /> */}
     </View>
   );
 }
