@@ -123,25 +123,25 @@ export default function ProfileScreen({ navigation }) {
   };
 
   //Charger depuis la db les trips bookmarked et les trips reserved
-  useEffect(() => {
-    if (userToken) {
-      fetchSavedTrips(userToken);
-    }
-  }, [userToken]);
+  // useEffect(() => {
+  //   if (userToken) {
+  //     fetchSavedTrips(userToken);
+  //   }
+  // }, [userToken]);
 
-  function fetchSavedTrips(userToken) {
-    const url = `http://${ipAddress}:3000/${userToken}/savedTrips`;
-    fetch(url)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Oops t'as fait de la merde");
-        }
-        return response.json();
-      })
-      .then((savedTrips) => {
-        console.log(savedTrips);
-      });
-  }
+  // function fetchSavedTrips(userToken) {
+  //   const url = `http://${ipAddress}:3000/${userToken}/savedTrips`;
+  //   fetch(url)
+  //     .then((response) => {
+  //       if (!response.ok) {
+  //         throw new Error("Oops t'as fait de la merde");
+  //       }
+  //       return response.json();
+  //     })
+  //     .then((savedTrips) => {
+  //       console.log(savedTrips);
+  //     });
+  // }
 
   const userDetails = (
     <View style={{ borderWidth: 1 }}>
