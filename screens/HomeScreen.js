@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     height: "9%",
   },
   bottomLine: {
-    marginBottom: 10,
+    marginBottom: 35,
     width: "100%",
     bottom: 0,
     height: "22%",

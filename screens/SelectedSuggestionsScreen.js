@@ -9,7 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import BackButton from "../components/BackButton";
+// import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -225,7 +225,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
           {activities}
         </View>
       </View>
-      <BackButton navigation={navigation} />
+      {/* <BackButton navigation={navigation} /> */}
 
       <TouchableOpacity
         style={styles.continueToPaymentButton}
