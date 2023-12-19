@@ -79,11 +79,7 @@ export default function SuggestionsScreen({ navigation }) {
   };
 
   useEffect(() => {
-<<<<<<< HEAD
     // console.log('useEffect');
-=======
-    console.log("useEffect");
->>>>>>> 6dcb2fd1ecec6637fce83b6b38386a74dd0570bf
     regenerateAll().then();
   }, []);
 
