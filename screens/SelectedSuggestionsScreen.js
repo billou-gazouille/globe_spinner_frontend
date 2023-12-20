@@ -14,6 +14,7 @@ import {
 import { CustomText } from "../components/CustomText";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
+import GradientFontColor from "../components/GradientFontColor";
 
 const colors = {
   black: "#515151",
@@ -89,7 +90,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
       ></Image>
 
       <View style={styles.headingAndSectionPair}>
-        <CustomText style={styles.text}>Accommodation</CustomText>
+        <GradientFontColor style={styles.text}>Accommodation</GradientFontColor>
         <View style={styles.sectionContainer}>
           <CustomText style={styles.accommodationName}>
             {trip.accommodation.accommodationBase.name}
@@ -130,7 +131,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
       </View>
 
       <View style={styles.headingAndSectionPair}>
-        <CustomText style={styles.text}>Transports</CustomText>
+        <GradientFontColor style={styles.text}>Transports</GradientFontColor>
         <View
           style={{
             ...styles.sectionContainer,
@@ -201,9 +202,9 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         </View>
       </View>
 
-      <CustomText style={[styles.text, { marginTop: 50 }]}>
+      <GradientFontColor style={[styles.text, { marginTop: 50 }]}>
         Activities
-      </CustomText>
+      </GradientFontColor>
       <View style={styles.activitiesContainer}>{activities}</View>
       {/* <BackButton navigation={navigation} /> */}
 
@@ -229,6 +230,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 28,
+    fontWeight: "bold",
   },
   cityImg: {
     width: "100%",
@@ -269,7 +271,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     // fontWeight: "bold",
-    letterSpacing: 1.5,
+    letterSpacing: 1,
   },
   // ---- ACTIVITIES -----
   activitiesContainer: {
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
     minWidth: "90%",
     shadowColor: colors.black,
     elevation: 10,
-    marginTop: 20,
+    marginTop: 10,
   },
   activity: {
     paddingTop: 15,
