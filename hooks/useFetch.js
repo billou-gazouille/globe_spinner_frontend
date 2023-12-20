@@ -16,32 +16,29 @@ export default function useFetch({ URL, options = DEFAULT_OPTIONS, triggerFetch 
 	// console.log('focused?', isScreenFocused);
 	// console.log('Error?', error);
 
-	const requestController = new AbortController();
-
 	useEffect(() => {
+		const requestController = new AbortController();
 		if (!isScreenFocused) return;
 
 		setError(null);
 		setIsLoading(true);
 
-		// Simulate 3s loading time with setTimeout
-		setTimeout(() => {
-			fetch(URL, { ...options, signal: requestController.signal })
-				.then(response => {
-					// you can throw a custom error to simulate a network or server error
-					// throw new Error('Unhandled error');
-					if (!response.ok) return setError(response.statusText);
-					else return response.json();
-				})
-				.then(data => {
-					console.log('[DATA]', data);
-					setData(data);
-				})
-				.catch(error => {
-					setError(error);
-				})
-				.finally(() => setIsLoading(false));
-		}, 3000);
+		fetch(URL, { ...options, signal: requestController.signal })
+			.then(response => {
+				// you can throw a custom error to simulate a network or server error
+				// throw new Error('Unhandled error');
+				if (!response.ok) return setError(response.statusText);
+				else return response.json();
+			})
+			.then(data => {
+				console.log('[DATA]', data);
+				setData(data);
+				setIsLoading(false);
+			})
+			.catch(error => {
+				setError(error);
+			})
+			//.finally(() => setIsLoading(false));
 
 		return () => requestController.abort();
 	}, [triggerFetch, isScreenFocused]);
