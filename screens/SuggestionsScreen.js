@@ -19,7 +19,7 @@ export default function SuggestionsScreen({ navigation }) {
   const [bookmarked, setBookmarked] = useState([false, false]);
 
   const handleSubmit = () => {
-    navigation.navigate("SelectedSuggestions");
+    navigation.navigate("SelectedSuggestionsHomeStack");
   };
 
   const userInfo = useSelector((state) => state.userInfo.value);
@@ -92,7 +92,9 @@ export default function SuggestionsScreen({ navigation }) {
 
   const selectTrip = (tripIndex) => {
     console.log("tripIndex: ", tripIndex);
-    navigation.navigate("SelectedSuggestions", { trip: trips[tripIndex] });
+    navigation.navigate("SelectedSuggestionsHomeStack", {
+      trip: trips[tripIndex],
+    });
   };
 
   const formattedDate = (stringDate) => {

@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   StatusBar,
+  Alert,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import GradientFontColor from "./GradientFontColor";
@@ -23,7 +24,7 @@ export default function SignupForm({ submit, closeModal }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [showFieldsError, setShowFieldsError] = useState(false);
+  // const [showFieldsError, setShowFieldsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   const EMAIL_REGEX =
@@ -46,31 +47,21 @@ export default function SignupForm({ submit, closeModal }) {
         confirmPassword,
       ])
     ) {
-      setShowFieldsError(true);
-      setErrorMsg("Some fields are empty !");
-      return;
+      return Alert.alert("Some fields are missing!");
     }
     if (!EMAIL_REGEX.test(email)) {
-      setShowFieldsError(true);
-      setErrorMsg("Email is not valid !");
-      return;
+      return Alert.alert("Wrong email adress");
     }
     if (password !== confirmPassword) {
-      setShowFieldsError(true);
-      setErrorMsg("passwords do not match !");
-      return;
+      return Alert.alert("Password doesn't match!");
     }
     if (password.length < 5) {
-      setShowFieldsError(true);
-      setErrorMsg("password must be at least 5 characters long !");
-      return;
+      return Alert.alert("Some fields are missing!");
     }
     const response = await submit(firstname, lastname, email, password);
     //console.log(response);
     if (!response.result) {
-      setShowFieldsError(true);
-      setErrorMsg(response.error);
-      return;
+      return Alert.alert("Some fields are missing!");
     }
   };
 
@@ -86,9 +77,6 @@ export default function SignupForm({ submit, closeModal }) {
         <GradientFontColor style={styles.title}>Sign</GradientFontColor>
         <Text style={styles.titleUp}>up</Text>
       </View>
-      {showFieldsError && (
-        <CustomText style={styles.fieldsError}>{errorMsg}</CustomText>
-      )}
 
       <KeyboardAvoidingView
         enabled={true}
@@ -192,13 +180,13 @@ const styles = StyleSheet.create({
     color: "#515151",
     marginLeft: 10,
   },
-  fieldsError: {
-    fontSize: 20,
-    justifyContent: "center",
-    alignItems: "center",
-    color: "red",
-    fontWeight: "bold",
-  },
+  // fieldsError: {
+  //   fontSize: 20,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   color: "red",
+  //   fontWeight: "bold",
+  // },
 
   inputsContainerRow: {
     width: "100%",

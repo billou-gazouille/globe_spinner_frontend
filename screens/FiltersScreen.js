@@ -16,7 +16,6 @@ import {
 } from "react-native";
 // import DatePickerAndroid from "../components/android/DatePickerAndroid";
 import CustomCheckbox from "../components/CustomCheckbox";
-// import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import { useDispatch, useSelector } from "react-redux";
 import { addFiltersToStore } from "../reducers/filters";
@@ -141,7 +140,7 @@ export default function FiltersScreen({ navigation }) {
           </View>
           <View style={styles.date}></View>
         </ImageBackground>
-        {/* <DatePickerIOS
+        <DatePickerIOS
           departureDate={departureDate}
           returnDate={returnDate}
           onDepartureDateChange={(event, selectedDate) => {
@@ -150,7 +149,7 @@ export default function FiltersScreen({ navigation }) {
           onReturnDateChange={(event, selectedDate) => {
             setReturnDate(selectedDate || returnDate);
           }}
-        /> */}
+        />
         <ImageBackground
           source={require("../assets/bendy-dotted-line_2.jpg")}
           style={styles.imageBackground}
