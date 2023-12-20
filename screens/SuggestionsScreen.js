@@ -143,7 +143,9 @@ export default function SuggestionsScreen({ navigation }) {
                 accommodationType={t.accommodation.accommodationBase.type}
                 leaveTransportType={t.outboundJourney.type}
                 returnTransportType={t.inboundJourney.type}
-                activities={actvitiesMax3.map((a) => a.activityBase.name)}
+                activities={actvitiesMax3.map((a) =>
+                  a.activityBase.name.replace(/\d/g, "")
+                )}
                 img={
                   imageURLs[i]
                     ? { uri: imageURLs[i] }

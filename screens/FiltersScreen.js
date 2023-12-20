@@ -107,7 +107,6 @@ export default function FiltersScreen({ navigation }) {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.keyboardAvoidingContainer}
     >
       <ScrollView contentContainerStyle={styles.container}>
         <StatusBar style="auto" />
