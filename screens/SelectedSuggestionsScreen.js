@@ -79,7 +79,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
   // payment
   const handleContinueToPaymentPress = () => {
-    navigation.navigate("Payment");
+    navigation.navigate("PaymentHomeStack");
   };
 
   return (
@@ -137,6 +137,8 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         </View>
       </View>
 
+      {/* Transports */}
+
       <View style={styles.headingAndSectionPair}>
         <GradientFontColor style={styles.text}>Transports</GradientFontColor>
         <View
@@ -180,6 +182,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
               </CustomText>
             </View>
           </View>
+
           <View style={{ width: "50%", alignItems: "center" }}>
             <CustomText
               style={{
@@ -189,8 +192,10 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
                 marginBottom: 10,
               }}
             >
-              Inbound
+              {" "}
+              Inbound{" "}
             </CustomText>
+
             <CustomText style={{ fontSize: 16 }}>
               {trip.destination.name.substring(0, 3).toUpperCase()}
               <CustomText>&#8594;</CustomText>{" "}

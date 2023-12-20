@@ -19,7 +19,7 @@ export default function SuggestionsScreen({ navigation }) {
   const [bookmarked, setBookmarked] = useState([false, false]);
 
   const handleSubmit = () => {
-    navigation.navigate("SelectedSuggestions");
+    navigation.navigate("SelectedSuggestionsHomeStack");
   };
 
   const userInfo = useSelector((state) => state.userInfo.value);

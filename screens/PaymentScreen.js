@@ -6,11 +6,11 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import Checkbox from "expo-checkbox";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons, FontAwesome, Entypo } from "@expo/vector-icons";
-import BackButton from "../components/BackButton";
 import {
   useFonts,
   NunitoSans_400Regular,
@@ -21,7 +21,7 @@ const PaymentScreen = () => {
   const [checked, setChecked] = useState(false);
 
   const handlePayPress = () => {
-    navigation.navigate("Recap");
+    navigation.navigate("RecapHomeStack");
   };
 
   const [fontsLoaded] = useFonts({
@@ -32,100 +32,100 @@ const PaymentScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <BackButton navigation={navigation} />
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={[styles.subtitleContainer, { height: 30 }]}>
+          <MaterialIcons name="person" size={24} color="#BA99FE" />
+          <Text
+            style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
+          >
+            Bank Card User
+          </Text>
+        </View>
 
-      <View style={[styles.subtitleContainer, { height: 30 }]}>
-        <MaterialIcons name="person" size={24} color="#BA99FE" />
-        <Text
-          style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
-        >
-          Bank Card User
-        </Text>
-      </View>
-
-      <TextInput
-        style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
-        placeholder="Enter your name"
-      />
-
-      <View style={styles.subtitleContainer}>
-        <FontAwesome name="credit-card" size={24} color="#BA99FE" />
-        <Text
-          style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
-        >
-          Card Number
-        </Text>
-      </View>
-      <TextInput
-        style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
-        placeholder="Enter card number"
-      />
-
-      <View style={styles.subtitleContainer}>
-        <Entypo name="calendar" size={24} color="#BA99FE" />
-        <Text
-          style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
-        >
-          Expiry Date
-        </Text>
-      </View>
-      <TextInput
-        style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
-        placeholder="MM/YYYY"
-      />
-
-      <View style={styles.subtitleContainer}>
-        <FontAwesome name="barcode" size={24} color="#BA99FE" />
-        <Text
-          style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
-        >
-          Code
-        </Text>
-      </View>
-      <TextInput
-        style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
-        placeholder="CVV"
-      />
-
-      <View style={styles.checkboxContainer}>
-        <Checkbox
-          style={styles.checkbox}
-          value={checked}
-          onValueChange={setChecked}
+        <TextInput
+          style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
+          placeholder="Enter your name"
         />
+
+        <View style={styles.subtitleContainer}>
+          <FontAwesome name="credit-card" size={24} color="#BA99FE" />
+          <Text
+            style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
+          >
+            Card Number
+          </Text>
+        </View>
+        <TextInput
+          style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
+          placeholder="Enter card number"
+        />
+
+        <View style={styles.subtitleContainer}>
+          <Entypo name="calendar" size={24} color="#BA99FE" />
+          <Text
+            style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
+          >
+            Expiry Date
+          </Text>
+        </View>
+        <TextInput
+          style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
+          placeholder="MM/YYYY"
+        />
+
+        <View style={styles.subtitleContainer}>
+          <FontAwesome name="barcode" size={24} color="#BA99FE" />
+          <Text
+            style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
+          >
+            Code
+          </Text>
+        </View>
+        <TextInput
+          style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
+          placeholder="CVV"
+        />
+
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            style={styles.checkbox}
+            value={checked}
+            onValueChange={setChecked}
+          />
+          <Text
+            style={[
+              styles.checkboxLabel,
+              { fontFamily: "NunitoSans_400Regular" },
+            ]}
+          >
+            Do you want to save your bank card details?
+          </Text>
+        </View>
+
         <Text
-          style={[
-            styles.checkboxLabel,
-            { fontFamily: "NunitoSans_400Regular" },
-          ]}
+          style={[styles.amountText, { fontFamily: "NunitoSans_400Regular" }]}
         >
-          Do you want to save your bank card details?
+          Amount: 1400£
         </Text>
+
+        <TouchableOpacity style={styles.payButton} onPress={handlePayPress}>
+          <Text
+            style={[
+              styles.payButtonText,
+              { fontFamily: "NunitoSans_400Regular" },
+            ]}
+          >
+            Pay
+          </Text>
+        </TouchableOpacity>
+
+        <Image
+          source={require("../assets/bendy-dotted-line_2.jpg")}
+          style={styles.mapImage}
+        />
       </View>
-
-      <Text
-        style={[styles.amountText, { fontFamily: "NunitoSans_400Regular" }]}
-      >
-        Amount: 1400£
-      </Text>
-
-      <TouchableOpacity style={styles.payButton} onPress={handlePayPress}>
-        <Text
-          style={[
-            styles.payButtonText,
-            { fontFamily: "NunitoSans_400Regular" },
-          ]}
-        >
-          Pay
-        </Text>
-      </TouchableOpacity>
-
-      <Image
-        source={require("../assets/bendy-dotted-line_2.jpg")}
-        style={styles.mapImage}
-      />
-    </View>
+    </ScrollView>
   );
 };
 
