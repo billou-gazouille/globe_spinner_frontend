@@ -43,7 +43,7 @@ export default function ProfileScreen({ navigation }) {
   const signIn = async (email, password) => {
     //console.log("handleSubmitSigninForm");
     // setIsSigningIn(false);
-    const data = await fetch("http://192.168.43.25:3000/users/signin", {
+    const data = await fetch("http://10.0.2.209:3000/users/signin", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -65,7 +65,7 @@ export default function ProfileScreen({ navigation }) {
 
   const signUp = async (firstName, lastName, email, password) => {
     // setIsSigningUp(false);
-    const data = await fetch("http://192.168.43.25:3000/users/signup", {
+    const data = await fetch("http://10.0.2.209:3000/users/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstName, lastName, email, password }),

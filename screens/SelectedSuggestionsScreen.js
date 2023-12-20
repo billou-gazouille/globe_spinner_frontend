@@ -12,13 +12,14 @@ import {
 import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import PaymentScreen from "../screens/PaymentScreen";
 
 export default function SelectedSuggestionsScreen({ navigation, route }) {
   const trip = route.params.trip;
 
   // payment coucou
   const handleContinueToPaymentPress = () => {
-    navigation.navigate("Payment");
+    navigation.navigate("PaymentHomeStack");
   };
 
   console.log("-----------------------------");
@@ -92,6 +93,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <StatusBar style="auto" />
+      {/* Accommodation  */}
       <Image
         source={require("../assets/noImage.jpg")}
         style={styles.cityImg}
@@ -101,20 +103,20 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         <CustomText style={styles.text}>Accommodation</CustomText>
         <View style={styles.sectionContainer}>
           <CustomText style={styles.accommodationName}>
-            Hostel Espresso City Center
+            {trip.accommodation.accommodationBase.name}
           </CustomText>
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1, marginLeft: 20 }}>
               <View style={{ marginTop: 15, flexDirection: "row" }}>
                 <FontAwesome name="users" size={25} color="black" />
                 <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                  3
+                  {trip.numberOfTravelers}Travelers
                 </CustomText>
               </View>
               <View style={{ marginTop: 20, flexDirection: "row" }}>
                 <FontAwesome name="clock-o" size={25} color="black" />
                 <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                  4 nights
+                  {trip.nbrOfNights} nights
                 </CustomText>
               </View>
             </View>
@@ -130,16 +132,19 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
               <FontAwesome name="map-marker" size={30} color="black" />
               <View>
                 <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
-                  Overtoom 57, 1054 HC
+                  {trip.accommodation.accommodationBase.address}
                 </CustomText>
                 <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
-                  Amsterdam, Netherlands
+                  {trip.accommodation.accommodationBase.location.name},{" "}
+                  {trip.accommodation.accommodationBase.location.country}
                 </CustomText>
               </View>
             </View>
           </View>
         </View>
       </View>
+
+      {/* Transports */}
 
       <View style={styles.headingAndSectionPair}>
         <CustomText style={styles.text}>Transports</CustomText>
@@ -169,19 +174,25 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
             >
               Outbound
             </CustomText>
-            <CustomText style={{ fontSize: 16 }}>
-              LYS <CustomText>&#8594;</CustomText> AMS
+
+            <CustomText style={styles.accommodationName}>
+              Type: {trip.outboundJourney.type}
             </CustomText>
+
             <FontAwesome name="train" size={25} color="black" />
             <View style={{ marginTop: 10 }}>
-              <CustomText style={{ fontSize: 14 }}>
-                Dep: 16 Feb, 10:30
+              <CustomText style={styles.accommodationName}>
+                Departure: {trip.outboundJourney.departure}
               </CustomText>
               <CustomText style={{ fontSize: 14 }}>
-                Arr: 16 Feb, 14:50
+                Arrival: {trip.outboundJourney.arrival}
+              </CustomText>
+              <CustomText style={styles.accommodationName}>
+                Price: {trip.outboundJourney.price}€
               </CustomText>
             </View>
           </View>
+
           <View style={{ width: "50%", alignItems: "center" }}>
             <CustomText
               style={{
@@ -191,18 +202,24 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
                 marginBottom: 10,
               }}
             >
-              Inbound
+              {" "}
+              Inbound{" "}
             </CustomText>
+
             <CustomText style={{ fontSize: 16 }}>
-              AMS <CustomText>&#8594;</CustomText> LYS
+              Type: {trip.inboundJourney.type}
+              <CustomText>&#8594;</CustomText> LYS
             </CustomText>
             <FontAwesome name="plane" size={25} color="black" />
             <View style={{ marginTop: 10 }}>
               <CustomText style={{ fontSize: 14 }}>
-                Dep: 29 Feb, 18:40
+                Departure: {trip.inboundJourney.departure}
               </CustomText>
               <CustomText style={{ fontSize: 14 }}>
-                Arr: 29 Feb, 20:50
+                Arrival: {trip.inboundJourney.arrival}
+              </CustomText>
+              <CustomText style={styles.accommodationName}>
+                Price: {trip.inboundJourney.price}€
               </CustomText>
             </View>
           </View>
@@ -222,7 +239,16 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
             height: activities.length * 150,
           }}
         >
-          {activities}
+        {activities.map((activity, index) => (
+ <View key={index}>
+ <Text>Name: {activity.name}</Text>
+ <Text>Start Time: {activity.startTime}</Text>
+ <Text>End Time: {activity.endTime}</Text>
+ <Text>Price: {activity.price}</Text>
+ <Text>Location: {activity.location}</Text>
+</View>
+))}
+ 
         </View>
       </View>
       <BackButton navigation={navigation} />
@@ -241,7 +267,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   scrollViewContent: {
-    // flex: 1,
+   //flex: 1,
     // height: '500%',
     //flexGrow: 1,
     justifyContent: "space-between",
