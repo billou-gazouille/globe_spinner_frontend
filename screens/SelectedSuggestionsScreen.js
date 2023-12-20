@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  useWindowDimensions,
 } from "react-native";
 // import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
@@ -16,6 +17,9 @@ import moment from "moment";
 
 const colors = {
   black: "#515151",
+  pink: "#EDB8FE",
+  purple: "#BA99FE",
+  blue: "#3972D9",
 };
 
 export default function SelectedSuggestionsScreen({ navigation, route }) {
@@ -25,7 +29,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
   const iconMapping = {
     Train: "train",
-    Airplane: "airplane",
+    Airplane: "plane",
     Coach: "bus",
   };
   const iconOutbound = iconMapping[outboundJourneyType] || "defaultIconName";
@@ -36,74 +40,45 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
   // console.log("trip", trip);
 
-  // payment coucou
-  const handleContinueToPaymentPress = () => {
-    navigation.navigate("Payment");
-  };
-
-  const activity = (name, date, timeStart, timeEnd, price, location) => {
+  const activities = trip.activities.map((e, i) => {
     return (
-      <View
-        style={{ height: 150, borderBottomWidth: 1, borderStyle: "dashed" }}
-      >
-        <CustomText style={styles.accommodationName}>
-          {name} - {date}
+      <View key={i} style={styles.activity}>
+        <CustomText style={styles.activityName}>
+          {e.activityBase.name.replace(/\d/g, "")} {"\n"}
+          {moment(e.startTime).format("DD MMM")}
         </CustomText>
-        <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-          <View style={{ flex: 1, marginLeft: 20 }}>
-            <View style={{ marginTop: 15, flexDirection: "row" }}>
-              <FontAwesome name="clock-o" size={25} color={colors.black} />
-              <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                {timeStart} to {timeEnd}
-              </CustomText>
-            </View>
-            <View style={{ marginTop: 20, flexDirection: "row" }}>
-              <FontAwesome name="money" size={25} color={colors.black} />
-              <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                {price}€
-              </CustomText>
-            </View>
-          </View>
-          <View
-            style={{
-              width: "60%",
-              height: "100%",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
+        <View
+          style={[
+            styles.activityContent,
+            i === trip.activities.length - 1
+              ? styles.lastActivityContent
+              : null,
+          ]}
+        >
+          <CustomText>
+            <FontAwesome name="clock-o" size={25} color={colors.black} />
+            {"  "}
+            {moment(e.startTime).format("HH:mm")} to{" "}
+            {moment(e.endTime).format("HH:mm")}
+          </CustomText>
+          <CustomText style={{ marginVertical: 10 }}>
+            <FontAwesome name="money" size={25} color={colors.black} />
+            {"  "}
+            {e.price} €
+          </CustomText>
+          <CustomText>
             <FontAwesome name="map-marker" size={30} color={colors.black} />
-            <View>
-              <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
-                {location}
-              </CustomText>
-            </View>
-          </View>
+            {/* {location} */}
+          </CustomText>
         </View>
       </View>
     );
-  };
+  });
 
-  const activities = [
-    activity(
-      "Amsterdam Museum",
-      "1 Mar",
-      "14h00",
-      "17h00",
-      25,
-      "Amstel 51, 1018 DR"
-    ),
-    activity("Some concert", "2 Mar", "10h00", "12h00", 20, "512 Canal Street"),
-    activity(
-      "Greenshouse effect coffeeshop",
-      "3 Mar",
-      "15h00",
-      "17h00",
-      18,
-      "Nieuwmarkt 14, 1012 CR"
-    ),
-  ];
+  // payment
+  const handleContinueToPaymentPress = () => {
+    navigation.navigate("Payment");
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -226,22 +201,10 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         </View>
       </View>
 
-      <View
-        style={{
-          ...styles.headingAndSectionPair,
-          height: activities.length * 150 + 50,
-        }}
-      >
-        <CustomText style={styles.text}>Activities</CustomText>
-        <View
-          style={{
-            ...styles.sectionContainer,
-            height: activities.length * 150,
-          }}
-        >
-          {activities}
-        </View>
-      </View>
+      <CustomText style={[styles.text, { marginTop: 50 }]}>
+        Activities
+      </CustomText>
+      <View style={styles.activitiesContainer}>{activities}</View>
       {/* <BackButton navigation={navigation} /> */}
 
       <TouchableOpacity
@@ -278,7 +241,7 @@ const styles = StyleSheet.create({
     // color: '#ECECEC',
     shadowColor: colors.black,
     elevation: 10,
-    backgroundColor: "#DCDCDC",
+    backgroundColor: "#ECECEC",
     borderRadius: 25,
   },
   headingAndSectionPair: {
@@ -295,15 +258,47 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   continueToPaymentButton: {
-    backgroundColor: "#3498db",
-    paddingVertical: 10,
+    backgroundColor: colors.blue,
+    paddingVertical: 15,
     paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 50,
     margin: 50,
   },
   continueToPaymentButtonText: {
+    textTransform: "uppercase",
     color: "white",
     fontSize: 16,
+    // fontWeight: "bold",
+    letterSpacing: 1.5,
+  },
+  // ---- ACTIVITIES -----
+  activitiesContainer: {
+    backgroundColor: "#ECECEC",
+    borderRadius: 25,
+    minWidth: "90%",
+    shadowColor: colors.black,
+    elevation: 10,
+    marginTop: 20,
+  },
+  activity: {
+    paddingTop: 15,
+    paddingHorizontal: 25,
+    // display: "block",
+  },
+  lastActivityContent: {
+    borderBottomWidth: 0,
+    // paddingVertical: 15,
+  },
+  activityContent: {
+    // marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 20,
+    borderBottomWidth: 2,
+    borderStyle: "dashed",
+    borderBottomColor: colors.purple,
+  },
+  activityName: {
+    lineHeight: 28,
     fontWeight: "bold",
   },
 });
