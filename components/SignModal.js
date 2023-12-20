@@ -1,35 +1,41 @@
-import React from 'react';
-import { View, Modal, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React from "react";
+import { View, Modal, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { CustomText } from './CustomText';
+import { CustomText } from "./CustomText";
+import GradientFontColor from "./GradientFontColor";
 
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-
-const SignModal = ({onClose, onSignIn, onSignUp, closeSignModal }) => {
-
-  const userInfo = useSelector(state => state.userInfo.value);
+const SignModal = ({ onClose, onSignIn, onSignUp, closeSignModal }) => {
+  const userInfo = useSelector((state) => state.userInfo.value);
   console.log(userInfo.isConnected);
-  
+
   //const dispatch = useDispatch();
 
   return (
     // plus de "Modal" car ça bug vraiment trop
     <View style={styles.container}>
-      <TouchableOpacity 
-        style={styles.closeButton} 
-        onPress={closeSignModal}
-      >
-        <FontAwesome name='close' size={30} color='black'/>
+      <View>
+        <GradientFontColor style={styles.title}>Welcome !</GradientFontColor>
+      </View>
+      <TouchableOpacity style={styles.closeButton} onPress={closeSignModal}>
+        <FontAwesome name="close" size={30} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={onSignIn}>
-        <CustomText style={styles.buttonText}>Sign In</CustomText> 
-      </TouchableOpacity>
-      <View style={{alignItems: 'center'}}>
-        <CustomText style={{fontSize: 18}}>Don't have an account ?</CustomText> 
-        <TouchableOpacity style={styles.button} onPress={onSignUp}>
-          <CustomText style={styles.buttonText}>Sign Up</CustomText>
+      <View style={styles.buttonContainer}>
+        <CustomText style={{ fontSize: 18 }}>
+          Already have an account ?
+        </CustomText>
+        <TouchableOpacity style={styles.button} onPress={onSignIn}>
+          <CustomText style={styles.buttonText}>Sign In</CustomText>
         </TouchableOpacity>
+        <View style={{ alignItems: "center", marginTop: 150 }}>
+          <CustomText style={{ fontSize: 18 }}>
+            Don't have an account ?
+          </CustomText>
+          <TouchableOpacity style={styles.button} onPress={onSignUp}>
+            <CustomText style={styles.buttonText}>Sign Up</CustomText>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -37,50 +43,66 @@ const SignModal = ({onClose, onSignIn, onSignUp, closeSignModal }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'space-evenly', 
-    alignItems: 'center',
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
     // borderWidth: 1,
     // borderColor: 'red',
+  },
+  titleContainer: {
+    flexDirection: "row",
+    marginBottom: 30,
+  },
+  title: {
+    fontSize: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: "KronaOne_400Regular",
+    marginTop: 50,
+    marginBottom: 30,
+  },
+  buttonContainer: {
+    flex: 1,
+    marginVertical: 100,
   },
   button: {
     marginVertical: 10,
     padding: 10,
-    backgroundColor: '#3972D9',
+    backgroundColor: "#3972D9",
     borderRadius: 25,
     width: 200,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   cancelButton: {
     marginTop: 10,
     padding: 10,
-    backgroundColor: '#3972D9',
+    backgroundColor: "#3972D9",
     borderRadius: 5,
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
   },
   cancelButtonText: {
-    color: '#F5F5F5',
+    color: "#F5F5F5",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   closeButton: {
     width: 40,
     height: 40,
-    right: 20,
-    top: 20,
+    right: 10,
+    top: 15,
     //backgroundColor: 'orange',
-    borderWidth: 2,
-    position: 'absolute',
+    // borderWidth: 2,
+    position: "absolute",
     borderRadius: 10,
-    justifyContent: 'center', 
-    alignItems: 'center', 
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

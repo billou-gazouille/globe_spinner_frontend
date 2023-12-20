@@ -8,87 +8,78 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  useWindowDimensions,
 } from "react-native";
-import BackButton from "../components/BackButton";
+// import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import PaymentScreen from "../screens/PaymentScreen";
+import moment from "moment";
+import GradientFontColor from "../components/GradientFontColor";
+
+const colors = {
+  black: "#515151",
+  pink: "#EDB8FE",
+  purple: "#BA99FE",
+  blue: "#3972D9",
+};
 
 export default function SelectedSuggestionsScreen({ navigation, route }) {
   const trip = route.params.trip;
+  const outboundJourneyType = trip.outboundJourney.type;
+  const inboundJourneyType = trip.inboundJourney.type;
 
-  // payment coucou
-  const handleContinueToPaymentPress = () => {
-    navigation.navigate("PaymentHomeStack");
+  const iconMapping = {
+    Train: "train",
+    Airplane: "plane",
+    Coach: "bus",
+  };
+  const iconOutbound = iconMapping[outboundJourneyType] || "defaultIconName";
+  const iconInbound = iconMapping[inboundJourneyType] || "defaultIconName";
+  const formattedDate = (date) => {
+    return moment(date).format("DD MMM, HH:mm");
   };
 
-  console.log("-----------------------------");
-  console.log(trip.accommodation.accommodationBase.name);
-  console.log("-----------------------------");
+  // console.log("trip", trip);
 
-  const activity = (name, date, timeStart, timeEnd, price, location) => {
+  const activities = trip.activities.map((e, i) => {
     return (
-      <View
-        style={{ height: 150, borderBottomWidth: 1, borderStyle: "dashed" }}
-      >
-        <CustomText style={styles.accommodationName}>
-          {name} - {date}
+      <View key={i} style={styles.activity}>
+        <CustomText style={styles.activityName}>
+          {e.activityBase.name.replace(/\d/g, "")} -{" "}
+          {moment(e.startTime).format("DD MMM")}
         </CustomText>
-        <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-          <View style={{ flex: 1, marginLeft: 20 }}>
-            <View style={{ marginTop: 15, flexDirection: "row" }}>
-              <FontAwesome name="clock-o" size={25} color="black" />
-              <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                {timeStart} to {timeEnd}
-              </CustomText>
-            </View>
-            <View style={{ marginTop: 20, flexDirection: "row" }}>
-              <FontAwesome name="money" size={25} color="black" />
-              <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                {price}€
-              </CustomText>
-            </View>
-          </View>
-          <View
-            style={{
-              width: "60%",
-              height: "100%",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-              alignItems: "center",
-            }}
-          >
-            <FontAwesome name="map-marker" size={30} color="black" />
-            <View>
-              <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
-                {location}
-              </CustomText>
-            </View>
-          </View>
+        <View
+          style={[
+            styles.activityContent,
+            i === trip.activities.length - 1
+              ? styles.lastActivityContent
+              : null,
+          ]}
+        >
+          <CustomText>
+            <FontAwesome name="clock-o" size={25} color={colors.purple} />
+            {"  "}
+            {moment(e.startTime).format("HH:mm")} to{" "}
+            {moment(e.endTime).format("HH:mm")}
+          </CustomText>
+          <CustomText style={{ marginVertical: 10 }}>
+            <FontAwesome name="money" size={25} color={colors.purple} />
+            {"  "}
+            {e.price} €
+          </CustomText>
+          <CustomText>
+            <FontAwesome name="map-marker" size={30} color={colors.purple} />
+            {/* {location} */}
+          </CustomText>
         </View>
       </View>
     );
-  };
+  });
 
-  const activities = [
-    activity(
-      "Amsterdam Museum",
-      "1 Mar",
-      "14h00",
-      "17h00",
-      25,
-      "Amstel 51, 1018 DR"
-    ),
-    activity("Some concert", "2 Mar", "10h00", "12h00", 20, "512 Canal Street"),
-    activity(
-      "Greenshouse effect coffeeshop",
-      "3 Mar",
-      "15h00",
-      "17h00",
-      18,
-      "Nieuwmarkt 14, 1012 CR"
-    ),
-  ];
+  // payment
+  const handleContinueToPaymentPress = () => {
+    navigation.navigate("Payment");
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -100,7 +91,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
       ></Image>
 
       <View style={styles.headingAndSectionPair}>
-        <CustomText style={styles.text}>Accommodation</CustomText>
+        <GradientFontColor style={styles.text}>Accommodation</GradientFontColor>
         <View style={styles.sectionContainer}>
           <CustomText style={styles.accommodationName}>
             {trip.accommodation.accommodationBase.name}
@@ -108,13 +99,13 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1, marginLeft: 20 }}>
               <View style={{ marginTop: 15, flexDirection: "row" }}>
-                <FontAwesome name="users" size={25} color="black" />
+                <FontAwesome name="users" size={25} color={colors.purple} />
                 <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
-                  {trip.numberOfTravelers}Travelers
+                  {trip.numberOfTravelers}
                 </CustomText>
               </View>
               <View style={{ marginTop: 20, flexDirection: "row" }}>
-                <FontAwesome name="clock-o" size={25} color="black" />
+                <FontAwesome name="clock-o" size={25} color={colors.purple} />
                 <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
                   {trip.nbrOfNights} nights
                 </CustomText>
@@ -129,14 +120,10 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
                 alignItems: "center",
               }}
             >
-              <FontAwesome name="map-marker" size={30} color="black" />
+              <FontAwesome name="map-marker" size={30} color={colors.purple} />
               <View>
                 <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
                   {trip.accommodation.accommodationBase.address}
-                </CustomText>
-                <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
-                  {trip.accommodation.accommodationBase.location.name},{" "}
-                  {trip.accommodation.accommodationBase.location.country}
                 </CustomText>
               </View>
             </View>
@@ -147,7 +134,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
       {/* Transports */}
 
       <View style={styles.headingAndSectionPair}>
-        <CustomText style={styles.text}>Transports</CustomText>
+        <GradientFontColor style={styles.text}>Transports</GradientFontColor>
         <View
           style={{
             ...styles.sectionContainer,
@@ -174,21 +161,18 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
             >
               Outbound
             </CustomText>
-
-            <CustomText style={styles.accommodationName}>
-              Type: {trip.outboundJourney.type}
+            <CustomText style={{ fontSize: 16 }}>
+              {trip.departureLocation.name.substring(0, 3).toUpperCase()}{" "}
+              <CustomText>&#8594;</CustomText>{" "}
+              {trip.destination.name.substring(0, 3).toUpperCase()}
             </CustomText>
-
-            <FontAwesome name="train" size={25} color="black" />
+            <FontAwesome name={iconOutbound} size={25} color={colors.purple} />
             <View style={{ marginTop: 10 }}>
-              <CustomText style={styles.accommodationName}>
-                Departure: {trip.outboundJourney.departure}
+              <CustomText style={{ fontSize: 14 }}>
+                Dep: {formattedDate(trip.outboundJourney.departure)}
               </CustomText>
               <CustomText style={{ fontSize: 14 }}>
-                Arrival: {trip.outboundJourney.arrival}
-              </CustomText>
-              <CustomText style={styles.accommodationName}>
-                Price: {trip.outboundJourney.price}€
+                Arr: {formattedDate(trip.outboundJourney.arrival)}
               </CustomText>
             </View>
           </View>
@@ -207,51 +191,28 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
             </CustomText>
 
             <CustomText style={{ fontSize: 16 }}>
-              Type: {trip.inboundJourney.type}
-              <CustomText>&#8594;</CustomText> LYS
+              {trip.destination.name.substring(0, 3).toUpperCase()}
+              <CustomText>&#8594;</CustomText>{" "}
+              {trip.departureLocation.name.substring(0, 3).toUpperCase()}
             </CustomText>
-            <FontAwesome name="plane" size={25} color="black" />
+            <FontAwesome name={iconInbound} size={25} color={colors.purple} />
             <View style={{ marginTop: 10 }}>
               <CustomText style={{ fontSize: 14 }}>
-                Departure: {trip.inboundJourney.departure}
+                Dep: {formattedDate(trip.inboundJourney.departure)}
               </CustomText>
               <CustomText style={{ fontSize: 14 }}>
-                Arrival: {trip.inboundJourney.arrival}
-              </CustomText>
-              <CustomText style={styles.accommodationName}>
-                Price: {trip.inboundJourney.price}€
+                Arr: {formattedDate(trip.inboundJourney.arrival)}
               </CustomText>
             </View>
           </View>
         </View>
       </View>
 
-      <View
-        style={{
-          ...styles.headingAndSectionPair,
-          height: activities.length * 150 + 50,
-        }}
-      >
-        <CustomText style={styles.text}>Activities</CustomText>
-        <View
-          style={{
-            ...styles.sectionContainer,
-            height: activities.length * 150,
-          }}
-        >
-        {activities.map((activity, index) => (
- <View key={index}>
- <Text>Name: {activity.name}</Text>
- <Text>Start Time: {activity.startTime}</Text>
- <Text>End Time: {activity.endTime}</Text>
- <Text>Price: {activity.price}</Text>
- <Text>Location: {activity.location}</Text>
-</View>
-))}
- 
-        </View>
-      </View>
-      <BackButton navigation={navigation} />
+      <GradientFontColor style={[styles.text, { marginTop: 50 }]}>
+        Activities
+      </GradientFontColor>
+      <View style={styles.activitiesContainer}>{activities}</View>
+      {/* <BackButton navigation={navigation} /> */}
 
       <TouchableOpacity
         style={styles.continueToPaymentButton}
@@ -275,6 +236,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 28,
+    fontWeight: "bold",
   },
   cityImg: {
     width: "100%",
@@ -285,9 +247,9 @@ const styles = StyleSheet.create({
     height: 150,
     marginTop: 10,
     // color: '#ECECEC',
-    shadowColor: "black",
+    shadowColor: colors.black,
     elevation: 10,
-    backgroundColor: "#DCDCDC",
+    backgroundColor: "#ECECEC",
     borderRadius: 25,
   },
   headingAndSectionPair: {
@@ -304,15 +266,47 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   continueToPaymentButton: {
-    backgroundColor: "#3498db",
-    paddingVertical: 10,
+    backgroundColor: colors.blue,
+    paddingVertical: 15,
     paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 50,
     margin: 50,
   },
   continueToPaymentButtonText: {
+    textTransform: "uppercase",
     color: "white",
     fontSize: 16,
+    // fontWeight: "bold",
+    letterSpacing: 1,
+  },
+  // ---- ACTIVITIES -----
+  activitiesContainer: {
+    backgroundColor: "#ECECEC",
+    borderRadius: 25,
+    minWidth: "90%",
+    shadowColor: colors.black,
+    elevation: 10,
+    marginTop: 10,
+  },
+  activity: {
+    paddingTop: 15,
+    paddingHorizontal: 25,
+    // display: "block",
+  },
+  lastActivityContent: {
+    borderBottomWidth: 0,
+    // paddingVertical: 15,
+  },
+  activityContent: {
+    // marginTop: 10,
+    paddingTop: 10,
+    paddingBottom: 20,
+    borderBottomWidth: 3,
+    // borderStyle: "dashed",
+    borderBottomColor: "white",
+  },
+  activityName: {
+    lineHeight: 28,
     fontWeight: "bold",
   },
 });

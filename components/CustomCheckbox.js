@@ -10,14 +10,14 @@ const CustomCheckbox = ({ selectTransportationMode, text }) => {
       unfillColor="#FFFFFF"
       text={text}
       isChecked={true}
-      iconStyle={{ borderColor: "#FFFFFF" }}
+      iconStyle={{ borderColor: "#FFFFFF", marginLeft: 10 }}
       innerIconStyle={{ borderWidth: 2 }}
       textStyle={{
         fontFamily: "NunitoSans_400Regular",
         textDecorationLine: "none",
-        marginTop: 15,
         fontSize: 18,
         color: "#515151",
+        marginLeft: -10,
       }}
       onPress={() => selectTransportationMode(text)}
     />
