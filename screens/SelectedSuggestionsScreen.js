@@ -78,7 +78,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
   // payment
   const handleContinueToPaymentPress = () => {
-    navigation.navigate("Payment");
+    navigation.navigate("PaymentHomeStack");
   };
 
   return (
