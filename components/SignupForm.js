@@ -9,15 +9,19 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   StatusBar,
+  useWindowDimensions,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import GradientFontColor from "./GradientFontColor";
 import { CustomText } from "./CustomText";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { Header } from "@react-navigation/elements";
 
 export default function SignupForm({ submit, closeModal }) {
+  const { width } = useWindowDimensions();
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -66,106 +70,114 @@ export default function SignupForm({ submit, closeModal }) {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <View>
-        <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-          <FontAwesome name="close" size={30} color="black" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.titleContainer}>
-        <GradientFontColor style={styles.title}>Sign</GradientFontColor>
-        <Text style={styles.titleUp}>up</Text>
-      </View>
-
-      <KeyboardAvoidingView
-        enabled={true}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <View style={styles.inputsContainerRow}>
-          <View style={styles.textAndInput}>
-            <CustomText style={{ fontSize: 20, color: "black" }}>
-              first name
-            </CustomText>
-            <TextInput
-              placeholder="firstname"
-              style={styles.textInput}
-              value={firstname}
-              onChangeText={(text) => setFirstname(text)}
-              autoFocus={true}
-            ></TextInput>
-          </View>
-
-          <View style={styles.textAndInput}>
-            <CustomText style={{ fontSize: 20, color: "black" }}>
-              last name
-            </CustomText>
-            <TextInput
-              placeholder="lastname"
-              style={styles.textInput}
-              value={lastname}
-              onChangeText={(text) => setLastname(text)}
-            ></TextInput>
-          </View>
-
-          <View style={styles.textAndInput}>
-            <CustomText style={{ fontSize: 20, color: "black" }}>
-              email
-            </CustomText>
-            <TextInput
-              placeholder="email"
-              style={styles.textInput}
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-            ></TextInput>
-          </View>
-
-          <View style={styles.textAndInput}>
-            <CustomText style={{ fontSize: 20, color: "black" }}>
-              password
-            </CustomText>
-            <TextInput
-              placeholder="password"
-              secureTextEntry={true}
-              style={styles.textInput}
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-            ></TextInput>
-          </View>
-
-          <View style={styles.textAndInput}>
-            <CustomText style={{ fontSize: 20, color: "black" }}>
-              confirm password
-            </CustomText>
-            <TextInput
-              placeholder="confirm password"
-              secureTextEntry={true}
-              style={styles.textInput}
-              value={confirmPassword}
-              onChangeText={(text) => setConfirmPassword(text)}
-            ></TextInput>
-          </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={[styles.scrollView, { width: width }]}>
+        <StatusBar style="auto" />
+        <View>
+          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+            <FontAwesome name="close" size={30} color="black" />
+          </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+        <View style={styles.titleContainer}>
+          <GradientFontColor style={styles.title}>Sign</GradientFontColor>
+          <Text style={styles.titleUp}>up</Text>
+        </View>
 
-      <TouchableOpacity style={styles.submitButton} onPress={handlePressSubmit}>
-        <CustomText style={styles.submitButtonText}>Submit</CustomText>
-      </TouchableOpacity>
-    </View>
+        <KeyboardAvoidingView
+          enabled={true}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
+          <View style={styles.inputsContainerRow}>
+            <View style={styles.textAndInput}>
+              <CustomText style={{ fontSize: 20, color: "black" }}>
+                first name
+              </CustomText>
+              <TextInput
+                placeholder="firstname"
+                style={styles.textInput}
+                value={firstname}
+                onChangeText={(text) => setFirstname(text)}
+                autoFocus={true}
+              ></TextInput>
+            </View>
+
+            <View style={styles.textAndInput}>
+              <CustomText style={{ fontSize: 20, color: "black" }}>
+                last name
+              </CustomText>
+              <TextInput
+                placeholder="lastname"
+                style={styles.textInput}
+                value={lastname}
+                onChangeText={(text) => setLastname(text)}
+              ></TextInput>
+            </View>
+
+            <View style={styles.textAndInput}>
+              <CustomText style={{ fontSize: 20, color: "black" }}>
+                e-mail
+              </CustomText>
+              <TextInput
+                placeholder="e-mail"
+                style={styles.textInput}
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+              ></TextInput>
+            </View>
+
+            <View style={styles.textAndInput}>
+              <CustomText style={{ fontSize: 20, color: "black" }}>
+                password
+              </CustomText>
+              <TextInput
+                placeholder="password"
+                secureTextEntry={true}
+                style={styles.textInput}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+              ></TextInput>
+            </View>
+
+            <View style={styles.textAndInput}>
+              <CustomText style={{ fontSize: 20, color: "black" }}>
+                confirm password
+              </CustomText>
+              <TextInput
+                placeholder="confirm password"
+                secureTextEntry={true}
+                style={styles.textInput}
+                value={confirmPassword}
+                onChangeText={(text) => setConfirmPassword(text)}
+              ></TextInput>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+
+        <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handlePressSubmit}
+        >
+          <CustomText style={styles.submitButtonText}>Submit</CustomText>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-
     backgroundColor: "white",
     flex: 1,
-    width: "100%",
   },
+  scrollView: {
+    alignItems: "center",
+  },
+
   titleContainer: {
     flexDirection: "row",
     marginBottom: 10,
+    justifyContent: "center",
   },
 
   title: {
@@ -180,25 +192,18 @@ const styles = StyleSheet.create({
     color: "#515151",
     marginLeft: 10,
   },
-  // fieldsError: {
-  //   fontSize: 20,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   color: "red",
-  //   fontWeight: "bold",
-  // },
 
   inputsContainerRow: {
     width: "100%",
     marginVertical: 20,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItemps: "baseline",
+    justifyContent: "center",
+    alignItems: "center",
     flexWrap: "wrap",
   },
   textAndInput: {
-    width: "80%",
-
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 10,
   },
   textInput: {
@@ -227,6 +232,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 50,
     alignItems: "center",
+    justifyContent: "center",
   },
   submitButtonText: {
     color: "#FFFFFF",
