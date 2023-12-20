@@ -10,6 +10,8 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
+import GradientFontColor from "../components/GradientFontColor";
+import { Icon } from "react-native-vector-icons/FontAwesome";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -144,11 +146,11 @@ export default function ProfileScreen({ navigation }) {
   // }
 
   const userDetails = (
-    <View style={{ borderWidth: 1 }}>
+    <View style={styles.container}>
       {/* <Text style={{ fontSize: 30, color: "black" }}>User details...</Text> */}
-      <CustomText style={{ color: "black", fontSize: 36, margin: 40 }}>
+      <GradientFontColor style={styles.hello}>
         Hello {userInfo.firstname} !
-      </CustomText>
+      </GradientFontColor>
       <CustomText style={{ color: "black", fontSize: 26, margin: 20 }}>
         My account info
       </CustomText>
@@ -168,7 +170,7 @@ export default function ProfileScreen({ navigation }) {
         onPress={() => HandlePressLogout()}
       >
         <Text style={{ fontSize: 16, color: "black" }}>Logout</Text>
-        {/* <FontAwesome name='logout' size={25} color='white'/> */}
+        <FontAwesome name="sign-out" size={40} style={styles.logout} />
       </TouchableOpacity>
     </View>
   );
@@ -187,12 +189,6 @@ export default function ProfileScreen({ navigation }) {
         connected? {userInfo.isConnected ? "YES" : "NO"}
       </Text> */}
       {modalToShow()}
-      <TouchableOpacity onPress={() => handleSubmit()}>
-        <Text style={styles.text}>
-          Hello this is the profile screen and if you click me you'll go on
-          suggestions screen
-        </Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -205,18 +201,31 @@ const styles = StyleSheet.create({
     //justifyContent: "center",
     justifyContent: "space-between",
   },
+  hello: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 35,
+    fontFamily: "KronaOne_400Regular",
+    fontSize: 40,
+  },
   text: {
     fontSize: 28,
   },
   logoutButton: {
+    backgroundColor: "pink",
     width: 60,
     height: 60,
     borderWidth: 1,
+  },
+  logout: {
+    color: "red",
   },
   userDetailsContainer: {
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "left",
+    backgroundColor: "red",
+    width: "100%",
   },
   userDetail: {
     color: "black",
