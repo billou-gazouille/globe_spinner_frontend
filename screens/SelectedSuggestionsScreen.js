@@ -45,7 +45,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
     return (
       <View key={i} style={styles.activity}>
         <CustomText style={styles.activityName}>
-          {e.activityBase.name.replace(/\d/g, "")} {"\n"}
+          {e.activityBase.name.replace(/\d/g, "")} -{" "}
           {moment(e.startTime).format("DD MMM")}
         </CustomText>
         <View
@@ -57,18 +57,18 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
           ]}
         >
           <CustomText>
-            <FontAwesome name="clock-o" size={25} color={colors.black} />
+            <FontAwesome name="clock-o" size={25} color={colors.purple} />
             {"  "}
             {moment(e.startTime).format("HH:mm")} to{" "}
             {moment(e.endTime).format("HH:mm")}
           </CustomText>
           <CustomText style={{ marginVertical: 10 }}>
-            <FontAwesome name="money" size={25} color={colors.black} />
+            <FontAwesome name="money" size={25} color={colors.purple} />
             {"  "}
             {e.price} €
           </CustomText>
           <CustomText>
-            <FontAwesome name="map-marker" size={30} color={colors.black} />
+            <FontAwesome name="map-marker" size={30} color={colors.purple} />
             {/* {location} */}
           </CustomText>
         </View>
@@ -98,13 +98,13 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
           <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
             <View style={{ flex: 1, marginLeft: 20 }}>
               <View style={{ marginTop: 15, flexDirection: "row" }}>
-                <FontAwesome name="users" size={25} color={colors.black} />
+                <FontAwesome name="users" size={25} color={colors.purple} />
                 <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
                   {trip.numberOfTravelers}
                 </CustomText>
               </View>
               <View style={{ marginTop: 20, flexDirection: "row" }}>
-                <FontAwesome name="clock-o" size={25} color={colors.black} />
+                <FontAwesome name="clock-o" size={25} color={colors.purple} />
                 <CustomText style={{ marginLeft: 10, fontSize: 18 }}>
                   {trip.nbrOfNights} nights
                 </CustomText>
@@ -119,7 +119,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
                 alignItems: "center",
               }}
             >
-              <FontAwesome name="map-marker" size={30} color={colors.black} />
+              <FontAwesome name="map-marker" size={30} color={colors.purple} />
               <View>
                 <CustomText style={{ marginLeft: 10, fontSize: 14 }}>
                   {trip.accommodation.accommodationBase.address}
@@ -163,7 +163,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
               <CustomText>&#8594;</CustomText>{" "}
               {trip.destination.name.substring(0, 3).toUpperCase()}
             </CustomText>
-            <FontAwesome name={iconOutbound} size={25} color={colors.black} />
+            <FontAwesome name={iconOutbound} size={25} color={colors.purple} />
             <View style={{ marginTop: 10 }}>
               <CustomText style={{ fontSize: 14 }}>
                 Dep: {formattedDate(trip.outboundJourney.departure)}
@@ -189,7 +189,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
               <CustomText>&#8594;</CustomText>{" "}
               {trip.departureLocation.name.substring(0, 3).toUpperCase()}
             </CustomText>
-            <FontAwesome name={iconInbound} size={25} color={colors.black} />
+            <FontAwesome name={iconInbound} size={25} color={colors.purple} />
             <View style={{ marginTop: 10 }}>
               <CustomText style={{ fontSize: 14 }}>
                 Dep: {formattedDate(trip.inboundJourney.departure)}
@@ -295,9 +295,9 @@ const styles = StyleSheet.create({
     // marginTop: 10,
     paddingTop: 10,
     paddingBottom: 20,
-    borderBottomWidth: 2,
-    borderStyle: "dashed",
-    borderBottomColor: colors.purple,
+    borderBottomWidth: 3,
+    // borderStyle: "dashed",
+    borderBottomColor: "white",
   },
   activityName: {
     lineHeight: 28,
