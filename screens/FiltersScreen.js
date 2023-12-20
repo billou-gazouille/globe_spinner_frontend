@@ -16,6 +16,7 @@ import {
 } from "react-native";
 // import DatePickerAndroid from "../components/android/DatePickerAndroid";
 import CustomCheckbox from "../components/CustomCheckbox";
+// import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
 import { useDispatch, useSelector } from "react-redux";
 import { addFiltersToStore } from "../reducers/filters";
@@ -104,12 +105,13 @@ export default function FiltersScreen({ navigation }) {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardAvoidingContainer}
-      >
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.keyboardAvoidingContainer}
+    >
+      <ScrollView contentContainerStyle={styles.container}>
         <StatusBar style="auto" />
+        {/* <BackButton /> */}
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Your </Text>
           <GradientFontColor style={styles.title}>filters</GradientFontColor>
@@ -190,14 +192,13 @@ export default function FiltersScreen({ navigation }) {
         >
           <CustomText style={styles.buttonText}>Go!</CustomText>
         </TouchableOpacity>
-      </KeyboardAvoidingView>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     paddingHorizontal: 15,
     paddingVertical: 20,
