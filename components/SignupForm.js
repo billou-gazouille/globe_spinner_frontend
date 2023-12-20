@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import GradientFontColor from "./GradientFontColor";
+import { CustomText } from "./CustomText";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -76,23 +77,28 @@ export default function SignupForm({ submit, closeModal }) {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
+      <View>
+        <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+          <FontAwesome name="close" size={30} color="black" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.titleContainer}>
+        <GradientFontColor style={styles.title}>Sign</GradientFontColor>
+        <Text style={styles.titleUp}>up</Text>
+      </View>
+      {showFieldsError && (
+        <CustomText style={styles.fieldsError}>{errorMsg}</CustomText>
+      )}
+
       <KeyboardAvoidingView
         enabled={true}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <View>
-          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-            <FontAwesome name="close" size={30} color="black" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.titleContainer}>
-          <GradientFontColor style={styles.title}>Sign</GradientFontColor>
-          <Text style={styles.title}>up</Text>
-        </View>
-        {showFieldsError && <Text style={styles.fieldsError}>{errorMsg}</Text>}
-        <View style={styles.inputsContainer}>
+        <View style={styles.inputsContainerRow}>
           <View style={styles.textAndInput}>
-            <Text style={{ fontSize: 20, color: "black" }}>first name</Text>
+            <CustomText style={{ fontSize: 20, color: "black" }}>
+              first name
+            </CustomText>
             <TextInput
               placeholder="firstname"
               style={styles.textInput}
@@ -103,7 +109,9 @@ export default function SignupForm({ submit, closeModal }) {
           </View>
 
           <View style={styles.textAndInput}>
-            <Text style={{ fontSize: 20, color: "black" }}>last name</Text>
+            <CustomText style={{ fontSize: 20, color: "black" }}>
+              last name
+            </CustomText>
             <TextInput
               placeholder="lastname"
               style={styles.textInput}
@@ -113,7 +121,9 @@ export default function SignupForm({ submit, closeModal }) {
           </View>
 
           <View style={styles.textAndInput}>
-            <Text style={{ fontSize: 20, color: "black" }}>email</Text>
+            <CustomText style={{ fontSize: 20, color: "black" }}>
+              email
+            </CustomText>
             <TextInput
               placeholder="email"
               style={styles.textInput}
@@ -123,7 +133,9 @@ export default function SignupForm({ submit, closeModal }) {
           </View>
 
           <View style={styles.textAndInput}>
-            <Text style={{ fontSize: 20, color: "black" }}>password</Text>
+            <CustomText style={{ fontSize: 20, color: "black" }}>
+              password
+            </CustomText>
             <TextInput
               placeholder="password"
               secureTextEntry={true}
@@ -134,9 +146,9 @@ export default function SignupForm({ submit, closeModal }) {
           </View>
 
           <View style={styles.textAndInput}>
-            <Text style={{ fontSize: 20, color: "black" }}>
+            <CustomText style={{ fontSize: 20, color: "black" }}>
               confirm password
-            </Text>
+            </CustomText>
             <TextInput
               placeholder="confirm password"
               secureTextEntry={true}
@@ -146,72 +158,76 @@ export default function SignupForm({ submit, closeModal }) {
             ></TextInput>
           </View>
         </View>
-
-        <TouchableOpacity
-          style={styles.submitButton}
-          onPress={handlePressSubmit}
-        >
-          <Text style={styles.submitButtonText}>Submit</Text>
-        </TouchableOpacity>
       </KeyboardAvoidingView>
+
+      <TouchableOpacity style={styles.submitButton} onPress={handlePressSubmit}>
+        <CustomText style={styles.submitButtonText}>Submit</CustomText>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    alignItems: "center",
+
+    backgroundColor: "white",
     flex: 1,
     width: "100%",
-    alignItems: "center",
-    paddingHorizontal: 15,
-    paddingVertical: 20,
-    backgroundColor: "pink",
   },
   titleContainer: {
     flexDirection: "row",
-    marginBottom: 30,
-    borderWidth: 2,
+    marginBottom: 10,
   },
+
   title: {
+    marginVertical: 45,
     fontSize: 40,
     fontFamily: "KronaOne_400Regular",
   },
+  titleUp: {
+    marginVertical: 45,
+    fontSize: 40,
+    fontFamily: "KronaOne_400Regular",
+    color: "#515151",
+    marginLeft: 10,
+  },
   fieldsError: {
     fontSize: 20,
+    justifyContent: "center",
+    alignItems: "center",
     color: "red",
     fontWeight: "bold",
   },
-  inputsContainer: {
+
+  inputsContainerRow: {
     width: "100%",
-    // height: '40%',
-    // borderWidth: 1,
+    marginVertical: 20,
+    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItemps: "baseline",
+    flexWrap: "wrap",
   },
   textAndInput: {
     width: "80%",
-    // borderWidth: 1,
-    // borderColor: "red"
+
     marginBottom: 10,
   },
   textInput: {
-    width: "100%",
-    borderWidth: 1,
-    fontSize: 20,
-    padding: 2,
-    color: "black",
-    marginTop: 2,
+    fontSize: 16,
+    borderBottomColor: "#BA99FE",
+    borderBottomWidth: 2,
+    paddingVertical: 5,
+    marginTop: 10,
   },
   closeButton: {
-    width: 40,
-    height: 40,
-    right: -70,
-    top: 20,
-    //backgroundColor: 'orange',
-    borderWidth: 2,
-    position: "absolute",
+    width: 60,
+    height: 30,
+    top: 10,
+    right: -200,
+    marginBottom: 50,
     zIndex: 99,
-    borderRadius: 10,
+    position: "absolute",
     justifyContent: "center",
     alignItems: "center",
   },
