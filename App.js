@@ -50,6 +50,8 @@ const HomeStack = () => {
         headerBackTitleVisible: false,
         headerBackVisible: true,
         headerTintColor: "#ba99FE",
+        // headerShadowVisible: false,
+        headerTransparent: true,
       }}
     >
       <Stack.Screen name="HomeStack" component={HomeScreen} />

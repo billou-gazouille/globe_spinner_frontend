@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  ImageBackground,
   useWindowDimensions,
 } from "react-native";
 // import BackButton from "../components/BackButton";
@@ -24,7 +25,9 @@ const colors = {
 };
 
 export default function SelectedSuggestionsScreen({ navigation, route }) {
+  const { width } = useWindowDimensions();
   const trip = route.params.trip;
+  const { img } = route.params;
   const outboundJourneyType = trip.outboundJourney.type;
   const inboundJourneyType = trip.inboundJourney.type;
 
@@ -38,8 +41,6 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   const formattedDate = (date) => {
     return moment(date).format("DD MMM, HH:mm");
   };
-
-  // console.log("trip", trip);
 
   const activities = trip.activities.map((e, i) => {
     return (
@@ -84,10 +85,16 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <StatusBar style="auto" />
-      <Image
-        source={require("../assets/noImage.jpg")}
-        style={styles.cityImg}
-      ></Image>
+
+      <ImageBackground source={img} style={styles.imageBackground}>
+        <View style={styles.overlay} />
+
+        <View style={[styles.cityImgContainer, { width: width }]}>
+          <CustomText style={styles.destinationTitle}>
+            {trip.destination.name} - {trip.destination.country}
+          </CustomText>
+        </View>
+      </ImageBackground>
 
       <View style={styles.headingAndSectionPair}>
         <GradientFontColor style={styles.text}>Accommodation</GradientFontColor>
@@ -222,9 +229,6 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
 const styles = StyleSheet.create({
   scrollViewContent: {
-    // flex: 1,
-    // height: '500%',
-    //flexGrow: 1,
     justifyContent: "space-between",
     alignItems: "center",
   },
@@ -232,9 +236,18 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
   },
-  cityImg: {
-    width: "100%",
-    height: 150,
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  cityImgContainer: {
+    height: 200,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  destinationTitle: {
+    color: "#FFFFFF",
+    fontFamily: "KronaOne_400Regular",
   },
   sectionContainer: {
     width: "95%",

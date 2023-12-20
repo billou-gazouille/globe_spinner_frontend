@@ -23,6 +23,9 @@ export default function SuggestionsScreen({ navigation }) {
   };
 
   const userInfo = useSelector((state) => state.userInfo.value);
+  const filtersFromStore = useSelector((state) => state.filters.value);
+
+  console.log("userInfo:", filtersFromStore);
 
   const toggleBookmarkTrip = async (tripIndex) => {
     //console.log("bookmared trip with index" + tripIndex);
@@ -49,15 +52,14 @@ export default function SuggestionsScreen({ navigation }) {
     // console.log("regenerateAll");
     setTrips([]);
     const filters = {
-      lat: 49,
-      lon: 2,
-      budget: 10000,
-      nbrOfTravelers: 1,
-      departureMinOutbound: "2023-12-18",
-      departureMaxOutbound: "2023-12-22",
-      departureMinInbound: "2023-12-25",
-      departureMaxInbound: "2023-12-29",
-      types: ["Airplane", "Coach", "Train"],
+      lat: filtersFromStore.departureLocation[1],
+      lon: filtersFromStore.departureLocation[0],
+      budget: filtersFromStore.budget,
+      nbrOfTravelers: filtersFromStore.nbrOfTravelers,
+      departureDateOutbound: filtersFromStore.departureDate,
+      departureDateInbound: filtersFromStore.returnDate,
+      interval: 3,
+      types: filtersFromStore.transportType,
     };
     const generatedTtrips = await fetch(
       //DON'T FORGET TO CHANGE YOUR IP ADRESS
@@ -92,7 +94,12 @@ export default function SuggestionsScreen({ navigation }) {
 
   const selectTrip = (tripIndex) => {
     console.log("tripIndex: ", tripIndex);
-    navigation.navigate("SelectedSuggestions", { trip: trips[tripIndex] });
+    navigation.navigate("SelectedSuggestions", {
+      trip: trips[tripIndex],
+      img: imageURLs[tripIndex]
+        ? { uri: imageURLs[tripIndex] }
+        : require("../assets/default_city.jpg"),
+    });
   };
 
   const formattedDate = (stringDate) => {
@@ -149,7 +156,7 @@ export default function SuggestionsScreen({ navigation }) {
                 img={
                   imageURLs[i]
                     ? { uri: imageURLs[i] }
-                    : require("../assets/noImage.jpg")
+                    : require("../assets/default_city.jpg")
                 }
                 leaveDate={formattedDate(t.outboundJourney.departure)}
                 returnDate={formattedDate(t.inboundJourney.arrival)}

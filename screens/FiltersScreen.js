@@ -20,6 +20,8 @@ import CustomCheckbox from "../components/CustomCheckbox";
 import { CustomText } from "../components/CustomText";
 import { useDispatch, useSelector } from "react-redux";
 import { addFiltersToStore } from "../reducers/filters";
+import { AutocompleteDropdown } from "react-native-autocomplete-dropdown";
+import moment from "moment";
 
 import DatePickerIOS from "../components/ios/DatePickerIOS";
 
@@ -32,9 +34,11 @@ export default function FiltersScreen({ navigation }) {
   const { height, width } = useWindowDimensions();
   // const filtersFromStore = useSelector((state) => state.filters.value);
 
-  const [departureLocation, setDepartureLocation] = useState("");
+  // const [departureLocation, setDepartureLocation] = useState("");
   const [departureDate, setDepartureDate] = useState(new Date());
-  const [returnDate, setReturnDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(
+    moment().add(4, "days").toDate()
+  );
   const [budget, setBudget] = useState("");
   const [nbrOfTravelers, setNbrOfTravelers] = useState(1);
   const [transportType, setTransportType] = useState([
@@ -42,6 +46,32 @@ export default function FiltersScreen({ navigation }) {
     "Airplane",
     "Coach",
   ]);
+  const [dataSet, setDataSet] = useState([]);
+  const [selectedCity, setSelectedCity] = useState({});
+
+  const searchCity = (query) => {
+    // Prevent search with an empty query
+    if (query === "" || query.length < 3) {
+      return;
+    }
+
+    fetch(`https://api-adresse.data.gouv.fr/search/?q=${query}`)
+      .then((response) => response.json())
+      .then(({ features }) => {
+        console.log(features);
+        const suggestions = features.map((data, i) => {
+          return {
+            id: i + 1,
+            title: data.properties.label,
+            coordinates: data.geometry.coordinates,
+          };
+        });
+        // console.log(suggestions);
+        setDataSet(suggestions);
+      });
+  };
+
+  console.log("city", selectedCity);
 
   const selectTransportationMode = (type) => {
     if (!transportType.includes(type)) {
@@ -60,7 +90,7 @@ export default function FiltersScreen({ navigation }) {
 
   const handleSubmit = () => {
     const filters = {
-      departureLocation,
+      departureLocation: selectedCity.coordinates,
       budget,
       nbrOfTravelers,
       transportType,
@@ -82,15 +112,22 @@ export default function FiltersScreen({ navigation }) {
 
   const handlePressSubmit = () => {
     const requiredFields = [
-      departureLocation,
+      selectedCity.coordinates,
       budget,
       nbrOfTravelers,
       transportType,
       departureDate,
       returnDate,
     ];
-    console.log("coucou", departureDate, returnDate);
     if (checkHasEmptyField(requiredFields)) {
+      console.log({
+        selectedCity,
+        budget,
+        nbrOfTravelers,
+        transportType,
+        departureDate,
+        returnDate,
+      });
       return Alert.alert("Some fields are missing!");
     }
     return true;
@@ -107,28 +144,40 @@ export default function FiltersScreen({ navigation }) {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.keyboardAvoidingContainer}
+      style={styles.keyboardAvoidingView}
     >
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Your </Text>
+        <GradientFontColor style={styles.title}>filters</GradientFontColor>
+      </View>
+
+      <View style={styles.inputDepartureContainerRow}>
+        <CustomText>Departure: </CustomText>
+        <AutocompleteDropdown
+          onChangeText={(text) => searchCity(text)}
+          onSelectItem={(item) =>
+            item &&
+            setSelectedCity((selectedCity) => ({
+              ...selectedCity,
+              ...item,
+            }))
+          }
+          textInputProps={{
+            placeholder: "Search city",
+            style: {
+              paddingLeft: 13,
+            },
+          }}
+          clearOnFocus={false}
+          closeOnBlur={true}
+          closeOnSubmit={false}
+          dataSet={dataSet}
+        />
+      </View>
+
       <ScrollView contentContainerStyle={styles.container}>
         <StatusBar style="auto" />
         {/* <BackButton /> */}
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>Your </Text>
-          <GradientFontColor style={styles.title}>filters</GradientFontColor>
-        </View>
-
-        <View style={styles.inputDepartureContainerRow}>
-          <View style={styles.inputContainer}>
-            <CustomText>Departure</CustomText>
-            <TextInput
-              style={styles.input}
-              // onChangeText={handleTextChange}
-              // value={"test"}
-              placeholder="E.g. Davézieux"
-              onChangeText={(text) => setDepartureLocation(text)}
-            />
-          </View>
-        </View>
 
         <CustomText style={styles.travelText}>How will you travel?</CustomText>
 
@@ -205,14 +254,20 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     // paddingBottom: 130,
   },
+  keyboardAvoidingView: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   titleContainer: {
     flexDirection: "row",
     marginBottom: 30,
+    justifyContent: "center",
   },
   title: {
     fontFamily: "KronaOne_400Regular",
-    fontSize: 40,
+    fontSize: 30,
     color: "#515151",
+    marginTop: 20,
   },
   sectionTitle: {
     marginTop: 25,
@@ -229,6 +284,7 @@ const styles = StyleSheet.create({
   inputDepartureContainerRow: {
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "row",
   },
 
   inputContainerRow: {
@@ -241,6 +297,9 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "43%",
+  },
+  departureInput: {
+    flexDirection: "row",
   },
   input: {
     fontSize: 16,
