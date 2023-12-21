@@ -42,6 +42,10 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
     return moment(date).format("DD MMM, HH:mm");
   };
 
+  trip.activities.sort((a, b) => {
+    return new Date(a.startTime) - new Date(b.startTime);
+  });
+
   const activities = trip.activities.map((e, i) => {
     return (
       <View key={i} style={styles.activity}>
