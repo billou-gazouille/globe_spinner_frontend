@@ -25,7 +25,7 @@ export default function SuggestionsScreen({ navigation }) {
   const userInfo = useSelector((state) => state.userInfo.value);
   const filtersFromStore = useSelector((state) => state.filters.value);
 
-  console.log("userInfo:", filtersFromStore);
+  // console.log("userInfo:", filtersFromStore);
 
   const toggleBookmarkTrip = async (tripIndex) => {
     //console.log("bookmared trip with index" + tripIndex);
@@ -71,7 +71,7 @@ export default function SuggestionsScreen({ navigation }) {
         body: JSON.stringify(filters),
       }
     ).then((resp) => resp.json());
-    console.log(generatedTtrips);
+    // console.log(generatedTtrips);
     if (generatedTtrips.length > 0) {
       setTrips(generatedTtrips);
       setImageURLs(["", ""]);
