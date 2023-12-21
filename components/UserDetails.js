@@ -29,18 +29,18 @@ export default function UserDetails({ logout }) {
   const userInfo = useSelector((state) => state.userInfo.value);
   const { height, width } = useWindowDimensions();
 
-  useEffect(() => {
-    fetch(`http://${ipAddress}:${port}/users/${userInfo.token}/savedTrips`)
-      .then((resp) => resp.json())
-      .then((data) => {
-        console.log("data: ", data);
-      });
-  }, []);
+  //   useEffect(() => {
+  //     fetch(`http://${ipAddress}:${port}/users/${userInfo.token}/savedTrips`)
+  //       .then((resp) => resp.json())
+  //       .then((data) => {
+  //         console.log("data: ", data);
+  //       });
+  //   }, []);
 
-  const HandlePressLogout = () => {
-    //console.log("HandlePressLogout");
-    logout();
-  };
+  //   const HandlePressLogout = () => {
+  //     //console.log("HandlePressLogout");
+  //     logout();
+  //   };
 
   return (
     <SafeAreaView style={[styles.container, { height }]}>
