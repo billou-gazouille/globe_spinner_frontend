@@ -7,6 +7,7 @@ import {
   Pressable,
   useWindowDimensions,
   StatusBar,
+  SafeAreaView,
 } from "react-native";
 import { CustomText } from "../components/CustomText";
 
@@ -14,11 +15,12 @@ export default function HomeScreen({ navigation }) {
   const { height, width } = useWindowDimensions();
 
   const handleSubmit = () => {
-    navigation.navigate("FiltersHomeStack");
+navigation.navigate("FiltersHomeStack");
+
   };
 
   return (
-    <View style={[styles.container, { height }]}>
+    <SafeAreaView style={[styles.container, { height }]}>
       <StatusBar style="auto" />
       <Image
         source={require("../assets/line-map.jpg")}
@@ -35,7 +37,7 @@ export default function HomeScreen({ navigation }) {
         source={require("../assets/bendy-dotted-line_2.jpg")}
         style={styles.topLine}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

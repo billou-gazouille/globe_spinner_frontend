@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import GradienFontColor from "../components/GradientFontColor";
+import { ipAddress } from "../myVariables";
 
 export default function SigninForm({ submit, closeModal }) {
   //const userInfo = useSelector(state => state.userInfo.value);
@@ -37,6 +38,7 @@ export default function SigninForm({ submit, closeModal }) {
       Alert.alert("Some fields are missing!");
       return;
     }
+    await submit(email, password);
   };
 
   return (
@@ -46,9 +48,8 @@ export default function SigninForm({ submit, closeModal }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-          <FontAwesome name="close" size={20} color="#black" />
+          <FontAwesome name="close" size={30} color="#black" />
         </TouchableOpacity>
-    
 
         <View style={styles.title}>
           <GradienFontColor>
@@ -106,24 +107,22 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: "white",
+    width: "100%",
     flex: 1,
   },
 
   closeButton: {
-      width: 60,
-      height: 30,
-      top: 30,
-      right: -250,
-      marginBottom: 30,
-      zIndex: 99,
-
-      justifyContent: "center",
-       alignItems: "center",
-
-    borderRadius: 5,
+    width: 40,
+    height: 40,
+    right: -20,
+    top: 15,
+    marginTop: -15,
+    position: "absolute",
+    justifyContent: "center",
+    alignItems: "center",
   },
   inputsContainer: {
-    width: "100%",
+    width: "80%",
     marginVertical: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -149,13 +148,11 @@ const styles = StyleSheet.create({
   title: {
     alignItems: "center",
     marginBottom: 80,
-    marginTop: 40,
-  
-  
+    marginTop: 50,
   },
 
   textInput: {
-    width: "50%",
+    width: "100%",
     borderWidth: 0,
     fontSize: 15,
     padding: 5,
@@ -175,7 +172,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop : 60,
+    marginTop: 60,
   },
 
   submitButtonText: {
