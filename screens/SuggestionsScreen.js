@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 import LoadingWheel from "../components/LoadingWheel";
-import useFetchGenerate from '../hooks/useFetchGenerate';
+import useFetchGenerate from "../hooks/useFetchGenerate";
 
 const { ipAddress, port } = require("../myVariables");
 
@@ -22,11 +22,7 @@ export default function SuggestionsScreen({ navigation }) {
   const userInfo = useSelector((state) => state.userInfo.value);
   const filtersFromStore = useSelector((state) => state.filters.value);
 
-<<<<<<< HEAD
-  // console.log("userInfo:", filtersFromStore);
-=======
   //console.log("userInfo:", filtersFromStore);
->>>>>>> 4f13d059ee154b5f7749043155a2adae7d722915
 
   const toggleBookmarkTrip = async (tripIndex) => {
     //console.log("bookmared trip with index" + tripIndex);
@@ -49,57 +45,27 @@ export default function SuggestionsScreen({ navigation }) {
 
   const [triggerFetchGenerate, setTriggerFetchGenerate] = useState(false);
 
-<<<<<<< HEAD
-  const regenerateAll = async () => {
-    // console.log("regenerateAll");
-    setTrips([]);
-    const filters = {
-      lat: filtersFromStore.departureLocation[1],
-      lon: filtersFromStore.departureLocation[0],
-      budget: filtersFromStore.budget,
-      nbrOfTravelers: filtersFromStore.nbrOfTravelers,
-      departureDateOutbound: filtersFromStore.departureDate,
-      departureDateInbound: filtersFromStore.returnDate,
-      interval: 3,
-      types: filtersFromStore.transportType,
-    };
-    // console.log(filters);
-    const generatedTtrips = await fetch(
-      //DON'T FORGET TO CHANGE YOUR IP ADRESS
-      `http://${ipAddress}:${port}/trips/generate`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(filters),
-      }
-    ).then((resp) => resp.json());
-    // console.log(generatedTtrips);
-    if (generatedTtrips.length > 0) {
-      setTrips(generatedTtrips);
-      setImageURLs(["", ""]);
-      for (let i = 0; i < generatedTtrips.length; i++) {
-        getPlaceImageURL(i, generatedTtrips[i].destination.name);
-      }
-    }
-=======
-
-  const { 
-    generatedTrips, isLoadingGenerate, errorGenerate,
-    place1, isLoadingPlace1, errorPlace1,
-    place2, isLoadingPlace2, errorPlace2
+  const {
+    generatedTrips,
+    isLoadingGenerate,
+    errorGenerate,
+    place1,
+    isLoadingPlace1,
+    errorPlace1,
+    place2,
+    isLoadingPlace2,
+    errorPlace2,
   } = useFetchGenerate({
-    generateRouteURL:`http://${ipAddress}:${port}/trips/generate`, 
+    generateRouteURL: `http://${ipAddress}:${port}/trips/generate`,
     generateFilters: filtersFromStore,
-    triggerFirstFetch: triggerFetchGenerate
+    triggerFirstFetch: triggerFetchGenerate,
   });
 
   //console.log(generatedTrips);
 
-
   const regenerateAll = () => {
     //console.log('regenerateAll');
-    setTriggerFetchGenerate(prev => !prev);
->>>>>>> 4f13d059ee154b5f7749043155a2adae7d722915
+    setTriggerFetchGenerate((prev) => !prev);
   };
 
   const handlePressRegenerateAll = () => {
@@ -112,13 +78,13 @@ export default function SuggestionsScreen({ navigation }) {
     if (index === 0) place = place1;
     else if (index === 1) place = place2;
     if (!place) return require("../assets/default_city.jpg");
-    return ({ uri: place.photos[0].src.landscape });
+    return { uri: place.photos[0].src.landscape };
   };
 
   const selectTrip = (tripIndex) => {
     navigation.navigate("SelectedSuggestionsHomeStack", {
       trip: generatedTrips[tripIndex],
-      img: getImage(tripIndex)
+      img: getImage(tripIndex),
     });
   };
 
@@ -132,8 +98,9 @@ export default function SuggestionsScreen({ navigation }) {
       .padStart(2, "0")}`;
   };
 
-  const preventRegenerate = isLoadingGenerate || isLoadingPlace1 || isLoadingPlace2;
-  const rgBtnColor = preventRegenerate ? '#C2C2C2' : "#3972D9";
+  const preventRegenerate =
+    isLoadingGenerate || isLoadingPlace1 || isLoadingPlace2;
+  const rgBtnColor = preventRegenerate ? "#C2C2C2" : "#3972D9";
 
   return (
     <View style={styles.container}>
@@ -167,8 +134,8 @@ export default function SuggestionsScreen({ navigation }) {
           })}
       </View>
       <TouchableOpacity
-        disabled={preventRegenerate} 
-        style={{...styles.regenerateAllButton, backgroundColor: rgBtnColor}}
+        disabled={preventRegenerate}
+        style={{ ...styles.regenerateAllButton, backgroundColor: rgBtnColor }}
         onPress={handlePressRegenerateAll}
       >
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
