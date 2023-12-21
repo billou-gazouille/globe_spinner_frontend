@@ -6,12 +6,17 @@ const DEFAULT_OPTIONS = {
 	headers: { 'Content-Type': 'application/json' },
 };
 
-// To manage several fetches where the URL of the next fetch
-// depends on the progress info (including data) of all the fetches until now
+const imageAPIoptions = {
+    headers: {
+      Authorization:
+        "5t6cWcJQKyLgJsDtnmjZX8fLomdIIvsa46xUgeXPcL5AZMAK4r2GODOm",
+    },
+  };
 
-export default function useFetchSequence({ generateRouteURL, triggerFirstFetch }) {
+const imagesAPIprefix = 'https://api.pexels.com/v1/search?query=';
+
+export default function useFetchSequence({ generateRouteURL, generateFilters, triggerFirstFetch }) {
     
-	//const [nextURL, setNextURL] = useState(firstURL);
 	const [generatedTrips, setGeneratedTrips] = useState(null);
 	const [isLoadingGenerate, setIsLoadingGenerate] = useState(false);
     const [errorGenerate, setErrorGenerate] = useState(null);
@@ -24,21 +29,24 @@ export default function useFetchSequence({ generateRouteURL, triggerFirstFetch }
 	const [isLoadingPlace2, setIsLoadingPlace2] = useState(false);
     const [errorPlace2, setErrorPlace2] = useState(null);
 
+    const isScreenFocused = useIsFocused();
     
 	useEffect(() => {
         const fetchGenerate = async () => {
             let place1URL, place2URL;
+            let tripsValid = true;
+
+            const requestController = new AbortController();
 
             const filters = {
-                lat: 49,
-                lon: 2,
-                budget: 10000,
-                nbrOfTravelers: 1,
-                departureMinOutbound: "2023-12-18",
-                departureMaxOutbound: "2023-12-22",
-                departureMinInbound: "2023-12-25",
-                departureMaxInbound: "2023-12-29",
-                types: ["Airplane", "Coach", "Train"],
+                lat: generateFilters.departureLocation[1],
+                lon: generateFilters.departureLocation[0],
+                budget: generateFilters.budget,
+                nbrOfTravelers: generateFilters.nbrOfTravelers,
+                departureDateOutbound: generateFilters.departureDate,
+                departureDateInbound: generateFilters.returnDate,
+                interval: 1,
+                types: generateFilters.transportType,
             };
 
             const fetchGenerateRouteOptions = {
@@ -47,38 +55,53 @@ export default function useFetchSequence({ generateRouteURL, triggerFirstFetch }
                 body: JSON.stringify(filters),
             };
     
-            const requestController = new AbortController();
+            //const abortController = new AbortController();
     
             if (!isScreenFocused) return;
-    
+            
+            setGeneratedTrips(null);
             setIsLoadingGenerate(true);
     
             await fetch(generateRouteURL, { 
-                options: fetchGenerateRouteOptions, 
+                ...fetchGenerateRouteOptions, 
                 signal: requestController.signal 
-            })
+                })
                 .then(response => {
                     if (!response.ok) {
                         setErrorGenerate(response.statusText);
+                        tripsValid = false;
                         return;
                     }
                     return response.json();
                 })
                 .then(data => {
-                    //console.log('[DATA]', data);
-                    setGeneratedTrips(data);
+                    //console.log('[trips]', data);
+                    if (!data.result) {
+                        tripsValid = false;
+                        setErrorGenerate(data.error);
+                        return;
+                    }
+                    setGeneratedTrips(data.trips);
                     setIsLoadingGenerate(false);
-                    place1URL = `${imagesAPIprefix}${data[0].destination.name}+aerial`;
-                    place2URL = `${imagesAPIprefix}${data[1].destination.name}+aerial`;
+                    place1URL = `${imagesAPIprefix}${data.trips[0].destination.name}+aerial`;
+                    //console.log('place1URL: ', place1URL);
+                    place2URL = `${imagesAPIprefix}${data.trips[1].destination.name}+aerial`;
+                    //console.log('place2URL: ', place2URL);
                 })
                 .catch(error => {
                     setErrorGenerate(error);
+                    tripsValid = false;
                 });
+
+            if (!tripsValid) return;
+            
+            setPlace1(null);
+            setIsLoadingPlace1(true);
             
             fetch(place1URL, { 
-                options: DEFAULT_OPTIONS, 
+                ...imageAPIoptions, 
                 signal: requestController.signal 
-            })
+                })
                 .then(response => {
                     if (!response.ok) {
                         setErrorPlace1(response.statusText);
@@ -87,7 +110,7 @@ export default function useFetchSequence({ generateRouteURL, triggerFirstFetch }
                     return response.json();
                 })
                 .then(data => {
-                    //console.log('[DATA]', data);
+                    //console.log('[place1]', data);
                     setPlace1(data);
                     setIsLoadingPlace1(false);
                 })
@@ -95,8 +118,11 @@ export default function useFetchSequence({ generateRouteURL, triggerFirstFetch }
                     setErrorPlace1(error);
                 });
             
+            setPlace2(null);
+            setIsLoadingPlace2(true);
+            
             fetch(place2URL, { 
-                    options: DEFAULT_OPTIONS, 
+                    ...imageAPIoptions, 
                     signal: requestController.signal 
                 })
                 .then(response => {
@@ -107,7 +133,7 @@ export default function useFetchSequence({ generateRouteURL, triggerFirstFetch }
                     return response.json();
                 })
                 .then(data => {
-                    //console.log('[DATA]', data);
+                    //console.log('[place2]', data);
                     setPlace2(data);
                     setIsLoadingPlace2(false);
                 })
@@ -115,16 +141,16 @@ export default function useFetchSequence({ generateRouteURL, triggerFirstFetch }
                     setErrorPlace2(error);
                 });
     
-            return () => requestController.abort();
+            return () => abortController.abort();
         };
 		
         fetchGenerate();
 		
-		}, [triggerFirstFetch, isScreenFocused, nextURL]);
+	}, [triggerFirstFetch, isScreenFocused]);
 
-	return { 
+	return ({ 
         generatedTrips, isLoadingGenerate, errorGenerate,
         place1, isLoadingPlace1, errorPlace1,
         place2, isLoadingPlace2, errorPlace2
-    };
+    });
 }

@@ -95,11 +95,11 @@ export default function FiltersScreen({ navigation }) {
     };
 
     dispatch(addFiltersToStore({ filters }));
-    console.log(
-      "************************************************************",
-      { filters },
-      "************************************************************"
-    );
+    // console.log(
+    //   "************************************************************",
+    //   { filters },
+    //   "************************************************************"
+    // );
     navigation.navigate("SuggestionsHomeStack");
   };
 
@@ -107,7 +107,7 @@ export default function FiltersScreen({ navigation }) {
     fields.some((field) => !field || field === "" || field.length === 0);
 
   const handlePressSubmit = () => {
-    return true;  // comment this line if you don't want to bypass the filters
+    //return true;  // comment this line if you don't want to bypass the filters
     const requiredFields = [
       selectedCity.coordinates,
       budget,
