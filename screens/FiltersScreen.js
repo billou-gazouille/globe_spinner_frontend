@@ -50,6 +50,7 @@ export default function FiltersScreen({ navigation }) {
     if (query === "" || query.length < 3) {
       return;
     }
+    console.log('query',query);
 
     fetch(`https://api-adresse.data.gouv.fr/search/?q=${query}`)
       .then((response) => response.json())
@@ -62,12 +63,12 @@ export default function FiltersScreen({ navigation }) {
             coordinates: data.geometry.coordinates,
           };
         });
-        // console.log(suggestions);
+        console.log('suggestions',suggestions);
         setDataSet(suggestions);
       });
   };
 
-  console.log("city", selectedCity);
+  // console.log("city", selectedCity);
 
   const selectTransportationMode = (type) => {
     if (!transportType.includes(type)) {
