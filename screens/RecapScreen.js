@@ -1,17 +1,19 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import GradientFontColor from "../components/GradientFontColor";
 
 const RecapScreen = () => {
   const destination = "London";
   const accommodation = "Hotel ABC";
   const transport = "Flight XYZ";
   const activities = "Picnic Basket, Spa Kit,Rain Poncho";
-  const amountPaid = 1400;
+  const amountPaid = 2500;
 
   const navigation = useNavigation();
   const handleOkPress = () => {
-    navigation.navigate("Home");
+    navigation.navigate("HomeStack");
+ 
   };
   return (
     <View style={styles.container}>
@@ -22,9 +24,11 @@ const RecapScreen = () => {
       />
 
       <View style={styles.overlay}>
-        <View style={styles.line} />
-        <Text style={styles.title}>Recap Trip</Text>
-        <View style={styles.line} />
+
+        <GradientFontColor style={styles.title}>Recap Trip</GradientFontColor>
+        
+        
+       
 
         <Text style={styles.subtitle}>Where to</Text>
         <View style={styles.infoContainer}>
@@ -64,13 +68,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 80,
-    backgroundColor: "#D8D0E7",
+    padding: 40,
+    backgroundColor: "white",
   },
   backgroundImage: {
     flex: 1,
-    width: "550%",
-    height: "100%",
+    width: "100%",
+    height: "50%",
     resizeMode: "cover",
     position: "absolute",
   },
@@ -79,31 +83,28 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "rgba(255, 255, 255, 0.7)",
-    width: 250,
+    width: "100%",
     height: 100,
   },
   title: {
-    fontSize: 30,
+    marginStart:5,
+    marginVertical:50,
+    fontSize: 40,
     fontWeight: "bold",
-    marginBottom: -20,
-    marginVertical: 10,
-  },
-  line: {
-    width: "100%",
-    height: 1,
-    backgroundColor: "black",
-    marginHorizontal: 5,
-    marginVertical: 5,
+    marginBottom: 30,
+    fontFamily: "KronaOne_400Regular",
+    marginTop:40,
   },
   // itemContainer: {
   //   marginBottom: 12,
   // },
   subtitle: {
-    fontSize: 18,
+    fontSize: 15,
     flex: 1,
     fontWeight: "bold",
     marginBottom: 2,
-    marginTop: 50,
+    marginTop:40,
+    fontFamily: "KronaOne_400Regular",
   },
   infoContainer: {
     borderBottomWidth: 1,
@@ -111,24 +112,20 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     marginBottom: 20,
   },
-  boldText: {
-    fontWeight: "bold",
-    Color: "#red",
-  },
   okButton: {
     position: "right",
     Right: -50,
     backgroundColor: "#3498db",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    padding: 50,
+    paddingVertical: 7,
+    paddingHorizontal: 24,
+    borderRadius: 55,
     marginBottom: 10,
   },
   okButtonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
+    fontFamily: "KronaOne_400Regular",
   },
 });
 
