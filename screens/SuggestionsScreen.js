@@ -63,6 +63,7 @@ export default function SuggestionsScreen({ navigation }) {
       interval: 3,
       types: filtersFromStore.transportType,
     };
+    // console.log(filters);
     const generatedTtrips = await fetch(
       //DON'T FORGET TO CHANGE YOUR IP ADRESS
       `http://${ipAddress}:${port}/trips/generate`,
@@ -72,7 +73,7 @@ export default function SuggestionsScreen({ navigation }) {
         body: JSON.stringify(filters),
       }
     ).then((resp) => resp.json());
-    // console.log(generatedTtrips);
+    console.log(generatedTtrips);
     if (generatedTtrips.length > 0) {
       setTrips(generatedTtrips);
       setImageURLs(["", ""]);
@@ -96,7 +97,7 @@ export default function SuggestionsScreen({ navigation }) {
 
   const selectTrip = (tripIndex) => {
     console.log("tripIndex: ", tripIndex);
-    navigation.navigate("SelectedSuggestions", {
+    navigation.navigate("SelectedSuggestionsHomeStack", {
       trip: trips[tripIndex],
       img: imageURLs[tripIndex]
         ? { uri: imageURLs[tripIndex] }

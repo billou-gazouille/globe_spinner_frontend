@@ -31,9 +31,6 @@ const transportationMode = ["Train", "Airplane", "Coach"];
 export default function FiltersScreen({ navigation }) {
   const dispatch = useDispatch();
   const { height, width } = useWindowDimensions();
-  // const filtersFromStore = useSelector((state) => state.filters.value);
-
-  // const [departureLocation, setDepartureLocation] = useState("");
   const [departureDate, setDepartureDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(
     moment().add(4, "days").toDate()

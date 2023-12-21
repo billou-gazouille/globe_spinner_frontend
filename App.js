@@ -80,10 +80,6 @@ const ProfileStack = () => {
     >
       <Stack.Screen name="ProfileStack" component={ProfileScreen} />
       <Stack.Screen name="SuggestionsStack" component={SuggestionsScreen} />
-      <Stack.Screen
-        name="SelectedSuggestionsStack"
-        component={SelectedSuggestionsScreen}
-      />
     </Stack.Navigator>
   );
 };
