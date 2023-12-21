@@ -11,6 +11,7 @@ import {
 import Checkbox from "expo-checkbox";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons, FontAwesome, Entypo } from "@expo/vector-icons";
+import GradienFontColor from "../components/GradientFontColor";
 import {
   useFonts,
   NunitoSans_400Regular,
@@ -35,12 +36,12 @@ const PaymentScreen = () => {
     <ScrollView>
       <View style={styles.container}>
         <View style={[styles.subtitleContainer, { height: 30 }]}>
-          <MaterialIcons name="person" size={24} color="#BA99FE" />
-          <Text
-            style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
-          >
+          <MaterialIcons name="person" size={30} color="#BA99FE" />
+
+          <Text style={[styles.signInText, { color: "#414141"}]}>
             Bank Card User
           </Text>
+       
         </View>
 
         <TextInput
@@ -50,9 +51,7 @@ const PaymentScreen = () => {
 
         <View style={styles.subtitleContainer}>
           <FontAwesome name="credit-card" size={24} color="#BA99FE" />
-          <Text
-            style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
-          >
+          <Text style={[styles.signInText, { color: "#414141" }]}>
             Card Number
           </Text>
         </View>
@@ -63,9 +62,7 @@ const PaymentScreen = () => {
 
         <View style={styles.subtitleContainer}>
           <Entypo name="calendar" size={24} color="#BA99FE" />
-          <Text
-            style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
-          >
+          <Text style={[styles.signInText, { color: "#414141" }]}>
             Expiry Date
           </Text>
         </View>
@@ -76,11 +73,9 @@ const PaymentScreen = () => {
 
         <View style={styles.subtitleContainer}>
           <FontAwesome name="barcode" size={24} color="#BA99FE" />
-          <Text
-            style={[styles.subtitle, { fontFamily: "NunitoSans_400Regular" }]}
-          >
-            Code
-          </Text>
+          <Text style={[styles.signInText, { color: "#414141" }]}>Code</Text>
+
+
         </View>
         <TextInput
           style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
@@ -96,7 +91,7 @@ const PaymentScreen = () => {
           <Text
             style={[
               styles.checkboxLabel,
-              { fontFamily: "NunitoSans_400Regular" },
+              {  fontFamily: "KronaOne_400Regular" },
             ]}
           >
             Do you want to save your bank card details?
@@ -104,7 +99,7 @@ const PaymentScreen = () => {
         </View>
 
         <Text
-          style={[styles.amountText, { fontFamily: "NunitoSans_400Regular" }]}
+          style={[styles.amountText, { fontFamily: "KronaOne_400Regular",}]}
         >
           Amount: 1400£
         </Text>
@@ -113,7 +108,7 @@ const PaymentScreen = () => {
           <Text
             style={[
               styles.payButtonText,
-              { fontFamily: "NunitoSans_400Regular" },
+              {  fontFamily: "KronaOne_400Regular", },
             ]}
           >
             Pay
@@ -131,24 +126,27 @@ const PaymentScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 90,
-    backgroundColor: "#E6E1F1",
+    padding: 50,
+    backgroundColor: "white",
     flex: 1,
     position: "relative",
     marginTop: 30,
   },
-
   subtitleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
-    marginTop: 10,
+    marginBottom: 10,
+    marginTop: 15,
   },
+  signInText: {
+  fontFamily: "KronaOne_400Regular",
+  fontSize:13,
+  },
+
   subtitle: {
     fontSize: 16,
     marginLeft: 8,
     flex: 1,
-    marginBottom: 5,
   },
   subtitleIcon: {
     marginRight: 4,
@@ -158,61 +156,60 @@ const styles = StyleSheet.create({
   },
 
   input: {
+    backgroundColor:"#ECE8F2",
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 8,
     margin: -10,
+    borderRadius : 8,
   },
   checkboxContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 30,
-    marginTop: 30,
+    marginBottom: 20,
+    marginTop: 15,
     justifyContent: "center",
+
   },
   checkboxLabel: {
-    marginLeft: 8,
-  },
-  Checkbox: {
-    borderWidth: 50,
-    borderColor: "#3972D9",
-    borderRadius: 100,
-    backgroundColor: "#BA99FE",
-    marginBottom: 50,
-  },
-  checkbox: {
-    marginLeft: 8,
-    padding: 10,
+    marginLeft: 10,
+    marginTop : 10,
+    fontSize:11,
+    color:"#3972D9"
   },
 
+
   amountText: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 10,
-    padding: 5,
+    borderRadius: 10,
+    padding: 10,
     color: "#3972D9",
-    backgroundColor: "#E6E1F1",
+    backgroundColor: "#E6E1F1", 
+    
   },
   payButton: {
     borderRadius: 5,
     paddingVertical: 15,
+    fontSize: 16,
 
     borderRadius: 50,
 
     paddingHorizontal: 60,
     elevation: 4,
-    backgroundColor: "#856DB7",
+    backgroundColor: "#BA99FE",
     marginTop: 20,
     justifyContent: "center",
     alignItems: "center",
   },
   payButtonText: {
     color: "#ffffff",
-    fontSize: 18,
+    fontSize: 16,
     textAlign: "center",
+    fontFamily: "KronaOne_400Regular",
   },
   mapImage: {
     width: "190%",
@@ -222,12 +219,12 @@ const styles = StyleSheet.create({
     marginLeft: -90,
   },
   imageContainer: {
-    width: "100%",
+    width: "50%",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 20,
   },
   customText: {
-    fontFamily: "KronaOne-Regular",
+    fontFamily: "KronaOne_400Regular",
     fontSize: 24,
   },
 });
