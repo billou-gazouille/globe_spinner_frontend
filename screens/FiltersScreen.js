@@ -153,6 +153,7 @@ export default function FiltersScreen({ navigation }) {
       <View style={styles.inputDepartureContainerRow}>
         <CustomText>Departure: </CustomText>
         <AutocompleteDropdown
+          // direction={Platform.select({ ios: "down" })}
           onChangeText={(text) => searchCity(text)}
           onSelectItem={(item) =>
             item &&
