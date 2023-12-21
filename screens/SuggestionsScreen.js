@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   StatusBar,
+  SafeAreaView,
 } from "react-native";
 // import BackButton from "../components/BackButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +13,7 @@ import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 import LoadingWheel from "../components/LoadingWheel";
 import useFetchGenerate from "../hooks/useFetchGenerate";
+import GradientFontColor from "../components/GradientFontColor";
 
 const { ipAddress, port } = require("../myVariables");
 
@@ -103,9 +105,9 @@ export default function SuggestionsScreen({ navigation }) {
   const rgBtnColor = preventRegenerate ? "#C2C2C2" : "#3972D9";
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {isLoadingGenerate && <LoadingWheel />}
-      <CustomText style={styles.suggestionsText}>Suggestions</CustomText>
+      <GradientFontColor style={styles.title}>Suggestions</GradientFontColor>
       <View style={styles.cardsContainer}>
         {generatedTrips &&
           generatedTrips.map((t, i) => {
@@ -141,7 +143,7 @@ export default function SuggestionsScreen({ navigation }) {
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
       </TouchableOpacity>
       {/* <BackButton /> */}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -161,9 +163,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // borderWidth: 1,
   },
-  suggestionsText: {
-    fontSize: 28,
-    marginBottom: 10,
+  title: {
+    fontFamily: "KronaOne_400Regular",
+    fontSize: 30,
+    color: "#515151",
     marginTop: 20,
   },
   regenerateAllButton: {
