@@ -7,63 +7,64 @@ const DEFAULT_OPTIONS = {
 };
 
 // To manage several fetches where the URL of the next fetch
-// depends on the data received by the current fetch
+// depends on the progress info (including data) of all the fetches until now
 
 export default function useFetchSequence({ firstURL, triggerFirstFetch, requestsSequence }) {
     
 	const [nextURL, setNextURL] = useState(firstURL);
+	const [requestIndex, setRequestIndex] = useState(0);
 	
 	const n = requestsSequence.length;
 	const isScreenFocused = useIsFocused();
 	const [requestsProgress, setRequestsProgress] = useState(Array(n).fill({
 		data: null,
 		error: null,
-		isLoadingArray: false,
+		isLoading: false,
 	}));
 	
-	const updateLatestRequest = (prevRequests, keyValuePairs) => {
+	const updatedRequests = (prevRequests, keyValuePairs) => {
 		const requestsCopy = [...prevRequests];
-		requestsCopy[requestsCopy.length-1] = { ...requestsCopy.at(-1), keyValuePairs };
+		requestsCopy[requestIndex] = { ...requestsCopy[requestIndex], ...keyValuePairs };
 		return requestsCopy;
 	}
 	
 	useEffect(() => {
 		const request = requestsSequence[requestIndex];
-		const { getNextURL, options=DEFAULT_OPTIONS } = request;
-		// getNextURL is a callback in the form: (data) => return nextURL;
+		const { options=DEFAULT_OPTIONS, getNextURL } = request;
+		// getNextURL is a callback in the form: (requestsProgress) => return nextURL;
 
 		const requestController = new AbortController();
 
 		if (!isScreenFocused) return;
 
 		setRequestsProgress(prev => {
-			return updateLatestRequest(prev, [
-				{ key: error, value: null },
-				{ key: isLoading, value: true },
-			]);
+			return updatedRequests(prev, { error: null, isLoading: true });
 		});
+
+		console.log('nextURL: ', nextURL);
 
 		fetch(nextURL, { ...options, signal: requestController.signal })
 			.then(response => {
-				if (!response.ok) return setError(response.statusText);
-				else return response.json();
+				if (!response.ok) {
+					setRequestsProgress(prev => {
+						return updatedRequests(prev, { error: response.statusText });
+					});
+					return;
+				}
+				return response.json();
 			})
 			.then(data => {
-				console.log('[DATA]', data);
+				//setNextURL(getNextURL(data));
+				setNextURL(getNextURL(updatedRequests(requestsProgress, { data: data, isLoading: false })));
+				//console.log('[DATA]', data);
 				setRequestsProgress(prev => {
-					return updateLatestRequest(prev, [
-						{ key: data, value: data },
-						{ key: isLoading, value: false },
-					]);
+					return updatedRequests(prev, { data: data, isLoading: false });
 				});
-				setNextURL(getNextURL(data));
+				setRequestIndex(prev => prev+1);
 			})
 			.catch(error => {
 				setRequestsProgress(prev => {
-					return updateLatestRequest(prev, [
-						{ key: error, value: error },
-						{ key: isLoading, value: false },
-					]);
+					return updatedRequests(prev, { error: error, isLoading: false });
 				});
 			});
 
