@@ -50,6 +50,7 @@ export default function FiltersScreen({ navigation }) {
     if (query === "" || query.length < 3) {
       return;
     }
+    console.log('query',query);
 
     fetch(`https://api-adresse.data.gouv.fr/search/?q=${query}`)
       .then((response) => response.json())
@@ -62,12 +63,12 @@ export default function FiltersScreen({ navigation }) {
             coordinates: data.geometry.coordinates,
           };
         });
-        // console.log(suggestions);
+        console.log('suggestions',suggestions);
         setDataSet(suggestions);
       });
   };
 
-  console.log("city", selectedCity);
+  // console.log("city", selectedCity);
 
   const selectTransportationMode = (type) => {
     if (!transportType.includes(type)) {
@@ -95,11 +96,11 @@ export default function FiltersScreen({ navigation }) {
     };
 
     dispatch(addFiltersToStore({ filters }));
-    console.log(
-      "************************************************************",
-      { filters },
-      "************************************************************"
-    );
+    // console.log(
+    //   "************************************************************",
+    //   { filters },
+    //   "************************************************************"
+    // );
     navigation.navigate("SuggestionsHomeStack");
   };
 
@@ -107,6 +108,7 @@ export default function FiltersScreen({ navigation }) {
     fields.some((field) => !field || field === "" || field.length === 0);
 
   const handlePressSubmit = () => {
+    //return true;  // comment this line if you don't want to bypass the filters
     const requiredFields = [
       selectedCity.coordinates,
       budget,
@@ -186,7 +188,7 @@ export default function FiltersScreen({ navigation }) {
           </View>
           <View style={styles.date}></View>
         </ImageBackground>
-        <DatePickerIOS
+        {Platform.OS === 'ios' && <DatePickerIOS
           departureDate={departureDate}
           returnDate={returnDate}
           onDepartureDateChange={(event, selectedDate) => {
@@ -195,7 +197,7 @@ export default function FiltersScreen({ navigation }) {
           onReturnDateChange={(event, selectedDate) => {
             setReturnDate(selectedDate || returnDate);
           }}
-        />
+        />}
         <ImageBackground
           source={require("../assets/bendy-dotted-line_2.jpg")}
           style={styles.imageBackground}

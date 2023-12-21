@@ -16,7 +16,7 @@ const RecapScreen = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/globe_spinner.jpg")}
+        source={require("../assets/globe.png")}
         style={styles.backgroundImage}
         resizeMode="cover"
       />
