@@ -68,6 +68,7 @@ export default function FiltersScreen({ navigation }) {
       });
   };
 
+
   // console.log("city", selectedCity);
 
   const selectTransportationMode = (type) => {

@@ -36,12 +36,11 @@ const PaymentScreen = () => {
     <ScrollView>
       <View style={styles.container}>
         <View style={[styles.subtitleContainer, { height: 30 }]}>
-          <MaterialIcons name="person" size={30} color="#BA99FE" />
+          <MaterialIcons name="person" size={21} color="#BA99FE" />
 
-          <Text style={[styles.signInText, { color: "#414141"}]}>
+          <Text style={[styles.signInText, { color: "#414141" }]}>
             Bank Card User
           </Text>
-       
         </View>
 
         <TextInput
@@ -50,18 +49,18 @@ const PaymentScreen = () => {
         />
 
         <View style={styles.subtitleContainer}>
-          <FontAwesome name="credit-card" size={24} color="#BA99FE" />
+          <FontAwesome name="credit-card" size={20} color="#BA99FE" />
           <Text style={[styles.signInText, { color: "#414141" }]}>
             Card Number
           </Text>
         </View>
         <TextInput
           style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
-          placeholder="Enter card number"
+          placeholder="Enter card number" maxLength={16}  keyboardType="numeric"
         />
 
         <View style={styles.subtitleContainer}>
-          <Entypo name="calendar" size={24} color="#BA99FE" />
+          <Entypo name="calendar" size={20} color="#BA99FE" />
           <Text style={[styles.signInText, { color: "#414141" }]}>
             Expiry Date
           </Text>
@@ -72,10 +71,8 @@ const PaymentScreen = () => {
         />
 
         <View style={styles.subtitleContainer}>
-          <FontAwesome name="barcode" size={24} color="#BA99FE" />
+          <FontAwesome name="lock" size={20} color="#BA99FE" />
           <Text style={[styles.signInText, { color: "#414141" }]}>Code</Text>
-
-
         </View>
         <TextInput
           style={[styles.input, { fontFamily: "NunitoSans_400Regular" }]}
@@ -91,7 +88,7 @@ const PaymentScreen = () => {
           <Text
             style={[
               styles.checkboxLabel,
-              {  fontFamily: "KronaOne_400Regular" },
+              { fontFamily: "KronaOne_400Regular" },
             ]}
           >
             Do you want to save your bank card details?
@@ -99,16 +96,16 @@ const PaymentScreen = () => {
         </View>
 
         <Text
-          style={[styles.amountText, { fontFamily: "KronaOne_400Regular",}]}
+          style={[styles.amountText, { fontFamily: "KronaOne_400Regular" }]}
         >
-          Amount: 1400£
+          Amount: 1400€
         </Text>
 
         <TouchableOpacity style={styles.payButton} onPress={handlePayPress}>
           <Text
             style={[
               styles.payButtonText,
-              {  fontFamily: "KronaOne_400Regular", },
+              { fontFamily: "KronaOne_400Regular" },
             ]}
           >
             Pay
@@ -126,7 +123,7 @@ const PaymentScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 50,
+    padding: 70,
     backgroundColor: "white",
     flex: 1,
     position: "relative",
@@ -139,13 +136,13 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   signInText: {
-  fontFamily: "KronaOne_400Regular",
-  fontSize:13,
+    fontFamily: "KronaOne_400Regular",
+    fontSize: 13,
   },
 
   subtitle: {
     fontSize: 16,
-    marginLeft: 8,
+   marginHorizontal : 30,
     flex: 1,
   },
   subtitleIcon: {
@@ -156,14 +153,14 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    backgroundColor:"#ECE8F2",
+    backgroundColor: "#ECE8F2",
     height: 40,
     borderColor: "gray",
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 8,
     margin: -10,
-    borderRadius : 8,
+    borderRadius: 8,
   },
   checkboxContainer: {
     flexDirection: "row",
@@ -171,30 +168,29 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     marginTop: 15,
     justifyContent: "center",
-
   },
   checkboxLabel: {
     marginLeft: 10,
-    marginTop : 10,
-    fontSize:11,
-    color:"#3972D9"
+    marginTop: 10,
+    fontSize: 11,
+    color: "#414141",
   },
 
-
   amountText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
     textAlign: "center",
     borderRadius: 10,
     padding: 10,
     color: "#3972D9",
-    backgroundColor: "#E6E1F1", 
-    
+    backgroundColor: "white",
   },
   payButton: {
     borderRadius: 5,
     paddingVertical: 15,
     fontSize: 16,
+    marginHorizontal: 35,
+    marginBottom: 20,
 
     borderRadius: 50,
 
