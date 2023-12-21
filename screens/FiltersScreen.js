@@ -31,9 +31,6 @@ const transportationMode = ["Train", "Airplane", "Coach"];
 export default function FiltersScreen({ navigation }) {
   const dispatch = useDispatch();
   const { height, width } = useWindowDimensions();
-  // const filtersFromStore = useSelector((state) => state.filters.value);
-
-  // const [departureLocation, setDepartureLocation] = useState("");
   const [departureDate, setDepartureDate] = useState(new Date());
   const [returnDate, setReturnDate] = useState(
     moment().add(4, "days").toDate()
@@ -191,7 +188,7 @@ export default function FiltersScreen({ navigation }) {
           </View>
           <View style={styles.date}></View>
         </ImageBackground>
-        <DatePickerIOS
+        {/* <DatePickerIOS
           departureDate={departureDate}
           returnDate={returnDate}
           onDepartureDateChange={(event, selectedDate) => {
@@ -200,7 +197,7 @@ export default function FiltersScreen({ navigation }) {
           onReturnDateChange={(event, selectedDate) => {
             setReturnDate(selectedDate || returnDate);
           }}
-        />
+        /> */}
         <ImageBackground
           source={require("../assets/bendy-dotted-line_2.jpg")}
           style={styles.imageBackground}
