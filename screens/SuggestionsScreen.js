@@ -24,9 +24,6 @@ export default function SuggestionsScreen({ navigation }) {
   //console.log("userInfo:", filtersFromStore);
 
   const toggleBookmarkTrip = async (tripIndex) => {
-    //console.log("bookmared trip with index" + tripIndex);
-    //console.log(userInfo);
-
     if (userInfo.isConnected) {
       const copy = [...bookmarked];
       copy[tripIndex] = !copy[tripIndex];
@@ -86,6 +83,7 @@ export default function SuggestionsScreen({ navigation }) {
       img: getImage(tripIndex),
       tripIndex: tripIndex,
       toggleBookmarkTrip: toggleBookmarkTrip,
+      isBookmarked: bookmarked[tripIndex],
     });
   };
 
