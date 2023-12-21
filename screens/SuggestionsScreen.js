@@ -56,7 +56,7 @@ export default function SuggestionsScreen({ navigation }) {
     triggerFirstFetch: triggerFetchGenerate
   });
 
-  //console.log(generatedTrips);
+  console.log(generatedTrips);
 
 
   const regenerateAll = () => {
