@@ -173,7 +173,6 @@ export default function FiltersScreen({ navigation }) {
 
       <ScrollView contentContainerStyle={styles.container}>
         <StatusBar style="auto" />
-        {/* <BackButton /> */}
 
         <CustomText style={styles.travelText}>How will you travel?</CustomText>
 
@@ -281,6 +280,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    zIndex: 99,
   },
 
   inputContainerRow: {
