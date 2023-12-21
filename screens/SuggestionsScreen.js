@@ -5,13 +5,15 @@ import {
   Text,
   TouchableOpacity,
   StatusBar,
+  SafeAreaView,
 } from "react-native";
 // import BackButton from "../components/BackButton";
 import { useDispatch, useSelector } from "react-redux";
 import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 import LoadingWheel from "../components/LoadingWheel";
-import useFetchGenerate from '../hooks/useFetchGenerate';
+import useFetchGenerate from "../hooks/useFetchGenerate";
+import GradientFontColor from "../components/GradientFontColor";
 
 const { ipAddress, port } = require("../myVariables");
 
@@ -45,23 +47,27 @@ export default function SuggestionsScreen({ navigation }) {
 
   const [triggerFetchGenerate, setTriggerFetchGenerate] = useState(false);
 
-
-  const { 
-    generatedTrips, isLoadingGenerate, errorGenerate,
-    place1, isLoadingPlace1, errorPlace1,
-    place2, isLoadingPlace2, errorPlace2
+  const {
+    generatedTrips,
+    isLoadingGenerate,
+    errorGenerate,
+    place1,
+    isLoadingPlace1,
+    errorPlace1,
+    place2,
+    isLoadingPlace2,
+    errorPlace2,
   } = useFetchGenerate({
-    generateRouteURL:`http://${ipAddress}:${port}/trips/generate`, 
+    generateRouteURL: `http://${ipAddress}:${port}/trips/generate`,
     generateFilters: filtersFromStore,
-    triggerFirstFetch: triggerFetchGenerate
+    triggerFirstFetch: triggerFetchGenerate,
   });
 
   console.log(generatedTrips);
 
-
   const regenerateAll = () => {
     //console.log('regenerateAll');
-    setTriggerFetchGenerate(prev => !prev);
+    setTriggerFetchGenerate((prev) => !prev);
   };
 
   const handlePressRegenerateAll = () => {
@@ -74,13 +80,13 @@ export default function SuggestionsScreen({ navigation }) {
     if (index === 0) place = place1;
     else if (index === 1) place = place2;
     if (!place) return require("../assets/default_city.jpg");
-    return ({ uri: place.photos[0].src.landscape });
+    return { uri: place.photos[0].src.landscape };
   };
 
   const selectTrip = (tripIndex) => {
     navigation.navigate("SelectedSuggestionsHomeStack", {
       trip: generatedTrips[tripIndex],
-      img: getImage(tripIndex)
+      img: getImage(tripIndex),
     });
   };
 
@@ -94,13 +100,14 @@ export default function SuggestionsScreen({ navigation }) {
       .padStart(2, "0")}`;
   };
 
-  const preventRegenerate = isLoadingGenerate || isLoadingPlace1 || isLoadingPlace2;
-  const rgBtnColor = preventRegenerate ? '#C2C2C2' : "#3972D9";
+  const preventRegenerate =
+    isLoadingGenerate || isLoadingPlace1 || isLoadingPlace2;
+  const rgBtnColor = preventRegenerate ? "#C2C2C2" : "#3972D9";
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {isLoadingGenerate && <LoadingWheel />}
-      <CustomText style={styles.suggestionsText}>Suggestions</CustomText>
+      <GradientFontColor style={styles.title}>Suggestions</GradientFontColor>
       <View style={styles.cardsContainer}>
         {generatedTrips &&
           generatedTrips.map((t, i) => {
@@ -129,14 +136,14 @@ export default function SuggestionsScreen({ navigation }) {
           })}
       </View>
       <TouchableOpacity
-        disabled={preventRegenerate} 
-        style={{...styles.regenerateAllButton, backgroundColor: rgBtnColor}}
+        disabled={preventRegenerate}
+        style={{ ...styles.regenerateAllButton, backgroundColor: rgBtnColor }}
         onPress={handlePressRegenerateAll}
       >
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
       </TouchableOpacity>
       {/* <BackButton /> */}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -156,9 +163,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // borderWidth: 1,
   },
-  suggestionsText: {
-    fontSize: 28,
-    marginBottom: 10,
+  title: {
+    fontFamily: "KronaOne_400Regular",
+    fontSize: 30,
+    color: "#515151",
     marginTop: 20,
   },
   regenerateAllButton: {

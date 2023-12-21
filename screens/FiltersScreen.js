@@ -50,7 +50,7 @@ export default function FiltersScreen({ navigation }) {
     if (query === "" || query.length < 3) {
       return;
     }
-    console.log('query',query);
+    console.log("query", query);
 
     fetch(`https://api-adresse.data.gouv.fr/search/?q=${query}`)
       .then((response) => response.json())
@@ -63,7 +63,7 @@ export default function FiltersScreen({ navigation }) {
             coordinates: data.geometry.coordinates,
           };
         });
-        console.log('suggestions',suggestions);
+        console.log("suggestions", suggestions);
         setDataSet(suggestions);
       });
   };
@@ -140,110 +140,120 @@ export default function FiltersScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.keyboardAvoidingView}
-    >
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Your </Text>
-        <GradientFontColor style={styles.title}>filters</GradientFontColor>
-      </View>
-
-      <View style={styles.inputDepartureContainerRow}>
-        <CustomText>Departure: </CustomText>
-        <AutocompleteDropdown
-          onChangeText={(text) => searchCity(text)}
-          onSelectItem={(item) =>
-            item &&
-            setSelectedCity((selectedCity) => ({
-              ...selectedCity,
-              ...item,
-            }))
-          }
-          textInputProps={{
-            placeholder: "Search city",
-            style: {
-              paddingLeft: 13,
-            },
-          }}
-          clearOnFocus={false}
-          closeOnBlur={true}
-          closeOnSubmit={false}
-          dataSet={dataSet}
-        />
-      </View>
-
-      <ScrollView contentContainerStyle={styles.container}>
-        <StatusBar style="auto" />
-
-        <CustomText style={styles.travelText}>How will you travel?</CustomText>
-
-        <View style={styles.checkboxes}>{checkboxes}</View>
-        <ImageBackground
-          source={require("../assets/bendy-dotted-line_2.jpg")}
-          style={styles.imageBackground}
-        >
-          <View style={[styles.sectionTitle, { width: width }]}>
-            <CustomText style={styles.sectionTextTitle}>DATES</CustomText>
-          </View>
-          <View style={styles.date}></View>
-        </ImageBackground>
-        {Platform.OS === 'ios' && <DatePickerIOS
-          departureDate={departureDate}
-          returnDate={returnDate}
-          onDepartureDateChange={(event, selectedDate) => {
-            setDepartureDate(selectedDate || departureDate);
-          }}
-          onReturnDateChange={(event, selectedDate) => {
-            setReturnDate(selectedDate || returnDate);
-          }}
-        />}
-        <ImageBackground
-          source={require("../assets/bendy-dotted-line_2.jpg")}
-          style={styles.imageBackground}
-        >
-          <View style={[styles.sectionTitle, { width: width }]}>
-            <CustomText style={styles.sectionTextTitle}>Details</CustomText>
-          </View>
-        </ImageBackground>
-
-        <View style={styles.inputContainerRow}>
-          <View style={styles.inputContainer}>
-            <CustomText>How many people:</CustomText>
-            <TextInput
-              style={styles.input}
-              // onChangeText={handleTextChange}
-              // value={"test"}
-              keyboardType="numeric"
-              placeholder="E.g. 3"
-              onChangeText={(number) => setNbrOfTravelers(Number(number))}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <CustomText>Budget:</CustomText>
-            <TextInput
-              style={styles.input}
-              keyboardType="numeric"
-              // onChangeText={handleTextChange}
-              // value={"test"}
-              placeholder="E.g. 300€"
-              onChangeText={(number) => setBudget(number)}
-            />
-          </View>
+    <SafeAreaView style={styles.safeAreaView}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
+      >
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Your </Text>
+          <GradientFontColor style={styles.title}>filters</GradientFontColor>
         </View>
 
-        <TouchableOpacity
-          onPress={callHandleAndHandlePress}
-          style={styles.button}
-        >
-          <CustomText style={styles.buttonText}>Go!</CustomText>
-        </TouchableOpacity>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        <View style={styles.inputDepartureContainerRow}>
+          <CustomText>Departure: </CustomText>
+          <AutocompleteDropdown
+            onChangeText={(text) => searchCity(text)}
+            onSelectItem={(item) =>
+              item &&
+              setSelectedCity((selectedCity) => ({
+                ...selectedCity,
+                ...item,
+              }))
+            }
+            textInputProps={{
+              placeholder: "Search city",
+              style: {
+                paddingLeft: 13,
+              },
+            }}
+            clearOnFocus={false}
+            closeOnBlur={true}
+            closeOnSubmit={false}
+            dataSet={dataSet}
+          />
+        </View>
+
+        <ScrollView contentContainerStyle={styles.container}>
+          <StatusBar style="auto" />
+
+          <CustomText style={styles.travelText}>
+            How will you travel?
+          </CustomText>
+
+          <View style={styles.checkboxes}>{checkboxes}</View>
+          <ImageBackground
+            source={require("../assets/bendy-dotted-line_2.jpg")}
+            style={styles.imageBackground}
+          >
+            <View style={[styles.sectionTitle, { width: width }]}>
+              <CustomText style={styles.sectionTextTitle}>DATES</CustomText>
+            </View>
+            <View style={styles.date}></View>
+          </ImageBackground>
+          {Platform.OS === "ios" && (
+            <DatePickerIOS
+              departureDate={departureDate}
+              returnDate={returnDate}
+              onDepartureDateChange={(event, selectedDate) => {
+                setDepartureDate(selectedDate || departureDate);
+              }}
+              onReturnDateChange={(event, selectedDate) => {
+                setReturnDate(selectedDate || returnDate);
+              }}
+            />
+          )}
+          <ImageBackground
+            source={require("../assets/bendy-dotted-line_2.jpg")}
+            style={styles.imageBackground}
+          >
+            <View style={[styles.sectionTitle, { width: width }]}>
+              <CustomText style={styles.sectionTextTitle}>Details</CustomText>
+            </View>
+          </ImageBackground>
+
+          <View style={styles.inputContainerRow}>
+            <View style={styles.inputContainer}>
+              <CustomText>How many people:</CustomText>
+              <TextInput
+                style={styles.input}
+                // onChangeText={handleTextChange}
+                // value={"test"}
+                keyboardType="numeric"
+                placeholder="E.g. 3"
+                onChangeText={(number) => setNbrOfTravelers(Number(number))}
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <CustomText>Budget:</CustomText>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                // onChangeText={handleTextChange}
+                // value={"test"}
+                placeholder="E.g. 300€"
+                onChangeText={(number) => setBudget(number)}
+              />
+            </View>
+          </View>
+
+          <TouchableOpacity
+            onPress={callHandleAndHandlePress}
+            style={styles.button}
+          >
+            <CustomText style={styles.buttonText}>Go!</CustomText>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   container: {
     alignItems: "center",
     paddingHorizontal: 15,
@@ -253,7 +263,6 @@ const styles = StyleSheet.create({
   },
   keyboardAvoidingView: {
     flex: 1,
-    backgroundColor: "white",
   },
   titleContainer: {
     flexDirection: "row",

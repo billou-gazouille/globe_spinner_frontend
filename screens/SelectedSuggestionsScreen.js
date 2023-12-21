@@ -30,6 +30,7 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   const { img } = route.params;
   const outboundJourneyType = trip.outboundJourney.type;
   const inboundJourneyType = trip.inboundJourney.type;
+  const totalPaidAmount = trip.total;
 
   const iconMapping = {
     Train: "train",
@@ -99,6 +100,11 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
           </CustomText>
         </View>
       </ImageBackground>
+      <View style={styles.priceContainer}>
+        <CustomText style={styles.text}>
+          Total Price: {totalPaidAmount}€
+        </CustomText>
+      </View>
 
       <View style={styles.headingAndSectionPair}>
         <GradientFontColor style={styles.text}>Accommodation</GradientFontColor>
@@ -222,7 +228,6 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
         Activities
       </GradientFontColor>
       <View style={styles.activitiesContainer}>{activities}</View>
-      {/* <BackButton navigation={navigation} /> */}
 
       <TouchableOpacity
         style={styles.continueToPaymentButton}
@@ -245,6 +250,13 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
   },
+  priceContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    paddingVertical: 20,
+  },
+
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -273,7 +285,7 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 40,
+    marginTop: 10,
   },
   accommodationName: {
     fontSize: 18,
