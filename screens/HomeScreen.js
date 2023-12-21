@@ -15,7 +15,8 @@ export default function HomeScreen({ navigation }) {
   const { height, width } = useWindowDimensions();
 
   const handleSubmit = () => {
-    navigation.navigate("FiltersHomeStack");
+   navigation.navigate("FiltersHomeStack");
+    // navigation.navigate("PaymentHomeStack");
   };
 
   return (
