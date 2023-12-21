@@ -6,80 +6,27 @@ import {
   TouchableOpacity,
   StatusBar,
 } from "react-native";
-import BackButton from "../components/BackButton";
+// import BackButton from "../components/BackButton";
 import { useDispatch, useSelector } from "react-redux";
 import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 import LoadingWheel from "../components/LoadingWheel";
-import useFetchSequence from "../hooks/useFetchSequence";
-
-const imagesAPIprefix = 'https://api.pexels.com/v1/search?query=';
-const imageAPIoptions = {
-  headers: {
-    Authorization:
-      "5t6cWcJQKyLgJsDtnmjZX8fLomdIIvsa46xUgeXPcL5AZMAK4r2GODOm",
-  },
-};
 
 const { ipAddress, port } = require("../myVariables");
 
 export default function SuggestionsScreen({ navigation }) {
+  const [trips, setTrips] = useState([]);
   const [bookmarked, setBookmarked] = useState([false, false]);
 
-  const [triggerFetchSequence, setTriggerFetchSequence] = useState(false);
-
-  const [filters, setFilters] = useState({
-    lat: 49,
-    lon: 2,
-    budget: 10000,
-    nbrOfTravelers: 1,
-    departureMinOutbound: "2023-12-18",
-    departureMaxOutbound: "2023-12-22",
-    departureMinInbound: "2023-12-25",
-    departureMaxInbound: "2023-12-29",
-    types: ["Airplane", "Coach", "Train"],
-  });
-
-  const fetchGenerate = {
-    options: {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(filters),
-    },
-    getNextURL: (requestsProgress) => `${imagesAPIprefix}${requestsProgress[0].data[0].destination.name}+aerial` 
-  };
-
-  const fetchPlace1 = {
-    options: imageAPIoptions,
-    getNextURL: (requestsProgress) => `${imagesAPIprefix}${requestsProgress[0].data[1].destination.name}+aerial` 
-  };
-
-  const fetchPlace2 = {
-    options: imageAPIoptions
-  };
-
-  const requestsSequence = [fetchGenerate, fetchPlace1, fetchPlace2];
-
-  const [
-      requestGenerateProgress,
-      requestPlace1Progress,
-      requestPlace2Progress,
-    ] = useFetchSequence({
-    firstURL: `http://${ipAddress}:${port}/trips/generate`,
-    triggerFirstFetch: triggerFetchSequence,
-    requestsSequence: requestsSequence
-  });
-
-  console.log('requestGenerateProgress: ', requestGenerateProgress);
-
-  // console.log('requestGenerateProgress.isLoading: ', requestGenerateProgress.isLoading);
-  // console.log('requestPlace1Progress.isLoading: ', requestPlace1Progress.isLoading);
-  // console.log('requestPlace2Progress.isLoading: ', requestPlace2Progress.isLoading);
-
-
   const userInfo = useSelector((state) => state.userInfo.value);
+  const filtersFromStore = useSelector((state) => state.filters.value);
+
+  console.log("userInfo:", filtersFromStore);
 
   const toggleBookmarkTrip = async (tripIndex) => {
+    //console.log("bookmared trip with index" + tripIndex);
+    //console.log(userInfo);
+
     if (userInfo.isConnected) {
       const copy = [...bookmarked];
       copy[tripIndex] = !copy[tripIndex];
@@ -95,20 +42,66 @@ export default function SuggestionsScreen({ navigation }) {
     // console.log("fetch response: ", data.savedTrip);
   };
 
+
+  const { 
+    generatedTrips, isLoadingGenerate, errorGenerate,
+    place1, isLoadingPlace1, errorPlace1,
+    place2, isLoadingPlace2, errorPlace2
+  } = 
+
+
   const regenerateAll = async () => {
     // console.log("regenerateAll");
-    setTriggerFetchSequence(prev => !prev);
+    setTrips([]);
+    const filters = {
+      lat: filtersFromStore.departureLocation[1],
+      lon: filtersFromStore.departureLocation[0],
+      budget: filtersFromStore.budget,
+      nbrOfTravelers: filtersFromStore.nbrOfTravelers,
+      departureDateOutbound: filtersFromStore.departureDate,
+      departureDateInbound: filtersFromStore.returnDate,
+      interval: 3,
+      types: filtersFromStore.transportType,
+    };
+    const generatedTtrips = await fetch(
+      //DON'T FORGET TO CHANGE YOUR IP ADRESS
+      `http://${ipAddress}:${port}/trips/generate`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(filters),
+      }
+    ).then((resp) => resp.json());
+    // console.log(generatedTtrips);
+    if (generatedTtrips.length > 0) {
+      setTrips(generatedTtrips);
+      setImageURLs(["", ""]);
+      for (let i = 0; i < generatedTtrips.length; i++) {
+        getPlaceImageURL(i, generatedTtrips[i].destination.name);
+      }
+    }
   };
 
-  const handlePressRegenerateAll = () => {
+  useEffect(() => {
+    // console.log('useEffect');
+    regenerateAll();
+  }, []);
+
+  const handlePressRegenerateAll = async () => {
     // console.log("handlePressRegenerateAll");
     regenerateAll();
   };
 
+  //console.log(trips);
 
   const selectTrip = (tripIndex) => {
     console.log("tripIndex: ", tripIndex);
-    navigation.navigate("SelectedSuggestions", { trip: trips[tripIndex] });
+    navigation.navigate("SelectedSuggestions", {
+      trip: trips[tripIndex],
+      img: imageURLs[tripIndex]
+        ? { uri: imageURLs[tripIndex] }
+        : require("../assets/default_city.jpg"),
+    });
   };
 
   const formattedDate = (stringDate) => {
@@ -121,23 +114,32 @@ export default function SuggestionsScreen({ navigation }) {
       .padStart(2, "0")}`;
   };
 
-  const getImage = (index) => {
-    let requestPlaceProgress;
-    if (index === 0) requestPlaceProgress = requestPlace1Progress;    // place 1
-    else if (index === 1) requestPlaceProgress = requestPlace2Progress; // place 2
-    if (!requestPlaceProgress.data) return require("../assets/noImage.jpg");
-    return ({ uri: requestPlaceProgress.data.photos[0].src.landscape});
-  }
-
-  const generatedTrips = requestGenerateProgress.data;
+  const getPlaceImageURL = async (index, placeName) => {
+    // console.log(placeName);
+    const data = await fetch(
+      `https://api.pexels.com/v1/search?query=${placeName}+aerial`,
+      {
+        headers: {
+          Authorization:
+            "5t6cWcJQKyLgJsDtnmjZX8fLomdIIvsa46xUgeXPcL5AZMAK4r2GODOm",
+        },
+      }
+    ).then((resp) => resp.json());
+    // console.log(data);
+    const imageURL = data.photos[0].src.landscape;
+    const copy = [...imageURLs];
+    copy[index] = imageURL;
+    setImageURLs(copy);
+    //return imageURL;
+  };
 
   return (
     <View style={styles.container}>
-      {requestGenerateProgress.isLoading && <LoadingWheel />}
+      {trips.length !== 2 && <LoadingWheel />}
       <CustomText style={styles.suggestionsText}>Suggestions</CustomText>
       <View style={styles.cardsContainer}>
-        {generatedTrips &&
-          generatedTrips.map((t, i) => {
+        {trips.length === 2 &&
+          trips.map((t, i) => {
             const actvitiesMax3 =
               t.activities.length <= 3
                 ? t.activities
@@ -150,8 +152,14 @@ export default function SuggestionsScreen({ navigation }) {
                 accommodationType={t.accommodation.accommodationBase.type}
                 leaveTransportType={t.outboundJourney.type}
                 returnTransportType={t.inboundJourney.type}
-                activities={actvitiesMax3.map((a) => a.activityBase.name)}
-                img={getImage(i)}
+                activities={actvitiesMax3.map((a) =>
+                  a.activityBase.name.replace(/\d/g, "")
+                )}
+                img={
+                  imageURLs[i]
+                    ? { uri: imageURLs[i] }
+                    : require("../assets/default_city.jpg")
+                }
                 leaveDate={formattedDate(t.outboundJourney.departure)}
                 returnDate={formattedDate(t.inboundJourney.arrival)}
                 price={1400}

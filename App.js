@@ -50,6 +50,8 @@ const HomeStack = () => {
         headerBackTitleVisible: false,
         headerBackVisible: true,
         headerTintColor: "#ba99FE",
+        // headerShadowVisible: false,
+        headerTransparent: true,
       }}
     >
       <Stack.Screen name="HomeStack" component={HomeScreen} />
@@ -144,12 +146,6 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
-            <Stack.Screen name="Suggestions" component={SuggestionsScreen} />
-            <Stack.Screen name="Filters" component={FiltersScreen} />
-            <Stack.Screen
-              name="SelectedSuggestions"
-              component={SelectedSuggestionsScreen}
-            />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

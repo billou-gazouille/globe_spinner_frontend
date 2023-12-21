@@ -26,49 +26,105 @@ export default function useFetchSequence({ generateRouteURL, triggerFirstFetch }
 
     
 	useEffect(() => {
-        if (isLoadingGenerate)
-		const request = requestsSequence[requestIndex];
-		const { options=DEFAULT_OPTIONS, getNextURL } = request;
-		// getNextURL is a callback in the form: (requestsProgress) => return nextURL;
+        const fetchGenerate = async () => {
+            let place1URL, place2URL;
 
-		const requestController = new AbortController();
+            const filters = {
+                lat: 49,
+                lon: 2,
+                budget: 10000,
+                nbrOfTravelers: 1,
+                departureMinOutbound: "2023-12-18",
+                departureMaxOutbound: "2023-12-22",
+                departureMinInbound: "2023-12-25",
+                departureMaxInbound: "2023-12-29",
+                types: ["Airplane", "Coach", "Train"],
+            };
 
-		if (!isScreenFocused) return;
-
-		setRequestsProgress(prev => {
-			return updatedRequests(prev, { error: null, isLoading: true });
-		});
-
-		console.log('nextURL: ', nextURL);
-
-		fetch(nextURL, { ...options, signal: requestController.signal })
-			.then(response => {
-				if (!response.ok) {
-					setRequestsProgress(prev => {
-						return updatedRequests(prev, { error: response.statusText });
-					});
-					return;
-				}
-				return response.json();
-			})
-			.then(data => {
-				//setNextURL(getNextURL(data));
-				setNextURL(getNextURL(updatedRequests(requestsProgress, { data: data, isLoading: false })));
-				//console.log('[DATA]', data);
-				setRequestsProgress(prev => {
-					return updatedRequests(prev, { data: data, isLoading: false });
-				});
-				setRequestIndex(prev => prev+1);
-			})
-			.catch(error => {
-				setRequestsProgress(prev => {
-					return updatedRequests(prev, { error: error, isLoading: false });
-				});
-			});
-
-			return () => requestController.abort();
+            const fetchGenerateRouteOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(filters),
+            };
+    
+            const requestController = new AbortController();
+    
+            if (!isScreenFocused) return;
+    
+            setIsLoadingGenerate(true);
+    
+            await fetch(generateRouteURL, { 
+                options: fetchGenerateRouteOptions, 
+                signal: requestController.signal 
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        setErrorGenerate(response.statusText);
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    //console.log('[DATA]', data);
+                    setGeneratedTrips(data);
+                    setIsLoadingGenerate(false);
+                    place1URL = `${imagesAPIprefix}${data[0].destination.name}+aerial`;
+                    place2URL = `${imagesAPIprefix}${data[1].destination.name}+aerial`;
+                })
+                .catch(error => {
+                    setErrorGenerate(error);
+                });
+            
+            fetch(place1URL, { 
+                options: DEFAULT_OPTIONS, 
+                signal: requestController.signal 
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        setErrorPlace1(response.statusText);
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    //console.log('[DATA]', data);
+                    setPlace1(data);
+                    setIsLoadingPlace1(false);
+                })
+                .catch(error => {
+                    setErrorPlace1(error);
+                });
+            
+            fetch(place2URL, { 
+                    options: DEFAULT_OPTIONS, 
+                    signal: requestController.signal 
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        setErrorPlace2(response.statusText);
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    //console.log('[DATA]', data);
+                    setPlace2(data);
+                    setIsLoadingPlace2(false);
+                })
+                .catch(error => {
+                    setErrorPlace2(error);
+                });
+    
+            return () => requestController.abort();
+        };
+		
+        fetchGenerate();
 		
 		}, [triggerFirstFetch, isScreenFocused, nextURL]);
 
-	return requestsProgress;
+	return { 
+        generatedTrips, isLoadingGenerate, errorGenerate,
+        place1, isLoadingPlace1, errorPlace1,
+        place2, isLoadingPlace2, errorPlace2
+    };
 }
