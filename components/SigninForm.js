@@ -48,7 +48,7 @@ export default function SigninForm({ submit, closeModal }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-          <FontAwesome name="close" size={20} color="#black" />
+          <FontAwesome name="close" size={30} color="#black" />
         </TouchableOpacity>
 
         <View style={styles.title}>
@@ -112,17 +112,14 @@ const styles = StyleSheet.create({
   },
 
   closeButton: {
-    width: 60,
-    height: 30,
-    top: 30,
-    right: -250,
-    marginBottom: 30,
-    zIndex: 99,
-
+    width: 40,
+    height: 40,
+    right: -20,
+    top: 15,
+    marginTop: -15,
+    position: "absolute",
     justifyContent: "center",
     alignItems: "center",
-
-    borderRadius: 5,
   },
   inputsContainer: {
     width: "80%",
@@ -151,7 +148,7 @@ const styles = StyleSheet.create({
   title: {
     alignItems: "center",
     marginBottom: 80,
-    marginTop: 40,
+    marginTop: 50,
   },
 
   textInput: {
