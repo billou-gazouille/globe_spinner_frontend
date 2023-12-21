@@ -25,10 +25,6 @@ export default function SuggestionCard({
   toggleBookmarkTrip,
   isBookmarked,
 }) {
-  handleBookmarkPress = () => {
-    toggleBookmarkTrip(tripIndex);
-  };
-
   return (
     <TouchableOpacity
       style={styles.container}
@@ -38,9 +34,9 @@ export default function SuggestionCard({
         <FontAwesome
           style={styles.bookmark}
           name="bookmark"
-          size={20}
-          color={isBookmarked ? "#EDB8FE" : "white"}
-          onPress={handleBookmarkPress}
+          size={25}
+          color={isBookmarked ? "#BA99FE" : "white"}
+          onPress={() => toggleBookmarkTrip(tripIndex)}
         />
         <CustomText
           style={{
@@ -54,7 +50,6 @@ export default function SuggestionCard({
         </CustomText>
         <Image source={img} style={styles.cityImg} />
         <View style={styles.overlay} />
-        {/* <ImageBackground source={img} style={{width: 200,height: 100}} imageStyle={{ resizeMode: 'cover' }} overlayColor='#00000088'></ImageBackground> */}
       </View>
       <View style={styles.infosContainer}>
         <View style={styles.activitiesContainer}>

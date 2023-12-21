@@ -17,11 +17,6 @@ const { ipAddress, port } = require("../myVariables");
 export default function SuggestionsScreen({ navigation }) {
   const [trips, setTrips] = useState([]);
   const [bookmarked, setBookmarked] = useState([false, false]);
-
-  const handleSubmit = () => {
-    navigation.navigate("SelectedSuggestionsHomeStack");
-  };
-
   const userInfo = useSelector((state) => state.userInfo.value);
   const filtersFromStore = useSelector((state) => state.filters.value);
 
@@ -58,7 +53,7 @@ export default function SuggestionsScreen({ navigation }) {
       nbrOfTravelers: filtersFromStore.nbrOfTravelers,
       departureDateOutbound: filtersFromStore.departureDate,
       departureDateInbound: filtersFromStore.returnDate,
-      interval: 3,
+      interval: 2,
       types: filtersFromStore.transportType,
     };
     // console.log(filters);
@@ -97,6 +92,8 @@ export default function SuggestionsScreen({ navigation }) {
     console.log("tripIndex: ", tripIndex);
     navigation.navigate("SelectedSuggestionsHomeStack", {
       trip: trips[tripIndex],
+      tripIndex: tripIndex,
+      toggleBookmarkTrip: toggleBookmarkTrip,
       img: imageURLs[tripIndex]
         ? { uri: imageURLs[tripIndex] }
         : require("../assets/default_city.jpg"),

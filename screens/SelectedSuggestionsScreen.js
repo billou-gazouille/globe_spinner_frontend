@@ -26,8 +26,7 @@ const colors = {
 
 export default function SelectedSuggestionsScreen({ navigation, route }) {
   const { width } = useWindowDimensions();
-  const trip = route.params.trip;
-  const { img } = route.params;
+  const { trip, img, tripIndex, toggleBookmarkTrip } = route.params;
   const outboundJourneyType = trip.outboundJourney.type;
   const inboundJourneyType = trip.inboundJourney.type;
 
@@ -88,7 +87,13 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
       <ImageBackground source={img} style={styles.imageBackground}>
         <View style={styles.overlay} />
-
+        <FontAwesome
+          style={styles.bookmark}
+          name="bookmark"
+          size={25}
+          color={isBookmarked ? "#BA99FE" : "white"}
+          onPress={() => toggleBookmarkTrip(tripIndex)}
+        />
         <View style={[styles.cityImgContainer, { width: width }]}>
           <CustomText style={styles.destinationTitle}>
             {trip.destination.name} - {trip.destination.country}
@@ -244,6 +249,12 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  bookmark: {
+    position: "absolute",
+    zIndex: 2,
+    right: 20,
+    top: 10,
   },
   cityImgContainer: {
     height: 200,
