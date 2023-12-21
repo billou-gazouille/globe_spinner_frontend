@@ -9,13 +9,18 @@ import {
   TextInput,
   TouchableOpacity,
   StatusBar,
+  SafeAreaView,
+  useWindowDimensions,
+  ScrollView,
 } from "react-native";
 import GradientFontColor from "../components/GradientFontColor";
 import { Icon } from "react-native-vector-icons/FontAwesome";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
+import UserDetails from "../components/UserDetails";
 import SignModal from "../components/SignModal";
+
 import { useSelector, useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -28,6 +33,8 @@ import { CustomText } from "../components/CustomText";
 const { ipAddress, port } = require("../myVariables");
 
 export default function ProfileScreen({ navigation }) {
+  const { height, width } = useWindowDimensions();
+
   const userInfo = useSelector((state) => state.userInfo.value);
   const userToken = useSelector((state) => state.userInfo.value.token);
 
@@ -81,7 +88,6 @@ export default function ProfileScreen({ navigation }) {
     if (data.result) {
       dispatch(connect());
       setIsSigningUp(false);
-      //console.log('okkk');
       dispatch(
         loadDetails({
           token: data.token,
@@ -124,56 +130,7 @@ export default function ProfileScreen({ navigation }) {
     dispatch(disconnect());
   };
 
-  //Charger depuis la db les trips bookmarked et les trips reserved
-  // useEffect(() => {
-  //   if (userToken) {
-  //     fetchSavedTrips(userToken);
-  //   }
-  // }, [userToken]);
-
-  // function fetchSavedTrips(userToken) {
-  //   const url = `http://${ipAddress}:3000/${userToken}/savedTrips`;
-  //   fetch(url)
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Oops t'as fait de la merde");
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((savedTrips) => {
-  //       console.log(savedTrips);
-  //     });
-  // }
-
-  const userDetails = (
-    <View style={styles.container}>
-      {/* <Text style={{ fontSize: 30, color: "black" }}>User details...</Text> */}
-      <GradientFontColor style={styles.hello}>
-        Hello {userInfo.firstname} !
-      </GradientFontColor>
-      <CustomText style={{ color: "black", fontSize: 26, margin: 20 }}>
-        My account info
-      </CustomText>
-      <View style={styles.userDetailsContainer}>
-        <CustomText style={styles.userDetail}>
-          first name: {userInfo.firstName}
-        </CustomText>
-        <CustomText style={styles.userDetail}>
-          last name: {userInfo.lastName}
-        </CustomText>
-        <CustomText style={styles.userDetail}>
-          email: {userInfo.email}
-        </CustomText>
-      </View>
-      <TouchableOpacity
-        style={styles.logoutButton}
-        onPress={() => HandlePressLogout()}
-      >
-        <Text style={{ fontSize: 16, color: "black" }}>Logout</Text>
-        <FontAwesome name="sign-out" size={40} style={styles.logout} />
-      </TouchableOpacity>
-    </View>
-  );
+  const userDetails = <UserDetails logout={() => dispatch(disconnect())} />;
 
   const modalToShow = () => {
     if (isSigningIn) return signinForm;
@@ -195,11 +152,12 @@ export default function ProfileScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "white",
     alignItems: "center",
-    //justifyContent: "center",
-    justifyContent: "space-between",
+    backgroundColor: "white",
+    flex: 1,
+  },
+  scrollView: {
+    alignItems: "center",
   },
   hello: {
     justifyContent: "center",
@@ -209,27 +167,23 @@ const styles = StyleSheet.create({
     fontSize: 40,
   },
   text: {
-    fontSize: 28,
+    color: "black",
+    fontSize: 26,
+    margin: 20,
   },
   logoutButton: {
-    backgroundColor: "pink",
+    // backgroundColor: "red",
     width: 60,
     height: 60,
-    borderWidth: 1,
+    position: "absolute",
+    right: -10,
+    marginTop: 20,
   },
-  logout: {
-    color: "red",
-  },
+
   userDetailsContainer: {
-    flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "left",
-    backgroundColor: "red",
-    width: "100%",
-  },
-  userDetail: {
-    color: "black",
-    fontSize: 24,
-    marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
+    marginVertical: 60,
   },
 });
