@@ -81,6 +81,7 @@ export default function FiltersScreen({ navigation }) {
     fields.some((field) => !field || field === "" || field.length === 0);
 
   const handlePressSubmit = () => {
+    return true;  // comment this line if you don't want to bypass the filters
     const requiredFields = [
       departureLocation,
       budget,

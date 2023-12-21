@@ -9,26 +9,24 @@ const DEFAULT_OPTIONS = {
 // To manage several fetches where the URL of the next fetch
 // depends on the progress info (including data) of all the fetches until now
 
-export default function useFetchSequence({ firstURL, triggerFirstFetch, requestsSequence }) {
+export default function useFetchSequence({ generateRouteURL, triggerFirstFetch }) {
     
-	const [nextURL, setNextURL] = useState(firstURL);
-	const [requestIndex, setRequestIndex] = useState(0);
-	
-	const n = requestsSequence.length;
-	const isScreenFocused = useIsFocused();
-	const [requestsProgress, setRequestsProgress] = useState(Array(n).fill({
-		data: null,
-		error: null,
-		isLoading: false,
-	}));
-	
-	const updatedRequests = (prevRequests, keyValuePairs) => {
-		const requestsCopy = [...prevRequests];
-		requestsCopy[requestIndex] = { ...requestsCopy[requestIndex], ...keyValuePairs };
-		return requestsCopy;
-	}
-	
+	//const [nextURL, setNextURL] = useState(firstURL);
+	const [generatedTrips, setGeneratedTrips] = useState(null);
+	const [isLoadingGenerate, setIsLoadingGenerate] = useState(false);
+    const [errorGenerate, setErrorGenerate] = useState(null);
+
+    const [place1, setPlace1] = useState(null);
+	const [isLoadingPlace1, setIsLoadingPlace1] = useState(false);
+    const [errorPlace1, setErrorPlace1] = useState(null);
+
+    const [place2, setPlace2] = useState(null);
+	const [isLoadingPlace2, setIsLoadingPlace2] = useState(false);
+    const [errorPlace2, setErrorPlace2] = useState(null);
+
+    
 	useEffect(() => {
+        if (isLoadingGenerate)
 		const request = requestsSequence[requestIndex];
 		const { options=DEFAULT_OPTIONS, getNextURL } = request;
 		// getNextURL is a callback in the form: (requestsProgress) => return nextURL;
