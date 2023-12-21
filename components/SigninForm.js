@@ -46,8 +46,9 @@ export default function SigninForm({ submit, closeModal }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-          <FontAwesome name="close" size={20} color="black" />
+          <FontAwesome name="close" size={20} color="#black" />
         </TouchableOpacity>
+    
 
         <View style={styles.title}>
           <GradienFontColor>
@@ -76,6 +77,7 @@ export default function SigninForm({ submit, closeModal }) {
                 style={styles.textInput}
                 value={password}
                 onChangeText={(text) => setPassword(text)}
+                secureTextEntry={true}
               ></TextInput>
             </View>
           </View>
@@ -108,18 +110,18 @@ const styles = StyleSheet.create({
   },
 
   closeButton: {
-    width: 30,
-    height: 30,
-    right: 20,
-    top: 20,
-    borderWidth: 1,
-    position: "absolute",
+      width: 60,
+      height: 30,
+      top: 30,
+      right: -250,
+      marginBottom: 30,
+      zIndex: 99,
+
+      justifyContent: "center",
+       alignItems: "center",
 
     borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
   },
-
   inputsContainer: {
     width: "100%",
     marginVertical: 20,
@@ -146,7 +148,10 @@ const styles = StyleSheet.create({
 
   title: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 80,
+    marginTop: 40,
+  
+  
   },
 
   textInput: {
@@ -170,6 +175,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
+    marginTop : 60,
   },
 
   submitButtonText: {

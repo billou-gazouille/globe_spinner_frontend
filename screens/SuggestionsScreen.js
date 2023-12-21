@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 import LoadingWheel from "../components/LoadingWheel";
+import useFetchGenerate from "../hooks/useFetchGenerate";
 
 const { ipAddress, port } = require("../myVariables");
 
@@ -20,7 +21,7 @@ export default function SuggestionsScreen({ navigation }) {
   const userInfo = useSelector((state) => state.userInfo.value);
   const filtersFromStore = useSelector((state) => state.filters.value);
 
-  console.log("userInfo:", filtersFromStore);
+  //console.log("userInfo:", filtersFromStore);
 
   const toggleBookmarkTrip = async (tripIndex) => {
     //console.log("bookmared trip with index" + tripIndex);
@@ -41,62 +42,50 @@ export default function SuggestionsScreen({ navigation }) {
     // console.log("fetch response: ", data.savedTrip);
   };
 
-  const [imageURLs, setImageURLs] = useState(["", ""]);
+  const [triggerFetchGenerate, setTriggerFetchGenerate] = useState(false);
 
-  const regenerateAll = async () => {
-    // console.log("regenerateAll");
-    setTrips([]);
-    const filters = {
-      lat: filtersFromStore.departureLocation[1],
-      lon: filtersFromStore.departureLocation[0],
-      budget: filtersFromStore.budget,
-      nbrOfTravelers: filtersFromStore.nbrOfTravelers,
-      departureDateOutbound: filtersFromStore.departureDate,
-      departureDateInbound: filtersFromStore.returnDate,
-      interval: 2,
-      types: filtersFromStore.transportType,
-    };
-    // console.log(filters);
-    const generatedTtrips = await fetch(
-      //DON'T FORGET TO CHANGE YOUR IP ADRESS
-      `http://${ipAddress}:${port}/trips/generate`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(filters),
-      }
-    ).then((resp) => resp.json());
-    console.log(generatedTtrips);
-    if (generatedTtrips.length > 0) {
-      setTrips(generatedTtrips);
-      setImageURLs(["", ""]);
-      for (let i = 0; i < generatedTtrips.length; i++) {
-        getPlaceImageURL(i, generatedTtrips[i].destination.name);
-      }
-    }
+  const {
+    generatedTrips,
+    isLoadingGenerate,
+    errorGenerate,
+    place1,
+    isLoadingPlace1,
+    errorPlace1,
+    place2,
+    isLoadingPlace2,
+    errorPlace2,
+  } = useFetchGenerate({
+    generateRouteURL: `http://${ipAddress}:${port}/trips/generate`,
+    generateFilters: filtersFromStore,
+    triggerFirstFetch: triggerFetchGenerate,
+  });
+
+  //console.log(generatedTrips);
+
+  const regenerateAll = () => {
+    //console.log('regenerateAll');
+    setTriggerFetchGenerate((prev) => !prev);
   };
 
-  useEffect(() => {
-    // console.log('useEffect');
-    regenerateAll().then();
-  }, []);
-
-  const handlePressRegenerateAll = async () => {
+  const handlePressRegenerateAll = () => {
     // console.log("handlePressRegenerateAll");
-    regenerateAll().then();
+    regenerateAll();
   };
 
-  //console.log(trips);
+  const getImage = (index) => {
+    let place;
+    if (index === 0) place = place1;
+    else if (index === 1) place = place2;
+    if (!place) return require("../assets/default_city.jpg");
+    return { uri: place.photos[0].src.landscape };
+  };
 
   const selectTrip = (tripIndex) => {
-    console.log("tripIndex: ", tripIndex);
     navigation.navigate("SelectedSuggestionsHomeStack", {
-      trip: trips[tripIndex],
+      trip: generatedTrips[tripIndex],
+      img: getImage(tripIndex),
       tripIndex: tripIndex,
       toggleBookmarkTrip: toggleBookmarkTrip,
-      img: imageURLs[tripIndex]
-        ? { uri: imageURLs[tripIndex] }
-        : require("../assets/default_city.jpg"),
     });
   };
 
@@ -110,32 +99,17 @@ export default function SuggestionsScreen({ navigation }) {
       .padStart(2, "0")}`;
   };
 
-  const getPlaceImageURL = async (index, placeName) => {
-    // console.log(placeName);
-    const data = await fetch(
-      `https://api.pexels.com/v1/search?query=${placeName}+aerial`,
-      {
-        headers: {
-          Authorization:
-            "5t6cWcJQKyLgJsDtnmjZX8fLomdIIvsa46xUgeXPcL5AZMAK4r2GODOm",
-        },
-      }
-    ).then((resp) => resp.json());
-    // console.log(data);
-    const imageURL = data.photos[0].src.landscape;
-    const copy = [...imageURLs];
-    copy[index] = imageURL;
-    setImageURLs(copy);
-    //return imageURL;
-  };
+  const preventRegenerate =
+    isLoadingGenerate || isLoadingPlace1 || isLoadingPlace2;
+  const rgBtnColor = preventRegenerate ? "#C2C2C2" : "#3972D9";
 
   return (
     <View style={styles.container}>
-      {trips.length !== 2 && <LoadingWheel />}
+      {isLoadingGenerate && <LoadingWheel />}
       <CustomText style={styles.suggestionsText}>Suggestions</CustomText>
       <View style={styles.cardsContainer}>
-        {trips.length === 2 &&
-          trips.map((t, i) => {
+        {generatedTrips &&
+          generatedTrips.map((t, i) => {
             const actvitiesMax3 =
               t.activities.length <= 3
                 ? t.activities
@@ -148,14 +122,8 @@ export default function SuggestionsScreen({ navigation }) {
                 accommodationType={t.accommodation.accommodationBase.type}
                 leaveTransportType={t.outboundJourney.type}
                 returnTransportType={t.inboundJourney.type}
-                activities={actvitiesMax3.map((a) =>
-                  a.activityBase.name.replace(/\d/g, "")
-                )}
-                img={
-                  imageURLs[i]
-                    ? { uri: imageURLs[i] }
-                    : require("../assets/default_city.jpg")
-                }
+                activities={actvitiesMax3.map((a) => a.activityBase.name)}
+                img={getImage(i)}
                 leaveDate={formattedDate(t.outboundJourney.departure)}
                 returnDate={formattedDate(t.inboundJourney.arrival)}
                 price={1400}
@@ -167,7 +135,8 @@ export default function SuggestionsScreen({ navigation }) {
           })}
       </View>
       <TouchableOpacity
-        style={styles.regenerateAllButton}
+        disabled={preventRegenerate}
+        style={{ ...styles.regenerateAllButton, backgroundColor: rgBtnColor }}
         onPress={handlePressRegenerateAll}
       >
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
@@ -203,7 +172,6 @@ const styles = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#3972D9",
     borderRadius: 25,
     marginTop: 20,
     marginBottom: 20,
