@@ -22,7 +22,7 @@ export default function SuggestionCard({
   returnTransportType,
   accommodationType,
   selectTrip,
-  toggleBookmarkTrip,
+  bookmarkTrip,
   isBookmarked,
 }) {
   return (
@@ -36,7 +36,7 @@ export default function SuggestionCard({
           name="bookmark"
           size={25}
           color={isBookmarked ? "#BA99FE" : "white"}
-          onPress={() => toggleBookmarkTrip(tripIndex)}
+          onPress={() => bookmarkTrip(tripIndex)}
         />
         <CustomText
           style={{

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   View,
@@ -13,9 +13,13 @@ import {
 } from "react-native";
 // import BackButton from "../components/BackButton";
 import { CustomText } from "../components/CustomText";
+import { useSelector } from "react-redux";
+
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
 import GradientFontColor from "../components/GradientFontColor";
+import toggleBookmarkTrip from "../modules/bookmarkTrip";
+// const toggleBookmarkTrip = require("../modules/bookmarkTrip");
 
 const colors = {
   black: "#515151",
@@ -26,8 +30,10 @@ const colors = {
 
 export default function SelectedSuggestionsScreen({ navigation, route }) {
   const { width } = useWindowDimensions();
-  const { trip, img, tripIndex, toggleBookmarkTrip, isBookmarked } =
-    route.params;
+  const { trip, img, tripIndex, isBookmarked } = route.params;
+  const [bookmarked, setBookmarked] = useState(isBookmarked);
+  const userInfo = useSelector((state) => state.userInfo.value);
+
   const outboundJourneyType = trip.outboundJourney.type;
   const inboundJourneyType = trip.inboundJourney.type;
   const totalPaidAmount = trip.total;
@@ -86,6 +92,17 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   const handleContinueToPaymentPress = () => {
     navigation.navigate("PaymentHomeStack");
   };
+  const handlePress = (tripIndex) => {
+    const { result, isBookmarked } = toggleBookmarkTrip(
+      tripIndex,
+      bookmarked,
+      userInfo.isConnected
+    );
+    if (!result) {
+      return;
+    }
+    setBookmarked(isBookmarked);
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
@@ -93,13 +110,13 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
       <ImageBackground source={img} style={styles.imageBackground}>
         <View style={styles.overlay} />
-        {/* <FontAwesome
+        <FontAwesome
           style={styles.bookmark}
           name="bookmark"
           size={25}
-          color={isBookmarked ? "#BA99FE" : "white"}
-          onPress={() => toggleBookmarkTrip(tripIndex)}
-        /> */}
+          color={bookmarked ? colors.purple : "white"}
+          onPress={() => handlePress(tripIndex)}
+        />
         <View style={[styles.cityImgContainer, { width: width }]}>
           <CustomText style={styles.destinationTitle}>
             {trip.destination.name} - {trip.destination.country}

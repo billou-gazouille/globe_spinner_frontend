@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,12 +8,13 @@ import {
   SafeAreaView,
 } from "react-native";
 // import BackButton from "../components/BackButton";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 import LoadingWheel from "../components/LoadingWheel";
 import useFetchGenerate from "../hooks/useFetchGenerate";
 import GradientFontColor from "../components/GradientFontColor";
+import toggleBookmarkTrip from "../modules/bookmarkTrip";
 
 const { ipAddress, port } = require("../myVariables");
 
@@ -25,20 +26,18 @@ export default function SuggestionsScreen({ navigation }) {
 
   //console.log("userInfo:", filtersFromStore);
 
-  const toggleBookmarkTrip = async (tripIndex) => {
-    if (userInfo.isConnected) {
-      const copy = [...bookmarked];
-      copy[tripIndex] = !copy[tripIndex];
-      setBookmarked(copy);
+  const bookmarkTrip = async (tripIndex) => {
+    const { result, isBookmarked } = await toggleBookmarkTrip(
+      tripIndex,
+      bookmarked[tripIndex],
+      userInfo.isConnected
+    );
+    if (!result) {
+      return;
     }
-    const url = `http://${ipAddress}:${port}/users/${userInfo.token}/saveTrip/${tripIndex}`;
-    // console.log(url);
-    const data = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    }).then((resp) => resp.json());
-
-    // console.log("fetch response: ", data.savedTrip);
+    const copy = [...bookmarked];
+    copy[tripIndex] = isBookmarked;
+    setBookmarked(copy);
   };
 
   const [triggerFetchGenerate, setTriggerFetchGenerate] = useState(false);
@@ -128,7 +127,7 @@ export default function SuggestionsScreen({ navigation }) {
                 returnDate={formattedDate(t.inboundJourney.arrival)}
                 price={1400}
                 selectTrip={selectTrip}
-                toggleBookmarkTrip={toggleBookmarkTrip}
+                bookmarkTrip={bookmarkTrip}
                 isBookmarked={bookmarked[i]}
               />
             );
