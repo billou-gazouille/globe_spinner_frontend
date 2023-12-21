@@ -150,7 +150,6 @@ export default function FiltersScreen({ navigation }) {
       <View style={styles.inputDepartureContainerRow}>
         <CustomText>Departure: </CustomText>
         <AutocompleteDropdown
-          // direction={Platform.select({ ios: "down" })}
           onChangeText={(text) => searchCity(text)}
           onSelectItem={(item) =>
             item &&
@@ -174,7 +173,6 @@ export default function FiltersScreen({ navigation }) {
 
       <ScrollView contentContainerStyle={styles.container}>
         <StatusBar style="auto" />
-        {/* <BackButton /> */}
 
         <CustomText style={styles.travelText}>How will you travel?</CustomText>
 
@@ -188,7 +186,7 @@ export default function FiltersScreen({ navigation }) {
           </View>
           <View style={styles.date}></View>
         </ImageBackground>
-        {/* <DatePickerIOS
+        <DatePickerIOS
           departureDate={departureDate}
           returnDate={returnDate}
           onDepartureDateChange={(event, selectedDate) => {
@@ -197,7 +195,7 @@ export default function FiltersScreen({ navigation }) {
           onReturnDateChange={(event, selectedDate) => {
             setReturnDate(selectedDate || returnDate);
           }}
-        /> */}
+        />
         <ImageBackground
           source={require("../assets/bendy-dotted-line_2.jpg")}
           style={styles.imageBackground}
@@ -282,6 +280,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    zIndex: 99,
   },
 
   inputContainerRow: {
