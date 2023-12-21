@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import GradienFontColor from "../components/GradientFontColor";
+import { ipAddress } from "../myVariables";
 
 export default function SigninForm({ submit, closeModal }) {
   //const userInfo = useSelector(state => state.userInfo.value);
@@ -37,6 +38,7 @@ export default function SigninForm({ submit, closeModal }) {
       Alert.alert("Some fields are missing!");
       return;
     }
+    await submit(email, password);
   };
 
   return (
@@ -48,7 +50,6 @@ export default function SigninForm({ submit, closeModal }) {
         <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
           <FontAwesome name="close" size={20} color="#black" />
         </TouchableOpacity>
-    
 
         <View style={styles.title}>
           <GradienFontColor>
@@ -106,24 +107,25 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: "white",
+    width: "100%",
     flex: 1,
   },
 
   closeButton: {
-      width: 60,
-      height: 30,
-      top: 30,
-      right: -250,
-      marginBottom: 30,
-      zIndex: 99,
+    width: 60,
+    height: 30,
+    top: 30,
+    right: -250,
+    marginBottom: 30,
+    zIndex: 99,
 
-      justifyContent: "center",
-       alignItems: "center",
+    justifyContent: "center",
+    alignItems: "center",
 
     borderRadius: 5,
   },
   inputsContainer: {
-    width: "100%",
+    width: "80%",
     marginVertical: 20,
     justifyContent: "center",
     alignItems: "center",
@@ -150,12 +152,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 80,
     marginTop: 40,
-  
-  
   },
 
   textInput: {
-    width: "50%",
+    width: "100%",
     borderWidth: 0,
     fontSize: 15,
     padding: 5,
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    marginTop : 60,
+    marginTop: 60,
   },
 
   submitButtonText: {
