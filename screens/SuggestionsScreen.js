@@ -22,6 +22,8 @@ const { ipAddress, port } = require("../myVariables");
 export default function SuggestionsScreen({ navigation }) {
   const userInfo = useSelector((state) => state.userInfo.value);
   const filtersFromStore = useSelector((state) => state.filters.value);
+  const [toggle, setToggle] = useState(true);
+  const [triggerFetchGenerate, setTriggerFetchGenerate] = useState(false);
   const dispatch = useDispatch();
 
   //console.log("userInfo:", filtersFromStore);
@@ -32,14 +34,13 @@ export default function SuggestionsScreen({ navigation }) {
       userInfo.isConnected,
       userInfo.token
     );
-    // console.log(result);
     if (!result) {
       return;
     }
     dispatch(toggleBookmark(tripIndex));
+    setToggle((current) => !current);
   };
-
-  const [triggerFetchGenerate, setTriggerFetchGenerate] = useState(false);
+  console.log("sug", userInfo.bookmarked);
 
   const {
     generatedTrips,
@@ -57,10 +58,7 @@ export default function SuggestionsScreen({ navigation }) {
     triggerFirstFetch: triggerFetchGenerate,
   });
 
-  //console.log(generatedTrips);
-
   const regenerateAll = () => {
-    //console.log('regenerateAll');
     dispatch(resetBookmarks());
     setTriggerFetchGenerate((prev) => !prev);
   };

@@ -25,6 +25,7 @@ export default function SuggestionCard({
   bookmarkTrip,
   isBookmarked,
 }) {
+  // console.log("hhh", isBookmarked);
   return (
     <TouchableOpacity
       style={styles.container}

@@ -28,10 +28,13 @@ export const userInfoSlice = createSlice({
       state.value.isConnected = false;
     },
     toggleBookmark: (state, action) => {
-      state.bookmarked[action.payload] = !state.bookmarked[action.payload];
+      console.log("action", action.payload);
+      state.value.bookmarked[action.payload] =
+        !state.value.bookmarked[action.payload];
+      console.log("store", state.bookmarked);
     },
     resetBookmarks: (state) => {
-      state.bookmarked = [false, false];
+      state.value.bookmarked = [false, false];
     },
   },
 });
