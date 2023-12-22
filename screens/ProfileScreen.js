@@ -9,12 +9,9 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
-  useWindowDimensions,
   StatusBar,
   SafeAreaView,
   useWindowDimensions,
-  ScrollView,
 } from "react-native";
 import GradientFontColor from "../components/GradientFontColor";
 // import { Icon } from "react-native-vector-icons/FontAwesome";
@@ -127,10 +124,10 @@ export default function ProfileScreen({ navigation }) {
     />
   );
 
-  const HandlePressLogout = () => {
-    // console.log("HandlePressLogout");
-    dispatch(disconnect());
-  };
+  // const HandlePressLogout = () => {
+  //   // console.log("HandlePressLogout");
+  //   dispatch(disconnect());
+  // };
 
   const userDetails = <UserDetails logout={() => dispatch(disconnect())} />;
 
@@ -144,7 +141,7 @@ export default function ProfileScreen({ navigation }) {
   return (
     <SafeAreaView style={[styles.container, { height }]}>
       {modalToShow()}
-      <ScrollView contentContainerStyle={[styles.scrollView, { width: width }]}>
+      {/* <ScrollView contentContainerStyle={[styles.scrollView, { width: width }]}>
         <StatusBar style="auto" />
         <TouchableOpacity
           style={styles.logoutButton}
@@ -165,7 +162,7 @@ export default function ProfileScreen({ navigation }) {
           </CustomText>
           <CustomText style={styles.text}>email: {userInfo.email}</CustomText>
         </View>
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   );
 }

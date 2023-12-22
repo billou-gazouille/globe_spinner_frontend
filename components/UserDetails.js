@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
-  Image,
-  Text,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
@@ -18,13 +15,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import { useSelector } from "react-redux";
 
-const { ipAddress, port } = require("../myVariables");
-
-import {
-  useFonts,
-  NunitoSans_400Regular,
-} from "@expo-google-fonts/nunito-sans";
-
 export default function UserDetails({ logout }) {
   const userInfo = useSelector((state) => state.userInfo.value);
   const { height, width } = useWindowDimensions();
@@ -37,19 +27,11 @@ export default function UserDetails({ logout }) {
   //       });
   //   }, []);
 
-  //   const HandlePressLogout = () => {
-  //     //console.log("HandlePressLogout");
-  //     logout();
-  //   };
-
   return (
     <SafeAreaView style={[styles.container, { height }]}>
       <ScrollView contentContainerStyle={[styles.scrollView, { width: width }]}>
         <StatusBar style="auto" />
-        <TouchableOpacity
-          style={styles.logoutButton}
-          onPress={() => HandlePressLogout()}
-        >
+        <TouchableOpacity style={styles.logoutButton} onPress={() => logout()}>
           <FontAwesome name="sign-out" size={40} />
         </TouchableOpacity>
         <GradientFontColor style={styles.hello}>

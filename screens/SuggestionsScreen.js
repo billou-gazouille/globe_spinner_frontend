@@ -32,7 +32,7 @@ export default function SuggestionsScreen({ navigation }) {
       userInfo.isConnected,
       userInfo.token
     );
-    console.log(result);
+    // console.log(result);
     if (!result) {
       return;
     }
