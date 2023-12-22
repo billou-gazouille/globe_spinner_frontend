@@ -31,7 +31,7 @@ export const userInfoSlice = createSlice({
       console.log("action", action.payload);
       state.value.bookmarked[action.payload] =
         !state.value.bookmarked[action.payload];
-      console.log("store", state.bookmarked);
+      console.log("store", state.value.bookmarked);
     },
     resetBookmarks: (state) => {
       state.value.bookmarked = [false, false];

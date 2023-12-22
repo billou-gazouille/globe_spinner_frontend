@@ -24,6 +24,7 @@ import { persistStore, persistReducer } from "redux-persist";
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
+  // blacklist: ["userInfo"],
 };
 
 const rootReducer = combineReducers({ filters, userInfo });

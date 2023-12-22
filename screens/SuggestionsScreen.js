@@ -22,7 +22,6 @@ const { ipAddress, port } = require("../myVariables");
 export default function SuggestionsScreen({ navigation }) {
   const userInfo = useSelector((state) => state.userInfo.value);
   const filtersFromStore = useSelector((state) => state.filters.value);
-  const [toggle, setToggle] = useState(true);
   const [triggerFetchGenerate, setTriggerFetchGenerate] = useState(false);
   const dispatch = useDispatch();
 
@@ -38,9 +37,9 @@ export default function SuggestionsScreen({ navigation }) {
       return;
     }
     dispatch(toggleBookmark(tripIndex));
-    setToggle((current) => !current);
   };
-  console.log("sug", userInfo.bookmarked);
+
+  console.log("suggestions", userInfo.bookmarked);
 
   const {
     generatedTrips,
