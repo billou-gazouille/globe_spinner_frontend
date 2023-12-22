@@ -34,7 +34,7 @@ export default function SuggestionCard({
         <FontAwesome
           style={styles.bookmark}
           name="bookmark"
-          size={25}
+          size={30}
           color={isBookmarked ? "#BA99FE" : "white"}
           onPress={() => bookmarkTrip(tripIndex)}
         />

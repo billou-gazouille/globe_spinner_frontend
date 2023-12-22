@@ -136,6 +136,7 @@ const TabNavigator = () => {
 };
 
 export default function App() {
+  // AsyncStorage.clear();
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

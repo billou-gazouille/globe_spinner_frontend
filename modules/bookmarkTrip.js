@@ -1,21 +1,22 @@
 const { ipAddress, port } = require("../myVariables");
 
-const toggleBookmarkTrip = (tripIndex, isBookmarked, isConnected) => {
+const toggleBookmarkTrip = async (tripIndex, isConnected, token) => {
   if (!isConnected) {
-    return { result: false };
+    return false;
   }
-  const url = `http://${ipAddress}:${port}/users/${userInfo.token}/saveTrip/${tripIndex}`;
-  fetch(url, {
+  const url = `http://${ipAddress}:${port}/users/${token}/saveTrip/${tripIndex}`;
+  const resp = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-  })
-    .then((resp) => resp.json())
-    .then((data) => {
-      if (!data.result) {
-        return { result: false };
-      }
-      return { result: true, isBookmarked: !isBookmarked };
-    });
+  });
+
+  const data = await resp.json();
+
+  if (!data.res) {
+    return false;
+  }
+
+  return true;
 };
 
 export default toggleBookmarkTrip;

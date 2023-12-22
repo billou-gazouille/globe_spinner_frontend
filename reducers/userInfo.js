@@ -7,6 +7,7 @@ const initialState = {
     firstName: null,
     lastName: null,
     email: null,
+    bookmarked: [false, false],
   },
 };
 
@@ -15,20 +16,31 @@ export const userInfoSlice = createSlice({
   initialState,
   reducers: {
     loadDetails: (state, action) => {
-      //console.log("action.payload: ", action.payload);
       state.value.token = action.payload.token;
       state.value.firstName = action.payload.firstName;
       state.value.lastName = action.payload.lastName;
       state.value.email = action.payload.email;
     },
     connect: (state) => {
-        state.value.isConnected = true;
+      state.value.isConnected = true;
     },
     disconnect: (state) => {
-      state.value = { ...initialState.value };
-  },
+      state.value.isConnected = false;
+    },
+    toggleBookmark: (state, action) => {
+      state.bookmarked[action.payload] = !state.bookmarked[action.payload];
+    },
+    resetBookmarks: (state) => {
+      state.bookmarked = [false, false];
+    },
   },
 });
 
-export const { connect, disconnect, loadDetails } = userInfoSlice.actions;
+export const {
+  connect,
+  disconnect,
+  loadDetails,
+  toggleBookmark,
+  resetBookmarks,
+} = userInfoSlice.actions;
 export default userInfoSlice.reducer;

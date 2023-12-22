@@ -19,7 +19,6 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import moment from "moment";
 import GradientFontColor from "../components/GradientFontColor";
 import toggleBookmarkTrip from "../modules/bookmarkTrip";
-// const toggleBookmarkTrip = require("../modules/bookmarkTrip");
 
 const colors = {
   black: "#515151",
@@ -37,6 +36,8 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   const outboundJourneyType = trip.outboundJourney.type;
   const inboundJourneyType = trip.inboundJourney.type;
   const totalPaidAmount = trip.total;
+
+  console.log("booklast", bookmarked);
 
   const iconMapping = {
     Train: "train",
@@ -92,11 +93,13 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
   const handleContinueToPaymentPress = () => {
     navigation.navigate("PaymentHomeStack");
   };
-  const handlePress = (tripIndex) => {
-    const { result, isBookmarked } = toggleBookmarkTrip(
+  const handlePress = async (tripIndex) => {
+    console.log("Press");
+    const { result, isBookmarked } = await toggleBookmarkTrip(
       tripIndex,
       bookmarked,
-      userInfo.isConnected
+      userInfo.isConnected,
+      userInfo.token
     );
     if (!result) {
       return;
@@ -110,18 +113,18 @@ export default function SelectedSuggestionsScreen({ navigation, route }) {
 
       <ImageBackground source={img} style={styles.imageBackground}>
         <View style={styles.overlay} />
-        <FontAwesome
-          style={styles.bookmark}
-          name="bookmark"
-          size={25}
-          color={bookmarked ? colors.purple : "white"}
-          onPress={() => handlePress(tripIndex)}
-        />
         <View style={[styles.cityImgContainer, { width: width }]}>
           <CustomText style={styles.destinationTitle}>
             {trip.destination.name} - {trip.destination.country}
           </CustomText>
         </View>
+        <FontAwesome
+          style={styles.bookmark}
+          name="bookmark"
+          size={30}
+          color={bookmarked ? colors.purple : "white"}
+          onPress={() => handlePress(tripIndex)}
+        />
       </ImageBackground>
       <View style={styles.priceContainer}>
         <CustomText style={styles.text}>
@@ -286,9 +289,9 @@ const styles = StyleSheet.create({
   },
   bookmark: {
     position: "absolute",
-    zIndex: 2,
+    zIndex: 1,
     right: 20,
-    top: 10,
+    bottom: 20,
   },
   cityImgContainer: {
     height: 200,
