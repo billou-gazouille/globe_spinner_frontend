@@ -86,6 +86,7 @@ export default function SignupForm({ submit, closeModal }) {
         <KeyboardAvoidingView
           enabled={true}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={[{ width: width }]}
         >
           <View style={styles.inputsContainerRow}>
             <View style={styles.textAndInput}>
@@ -168,10 +169,11 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     backgroundColor: "white",
-    flex: 1,
+    width: "100%",
   },
   scrollView: {
     alignItems: "center",
+    flex: 1,
   },
 
   titleContainer: {
@@ -200,12 +202,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textAndInput: {
-    width: "100%",
+    width: "600%",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 10,
   },
   textInput: {
+    width: "10%",
     fontSize: 16,
     borderBottomColor: "#BA99FE",
     borderBottomWidth: 2,
