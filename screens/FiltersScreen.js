@@ -50,12 +50,12 @@ export default function FiltersScreen({ navigation }) {
     if (query === "" || query.length < 3) {
       return;
     }
-    console.log("query", query);
+    // console.log("query", query);
 
     fetch(`https://api-adresse.data.gouv.fr/search/?q=${query}`)
       .then((response) => response.json())
       .then(({ features }) => {
-        console.log(features);
+        // console.log(features)
         const suggestions = features.map((data, i) => {
           return {
             id: i + 1,
@@ -63,7 +63,7 @@ export default function FiltersScreen({ navigation }) {
             coordinates: data.geometry.coordinates,
           };
         });
-        console.log("suggestions", suggestions);
+        // console.log("suggestions", suggestions);
         setDataSet(suggestions);
       });
   };
@@ -118,14 +118,14 @@ export default function FiltersScreen({ navigation }) {
       returnDate,
     ];
     if (checkHasEmptyField(requiredFields)) {
-      console.log({
-        selectedCity,
-        budget,
-        nbrOfTravelers,
-        transportType,
-        departureDate,
-        returnDate,
-      });
+      // console.log({
+      //   selectedCity,
+      //   budget,
+      //   nbrOfTravelers,
+      //   transportType,
+      //   departureDate,
+      //   returnDate,
+      // });
       return Alert.alert("Some fields are missing!");
     }
     return true;

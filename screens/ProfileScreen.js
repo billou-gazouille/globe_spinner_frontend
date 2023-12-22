@@ -83,7 +83,7 @@ export default function ProfileScreen({ navigation }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstName, lastName, email, password }),
     }).then((resp) => resp.json());
-    console.log(data);
+    // console.log(data);
     if (data.result) {
       dispatch(connect());
       setIsSigningUp(false);
@@ -141,28 +141,6 @@ export default function ProfileScreen({ navigation }) {
   return (
     <SafeAreaView style={[styles.container, { height }]}>
       {modalToShow()}
-      {/* <ScrollView contentContainerStyle={[styles.scrollView, { width: width }]}>
-        <StatusBar style="auto" />
-        <TouchableOpacity
-          style={styles.logoutButton}
-          onPress={() => HandlePressLogout()}
-        >
-          <FontAwesome name="sign-out" size={40} />
-        </TouchableOpacity>
-        <GradientFontColor style={styles.hello}>
-          Hello {userInfo.firstname} !
-        </GradientFontColor>
-        <View style={styles.userDetailsContainer}>
-          <CustomText style={styles.text}>My account info : </CustomText>
-          <CustomText style={styles.text}>
-            first name: {userInfo.firstName}
-          </CustomText>
-          <CustomText style={styles.text}>
-            last name: {userInfo.lastName}
-          </CustomText>
-          <CustomText style={styles.text}>email: {userInfo.email}</CustomText>
-        </View>
-      </ScrollView> */}
     </SafeAreaView>
   );
 }
@@ -176,31 +154,9 @@ const styles = StyleSheet.create({
   scrollView: {
     alignItems: "center",
   },
-  hello: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 35,
-    fontFamily: "KronaOne_400Regular",
-    fontSize: 40,
-  },
   text: {
     color: "black",
     fontSize: 26,
     margin: 20,
-  },
-  logoutButton: {
-    // backgroundColor: "red",
-    width: 60,
-    height: 60,
-    position: "absolute",
-    right: -10,
-    marginTop: 20,
-  },
-
-  userDetailsContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 10,
-    marginVertical: 60,
   },
 });
