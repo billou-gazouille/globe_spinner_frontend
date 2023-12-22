@@ -93,16 +93,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   closeButton: {
-    // width: 40,
-    // height: 40,
-    // right: 10,
-    // top: 15,
-    // marginTop: -15,
-    // marginRight: -10,
-    // position: "absolute",
-    // justifyContent: "center",
-    // alignItems: "center",
-
     width: 40,
     height: 40,
     right: 10,

@@ -54,7 +54,7 @@ export default function SignupForm({ submit, closeModal }) {
       return Alert.alert("Some fields are missing!");
     }
     if (!EMAIL_REGEX.test(email)) {
-      return Alert.alert("Wrong email adress");
+      return Alert.alert("Wrong email adress or password!");
     }
     if (password !== confirmPassword) {
       return Alert.alert("Password doesn't match!");
@@ -198,7 +198,6 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     justifyContent: "center",
     alignItems: "center",
-    flexWrap: "wrap",
   },
   textAndInput: {
     width: "100%",

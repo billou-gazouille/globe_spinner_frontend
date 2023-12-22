@@ -48,7 +48,7 @@ export default function SigninForm({ submit, closeModal }) {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-          <FontAwesome name="close" size={30} color="#black" />
+          <FontAwesome name="close" size={30} />
         </TouchableOpacity>
 
         <View style={styles.title}>
@@ -88,22 +88,11 @@ export default function SigninForm({ submit, closeModal }) {
       <TouchableOpacity style={styles.submitButton} onPress={handlePressSubmit}>
         <Text style={{ fontSize: 25, color: "white" }}>Submit</Text>
       </TouchableOpacity>
-      {/* <Image
-        source={require("../assets/line-map.jpg")}
-        style={styles.headerImage}
-      /> */}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  // headerImage: {
-  //   width: "100%",
-  //   height: 60,
-  //   resizeMode: "stretch",
-  //   marginTop: 50,
-  // },
-
   container: {
     alignItems: "center",
     backgroundColor: "white",
@@ -187,6 +176,5 @@ const styles = StyleSheet.create({
     fontFamily: "KronaOne_400Regular",
     marginTop: 50,
     marginBottom: 30,
-    color: "#3972D9",
   },
 });
