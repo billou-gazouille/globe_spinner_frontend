@@ -54,7 +54,7 @@ export default function SignupForm({ submit, closeModal }) {
       return Alert.alert("Some fields are missing!");
     }
     if (!EMAIL_REGEX.test(email)) {
-      return Alert.alert("Wrong email adress or password!");
+      return Alert.alert("Wrong email adress or");
     }
     if (password !== confirmPassword) {
       return Alert.alert("Password doesn't match!");
