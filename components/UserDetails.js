@@ -29,6 +29,7 @@ export default function UserDetails({ logout }) {
   const userInfo = useSelector((state) => state.userInfo.value);
   const { height, width } = useWindowDimensions();
 
+  //CETTE PARTIE EST COMMENTÉE CAR ELLE FAIT PLANTER LA PROMESSE AU MOMENT DU SIGNIN
   //   useEffect(() => {
   //     fetch(`http://${ipAddress}:${port}/users/${userInfo.token}/savedTrips`)
   //       .then((resp) => resp.json())
