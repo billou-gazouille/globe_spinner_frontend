@@ -7,14 +7,14 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  ScrollView,
   TouchableOpacity,
   StatusBar,
   SafeAreaView,
   useWindowDimensions,
-  ScrollView,
 } from "react-native";
 import GradientFontColor from "../components/GradientFontColor";
-import { Icon } from "react-native-vector-icons/FontAwesome";
+// import { Icon } from "react-native-vector-icons/FontAwesome";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
@@ -22,7 +22,7 @@ import UserDetails from "../components/UserDetails";
 import SignModal from "../components/SignModal";
 
 import { useSelector, useDispatch } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { connect, disconnect, loadDetails } from "../reducers/userInfo";
 
@@ -34,9 +34,8 @@ const { ipAddress, port } = require("../myVariables");
 
 export default function ProfileScreen({ navigation }) {
   const { height, width } = useWindowDimensions();
-
   const userInfo = useSelector((state) => state.userInfo.value);
-  const userToken = useSelector((state) => state.userInfo.value.token);
+  // const userToken = useSelector((state) => state.userInfo.value.token);
 
   const [isSigningIn, setIsSigningIn] = useState(false);
   const [isSigningUp, setIsSigningUp] = useState(false);
@@ -48,9 +47,9 @@ export default function ProfileScreen({ navigation }) {
     setIsSigningUp(false);
   };
 
-  const handleSubmit = () => {
-    navigation.navigate("Suggestions");
-  };
+  // const handleSubmit = () => {
+  //   navigation.navigate("Suggestions");
+  // };
 
   const signIn = async (email, password) => {
     //console.log("handleSubmitSigninForm");
@@ -125,10 +124,10 @@ export default function ProfileScreen({ navigation }) {
     />
   );
 
-  const HandlePressLogout = () => {
-    //console.log("HandlePressLogout");
-    dispatch(disconnect());
-  };
+  // const HandlePressLogout = () => {
+  //   // console.log("HandlePressLogout");
+  //   dispatch(disconnect());
+  // };
 
   const userDetails = <UserDetails logout={() => dispatch(disconnect())} />;
 
@@ -140,13 +139,31 @@ export default function ProfileScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      {/* <Text style={{ ...styles.text, marginTop: 40 }}>
-        connected? {userInfo.isConnected ? "YES" : "NO"}
-      </Text> */}
+    <SafeAreaView style={[styles.container, { height }]}>
       {modalToShow()}
-    </View>
+      {/* <ScrollView contentContainerStyle={[styles.scrollView, { width: width }]}>
+        <StatusBar style="auto" />
+        <TouchableOpacity
+          style={styles.logoutButton}
+          onPress={() => HandlePressLogout()}
+        >
+          <FontAwesome name="sign-out" size={40} />
+        </TouchableOpacity>
+        <GradientFontColor style={styles.hello}>
+          Hello {userInfo.firstname} !
+        </GradientFontColor>
+        <View style={styles.userDetailsContainer}>
+          <CustomText style={styles.text}>My account info : </CustomText>
+          <CustomText style={styles.text}>
+            first name: {userInfo.firstName}
+          </CustomText>
+          <CustomText style={styles.text}>
+            last name: {userInfo.lastName}
+          </CustomText>
+          <CustomText style={styles.text}>email: {userInfo.email}</CustomText>
+        </View>
+      </ScrollView> */}
+    </SafeAreaView>
   );
 }
 

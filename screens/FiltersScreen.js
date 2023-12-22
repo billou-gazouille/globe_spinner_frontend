@@ -68,7 +68,6 @@ export default function FiltersScreen({ navigation }) {
       });
   };
 
-
   // console.log("city", selectedCity);
 
   const selectTransportationMode = (type) => {
@@ -109,7 +108,7 @@ export default function FiltersScreen({ navigation }) {
     fields.some((field) => !field || field === "" || field.length === 0);
 
   const handlePressSubmit = () => {
-    //return true;  // comment this line if you don't want to bypass the filters
+    // return true; // comment this line if you don't want to bypass the filters
     const requiredFields = [
       selectedCity.coordinates,
       budget,

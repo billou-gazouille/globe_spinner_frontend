@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -8,41 +8,35 @@ import {
   SafeAreaView,
 } from "react-native";
 // import BackButton from "../components/BackButton";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import SuggestionCard from "../components/SuggestionCard";
 import { CustomText } from "../components/CustomText";
 import LoadingWheel from "../components/LoadingWheel";
 import useFetchGenerate from "../hooks/useFetchGenerate";
 import GradientFontColor from "../components/GradientFontColor";
+import toggleBookmarkTrip from "../modules/bookmarkTrip";
+import { resetBookmarks, toggleBookmark } from "../reducers/userInfo";
 
 const { ipAddress, port } = require("../myVariables");
 
 export default function SuggestionsScreen({ navigation }) {
-  const [trips, setTrips] = useState([]);
-  const [bookmarked, setBookmarked] = useState([false, false]);
-
   const userInfo = useSelector((state) => state.userInfo.value);
   const filtersFromStore = useSelector((state) => state.filters.value);
+  const dispatch = useDispatch();
 
   //console.log("userInfo:", filtersFromStore);
 
-  const toggleBookmarkTrip = async (tripIndex) => {
-    //console.log("bookmared trip with index" + tripIndex);
-    //console.log(userInfo);
-
-    if (userInfo.isConnected) {
-      const copy = [...bookmarked];
-      copy[tripIndex] = !copy[tripIndex];
-      setBookmarked(copy);
+  const bookmarkTrip = async (tripIndex) => {
+    const result = await toggleBookmarkTrip(
+      tripIndex,
+      userInfo.isConnected,
+      userInfo.token
+    );
+    // console.log(result);
+    if (!result) {
+      return;
     }
-    const url = `http://${ipAddress}:${port}/users/${userInfo.token}/saveTrip/${tripIndex}`;
-    // console.log(url);
-    const data = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-    }).then((resp) => resp.json());
-
-    // console.log("fetch response: ", data.savedTrip);
+    dispatch(toggleBookmark(tripIndex));
   };
 
   const [triggerFetchGenerate, setTriggerFetchGenerate] = useState(false);
@@ -63,16 +57,12 @@ export default function SuggestionsScreen({ navigation }) {
     triggerFirstFetch: triggerFetchGenerate,
   });
 
-  console.log(generatedTrips);
+  //console.log(generatedTrips);
 
   const regenerateAll = () => {
     //console.log('regenerateAll');
+    dispatch(resetBookmarks());
     setTriggerFetchGenerate((prev) => !prev);
-  };
-
-  const handlePressRegenerateAll = () => {
-    // console.log("handlePressRegenerateAll");
-    regenerateAll();
   };
 
   const getImage = (index) => {
@@ -87,6 +77,8 @@ export default function SuggestionsScreen({ navigation }) {
     navigation.navigate("SelectedSuggestionsHomeStack", {
       trip: generatedTrips[tripIndex],
       img: getImage(tripIndex),
+      tripIndex: tripIndex,
+      isBookmarked: userInfo.bookmarked[tripIndex],
     });
   };
 
@@ -129,8 +121,8 @@ export default function SuggestionsScreen({ navigation }) {
                 returnDate={formattedDate(t.inboundJourney.arrival)}
                 price={1400}
                 selectTrip={selectTrip}
-                toggleBookmarkTrip={toggleBookmarkTrip}
-                isBookmarked={bookmarked[i]}
+                bookmarkTrip={bookmarkTrip}
+                isBookmarked={userInfo.bookmarked[i]}
               />
             );
           })}
@@ -138,7 +130,7 @@ export default function SuggestionsScreen({ navigation }) {
       <TouchableOpacity
         disabled={preventRegenerate}
         style={{ ...styles.regenerateAllButton, backgroundColor: rgBtnColor }}
-        onPress={handlePressRegenerateAll}
+        onPress={regenerateAll}
       >
         <CustomText style={styles.regenerateAllText}>REGENERATE ALL</CustomText>
       </TouchableOpacity>
